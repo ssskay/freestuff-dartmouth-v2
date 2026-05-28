@@ -66,16 +66,19 @@ function transformResource(resource) {
   const transformed = {
     name: resource.name,
     description: resource.description,
-    url: resource.link, // Note: JSON uses 'link', DB uses 'url'
+    url: resource.link || resource.url, // Note: JSON uses 'link', DB uses 'url'
     category: resource.category,
     eligibility: resource.eligibility || [],
     last_verified: resource.last_verified || new Date().toISOString().split('T')[0],
     notes: resource.notes || null,
     source: resource.source || null,
-    added_at: resource.added_at || new Date().toISOString(),
+    added_at: resource.added_at || resource.date_added || new Date().toISOString(),
     added_by: resource.added_by || 'human',
     upvotes: 0, // Start with 0 upvotes
     is_active: resource.status === 'active',
+    annual_value: resource.annual_value || null,
+    date_added: resource.date_added || new Date().toISOString().split('T')[0],
+    hidden_gem: resource.hidden_gem || false,
   };
 
   // Only include id if it's a valid UUID (otherwise let Postgres generate it)

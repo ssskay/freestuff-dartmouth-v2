@@ -32,6 +32,22 @@ try {
 // Get unique categories and eligibility options
 const categories = [...new Set(resources.map(r => r.category))].sort();
 const eligibilityOptions = [...new Set(resources.flatMap(r => r.eligibility))].sort();
+
+// Filter hidden gems
+const hiddenGems = resources.filter(r => r.hidden_gem === true);
+
+// Calculate total annual value
+const totalValue = resources
+  .filter(r => r.annual_value && r.annual_value > 0)
+  .reduce((sum, r) => sum + r.annual_value, 0);
+
+// Get recently added resources (last 30 days)
+const thirtyDaysAgo = new Date();
+thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+const recentResources = resources
+  .filter(r => r.date_added && new Date(r.date_added) >= thirtyDaysAgo)
+  .sort((a, b) => new Date(b.date_added).getTime() - new Date(a.date_added).getTime())
+  .slice(0, 3);
 ---
 
 <BaseLayout title="Free Stuff @ Dartmouth">
@@ -73,6 +89,16 @@ const eligibilityOptions = [...new Set(resources.flatMap(r => r.eligibility))].s
             ))}
           </select>
         </div>
+
+        <div class="filter-group">
+          <label for="sort-filter" class="filter-label">Sort by</label>
+          <select id="sort-filter" class="filter-select">
+            <option value="name">Name (A-Z)</option>
+            <option value="popular">Most Popular</option>
+            <option value="value">Highest Value</option>
+            <option value="recent">Recently Added</option>
+          </select>
+        </div>
       </div>
 
       <div class="filter-status">
@@ -83,6 +109,49 @@ const eligibilityOptions = [...new Set(resources.flatMap(r => r.eligibility))].s
       </div>
     </div>
   </div>
+
+  <!-- Value Calculator Banner -->
+  <div class="value-banner">
+    <div class="value-banner-content">
+      <div class="value-amount">${totalValue.toLocaleString()}</div>
+      <div class="value-label">in free resources you already have access to</div>
+    </div>
+  </div>
+
+  <!-- Recently Added Section -->
+  {recentResources.length > 0 && (
+    <div class="recently-added-section">
+      <h3 class="recently-added-title">Just added</h3>
+      <div class="recently-added-grid">
+        {recentResources.map((resource) => (
+          <a href={resource.url} target="_blank" rel="noopener noreferrer" class="recently-added-item">
+            <span class="new-badge">New</span>
+            <span class="recently-added-name">{resource.name}</span>
+            <span class="recently-added-category">{resource.category.replace(/-/g, ' ')}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- Hidden Gems Section -->
+  {hiddenGems.length > 0 && (
+    <div class="hidden-gems-section">
+      <div class="hidden-gems-header">
+        <h2 class="hidden-gems-title">The stuff nobody tells you about</h2>
+        <p class="hidden-gems-deck">
+          Most people graduate without knowing half of this exists. DOC cabins for $20/night? Bloomberg Terminals you can just walk up and use? Your friend who reads the fine print found these for you.
+        </p>
+      </div>
+      <div class="hidden-gems-grid">
+        {hiddenGems.map((resource) => (
+          <div class="hidden-gem-card">
+            <ResourceCard resource={resource} />
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
 
   <!-- Resource Grid -->
   <div id="resource-grid" class="resource-grid">
@@ -292,6 +361,157 @@ const eligibilityOptions = [...new Set(resources.flatMap(r => r.eligibility))].s
       font-size: var(--text-base);
     }
 
+    /* Value Calculator Banner */
+    .value-banner {
+      max-width: 90rem;
+      margin: 0 auto var(--space-2xl);
+      padding: 0 var(--space-lg);
+    }
+
+    .value-banner-content {
+      padding: var(--space-xl);
+      background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+
+    .value-amount {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-4xl);
+      font-weight: 600;
+      line-height: var(--leading-tight);
+      color: var(--color-paper);
+      margin-bottom: var(--space-2xs);
+    }
+
+    .value-label {
+      font-size: var(--text-lg);
+      line-height: var(--leading-normal);
+      color: var(--color-paper);
+      opacity: 0.95;
+    }
+
+    /* Recently Added Section */
+    .recently-added-section {
+      max-width: 90rem;
+      margin: 0 auto var(--space-2xl);
+      padding: 0 var(--space-lg);
+    }
+
+    .recently-added-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-xl);
+      font-weight: 600;
+      line-height: var(--leading-tight);
+      color: var(--color-ink);
+      margin: 0 0 var(--space-md) 0;
+    }
+
+    .recently-added-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+      gap: var(--space-sm);
+    }
+
+    .recently-added-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3xs);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--color-paper);
+      border: var(--rule-thin) solid var(--color-border);
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: border-color var(--dur-fast) var(--ease-out);
+    }
+
+    .recently-added-item:hover {
+      border-color: var(--color-accent);
+    }
+
+    .new-badge {
+      position: absolute;
+      top: var(--space-xs);
+      right: var(--space-xs);
+      padding: var(--space-3xs) var(--space-xs);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-paper);
+      background: var(--color-accent);
+      border-radius: var(--radius-sm);
+    }
+
+    .recently-added-name {
+      font-size: var(--text-base);
+      font-weight: 600;
+      color: var(--color-ink);
+      padding-right: var(--space-xl);
+    }
+
+    .recently-added-category {
+      font-size: var(--text-xs);
+      text-transform: capitalize;
+      color: var(--color-ink-subtle);
+    }
+
+    /* Hidden Gems Section */
+    .hidden-gems-section {
+      max-width: 90rem;
+      margin: 0 auto var(--space-3xl);
+      padding: 0 var(--space-lg);
+    }
+
+    .hidden-gems-header {
+      max-width: var(--measure);
+      margin-bottom: var(--space-xl);
+    }
+
+    .hidden-gems-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      line-height: var(--leading-tight);
+      color: var(--color-ink);
+      margin: 0 0 var(--space-xs) 0;
+    }
+
+    .hidden-gems-deck {
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+      color: var(--color-ink-muted);
+      margin: 0;
+    }
+
+    .hidden-gems-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      gap: var(--space-lg);
+    }
+
+    .hidden-gem-card {
+      position: relative;
+    }
+
+    .hidden-gem-card::before {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+      border-radius: var(--radius-md);
+      opacity: 0.1;
+      pointer-events: none;
+      z-index: -1;
+    }
+
     /* Mobile adjustments */
     @media (max-width: 768px) {
       .hero-catalogue {
@@ -321,6 +541,54 @@ const eligibilityOptions = [...new Set(resources.flatMap(r => r.eligibility))].s
         gap: var(--space-xs);
       }
 
+      .hidden-gems-section {
+        padding: 0 var(--space-md);
+        margin-bottom: var(--space-2xl);
+      }
+
+      .hidden-gems-title {
+        font-size: var(--text-xl);
+      }
+
+      .hidden-gems-deck {
+        font-size: var(--text-sm);
+      }
+
+      .value-banner {
+        padding: 0 var(--space-md);
+        margin-bottom: var(--space-xl);
+      }
+
+      .value-banner-content {
+        padding: var(--space-lg);
+      }
+
+      .value-amount {
+        font-size: var(--text-3xl);
+      }
+
+      .value-label {
+        font-size: var(--text-base);
+      }
+
+      .recently-added-section {
+        padding: 0 var(--space-md);
+        margin-bottom: var(--space-xl);
+      }
+
+      .recently-added-title {
+        font-size: var(--text-lg);
+      }
+
+      .recently-added-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hidden-gems-grid {
+        gap: var(--space-md);
+        grid-template-columns: 1fr;
+      }
+
       .resource-grid {
         padding: 0 var(--space-md) var(--space-xl);
         gap: var(--space-md);
@@ -337,12 +605,46 @@ const eligibilityOptions = [...new Set(resources.flatMap(r => r.eligibility))].s
     const searchInput = document.getElementById('search') as HTMLInputElement;
     const categoryFilter = document.getElementById('category-filter') as HTMLSelectElement;
     const eligibilityFilter = document.getElementById('eligibility-filter') as HTMLSelectElement;
+    const sortFilter = document.getElementById('sort-filter') as HTMLSelectElement;
     const clearFiltersBtn = document.getElementById('clear-filters') as HTMLButtonElement;
     const clearFiltersBtnAlt = document.getElementById('clear-filters-alt') as HTMLButtonElement;
     const resultCount = document.getElementById('result-count') as HTMLSpanElement;
     const resourceGrid = document.getElementById('resource-grid') as HTMLDivElement;
     const noResults = document.getElementById('no-results') as HTMLDivElement;
-    const resourceItems = document.querySelectorAll('.resource-item') as NodeListOf<HTMLDivElement>;
+    let resourceItems = Array.from(document.querySelectorAll('.resource-item') as NodeListOf<HTMLDivElement>);
+
+    function sortResources() {
+      const sortBy = sortFilter.value;
+
+      resourceItems.sort((a, b) => {
+        const aCard = a.querySelector('.resource-card');
+        const bCard = b.querySelector('.resource-card');
+
+        if (sortBy === 'popular') {
+          const aUpvotes = parseInt(aCard?.querySelector('.upvote-count')?.textContent || '0');
+          const bUpvotes = parseInt(bCard?.querySelector('.upvote-count')?.textContent || '0');
+          return bUpvotes - aUpvotes;
+        } else if (sortBy === 'value') {
+          const aValue = aCard?.querySelector('.value-badge')?.textContent?.replace(/[^0-9]/g, '') || '0';
+          const bValue = bCard?.querySelector('.value-badge')?.textContent?.replace(/[^0-9]/g, '') || '0';
+          return parseInt(bValue) - parseInt(aValue);
+        } else if (sortBy === 'recent') {
+          const aNew = aCard?.querySelector('.new-badge') ? 1 : 0;
+          const bNew = bCard?.querySelector('.new-badge') ? 1 : 0;
+          if (aNew !== bNew) return bNew - aNew;
+          const aName = JSON.parse(a.dataset.searchable || '{}').name || '';
+          const bName = JSON.parse(b.dataset.searchable || '{}').name || '';
+          return aName.localeCompare(bName);
+        } else { // name
+          const aName = JSON.parse(a.dataset.searchable || '{}').name || '';
+          const bName = JSON.parse(b.dataset.searchable || '{}').name || '';
+          return aName.localeCompare(bName);
+        }
+      });
+
+      // Re-append elements in sorted order
+      resourceItems.forEach(item => resourceGrid.appendChild(item));
+    }
 
     function filterResources() {
       const searchTerm = searchInput.value.toLowerCase();
@@ -387,14 +689,20 @@ const eligibilityOptions = [...new Set(resources.flatMap(r => r.eligibility))].s
       searchInput.value = '';
       categoryFilter.value = '';
       eligibilityFilter.value = '';
+      sortFilter.value = 'name';
+      sortResources();
       filterResources();
     }
 
     searchInput.addEventListener('input', filterResources);
     categoryFilter.addEventListener('change', filterResources);
     eligibilityFilter.addEventListener('change', filterResources);
+    sortFilter.addEventListener('change', sortResources);
     clearFiltersBtn.addEventListener('click', clearFilters);
     clearFiltersBtnAlt.addEventListener('click', clearFilters);
+
+    // Initial sort
+    sortResources();
 
     // Upvote functionality
     const fingerprint = getFingerprint();
