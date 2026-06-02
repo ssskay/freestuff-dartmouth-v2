@@ -1,0 +1,386 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ResourceCard from '../../components/ResourceCard.astro';
+import { getAllResources } from '../../lib/supabase';
+
+// Fetch resources
+let resources;
+try {
+  resources = await getAllResources();
+  if (resources.length === 0) {
+    const staticResources = await import('../../content/resources.json');
+    resources = staticResources.default.map(r => ({
+      ...r,
+      url: r.link,
+      upvotes: 0,
+      is_active: r.status === 'active'
+    }));
+  }
+} catch (error) {
+  console.error('Error fetching from Supabase:', error);
+  const staticResources = await import('../../content/resources.json');
+  resources = staticResources.default.map(r => ({
+    ...r,
+    url: r.link,
+    upvotes: 0,
+    is_active: r.status === 'active'
+  }));
+}
+
+// Filter resources for this scenario
+const scenarioResources = resources.filter(r =>
+  r.category === 'outdoor' ||
+  r.name.includes('DOC') ||
+  r.name.includes('Ledyard') ||
+  r.name.includes('Rental') ||
+  r.name.includes('Climb') ||
+  r.name.includes('Recreation')
+);
+---
+
+<BaseLayout title="Adventure Resources | Free Stuff @ Dartmouth">
+  <div class="scenario-page">
+    <div class="scenario-hero">
+      <div class="scenario-icon-large">🏔️</div>
+      <h1 class="scenario-title">Planning an adventure?</h1>
+      <p class="scenario-description">
+        Whether you're planning a weekend in the White Mountains, need gear for spring break, or just want to try something new outside — the DOC (Dartmouth Outing Club) has you covered. Free gear, cheap cabins, and trip options that would cost hundreds anywhere else.
+      </p>
+    </div>
+
+    <div class="scenario-content">
+      <div class="scenario-section">
+        <h2 class="section-title">What you'll find here</h2>
+        <ul class="benefit-list">
+          <li><strong>DOC Cabin Rentals</strong> — 18 cabins across New Hampshire. Free for undergrads at Grant cabins, $0-40/night elsewhere. Hotels charge $200+.</li>
+          <li><strong>Outdoor Gear Rentals</strong> — Tents, sleeping bags, backpacks, snowshoes, skis. Borrow it all for free or cheap.</li>
+          <li><strong>Ledyard Canoe Club</strong> — Free kayak and canoe access on the Connecticut River. Equipment and instruction included.</li>
+          <li><strong>DOC Trips</strong> — Organized adventures with experienced leaders. Hiking, camping, climbing, skiing. Transportation and gear included.</li>
+          <li><strong>Climbing Wall</strong> — Indoor climbing at Alumni Gym. Open hours and classes available.</li>
+        </ul>
+      </div>
+
+      <div class="resources-section">
+        <h2 class="section-title">Your resources ({scenarioResources.length})</h2>
+        <div class="resource-grid">
+          {scenarioResources.map((resource) => (
+            <div class="resource-item">
+              <ResourceCard resource={resource} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="cta-section">
+        <p class="cta-text">Need something else?</p>
+        <a href="/" class="cta-button">Browse all {resources.length} resources</a>
+        <a href="/scenarios" class="cta-link-secondary">See other scenarios →</a>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .scenario-page {
+      max-width: 90rem;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--space-lg);
+    }
+
+    .scenario-hero {
+      max-width: var(--measure);
+      margin: 0 auto var(--space-3xl);
+      text-align: center;
+    }
+
+    .scenario-icon-large {
+      font-size: var(--text-6xl);
+      line-height: 1;
+      margin-bottom: var(--space-md);
+    }
+
+    .scenario-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-4xl);
+      font-weight: 600;
+      line-height: var(--leading-tight);
+      color: var(--color-ink);
+      margin: 0 0 var(--space-md) 0;
+    }
+
+    .scenario-description {
+      font-size: var(--text-lg);
+      line-height: var(--leading-relaxed);
+      color: var(--color-ink-muted);
+      margin: 0;
+    }
+
+    .scenario-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3xl);
+    }
+
+    .scenario-section {
+      max-width: var(--measure);
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      line-height: var(--leading-tight);
+      color: var(--color-ink);
+      margin: 0 0 var(--space-md) 0;
+    }
+
+    .benefit-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    .benefit-list li {
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+      color: var(--color-ink-muted);
+      padding-left: var(--space-lg);
+      position: relative;
+    }
+
+    .benefit-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    .resources-section {
+      width: 100%;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+
+    .cta-section {
+      max-width: var(--measure);
+      margin: 0 auto;
+      text-align: center;
+      padding: var(--space-2xl) 0;
+      border-top: var(--rule-thin) solid var(--color-border);
+    }
+
+    .cta-text {
+      margin: 0 0 var(--space-md) 0;
+      font-size: var(--text-lg);
+      color: var(--color-ink-muted);
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: var(--space-sm) var(--space-lg);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      font-weight: 600;
+      color: var(--color-paper);
+      background: var(--color-accent);
+      border: none;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background var(--dur-fast) var(--ease-out);
+    }
+
+    .cta-button:hover {
+      background: var(--color-accent-hover);
+    }
+
+    .cta-link-secondary {
+      display: block;
+      margin-top: var(--space-sm);
+      font-size: var(--text-base);
+      font-weight: 500;
+      color: var(--color-accent);
+      text-decoration: none;
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+
+    .cta-link-secondary:hover {
+      color: var(--color-accent-hover);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .scenario-page {
+        padding: var(--space-xl) var(--space-md);
+      }
+
+      .scenario-title {
+        font-size: var(--text-3xl);
+      }
+
+      .scenario-description {
+        font-size: var(--text-base);
+      }
+
+      .section-title {
+        font-size: var(--text-xl);
+      }
+
+      .resource-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+    }
+  </style>
+
+
+  <script>
+    import { getFingerprint } from '../../lib/fingerprint';
+    import { upvoteResource, removeUpvote, getUserVotes, reportIssue } from '../../lib/supabase';
+
+    const fingerprint = getFingerprint();
+
+    // Get user's existing votes and update UI
+    getUserVotes(fingerprint).then(votedIds => {
+      votedIds.forEach(id => {
+        const btn = document.querySelector(`button[data-resource-id="${id}"]`) as HTMLButtonElement;
+        if (btn && btn.classList.contains('upvote-btn')) {
+          btn.dataset.voted = 'true';
+        }
+      });
+    });
+
+    // Handle upvote button clicks
+    document.addEventListener('click', async (e) => {
+      const target = e.target as HTMLElement;
+      const button = target.closest('.upvote-btn') as HTMLButtonElement;
+
+      if (!button) return;
+
+      e.preventDefault();
+
+      const resourceId = button.dataset.resourceId;
+      const hasVoted = button.dataset.voted === 'true';
+
+      if (!resourceId) return;
+
+      button.disabled = true;
+
+      try {
+        let result;
+        if (hasVoted) {
+          result = await removeUpvote(resourceId, fingerprint);
+        } else {
+          result = await upvoteResource(resourceId, fingerprint);
+        }
+
+        if (result.success) {
+          button.dataset.voted = hasVoted ? 'false' : 'true';
+          const countSpan = button.querySelector('.upvote-count') as HTMLSpanElement;
+          if (countSpan) {
+            countSpan.textContent = result.upvotes.toString();
+          }
+        }
+      } catch (error) {
+        console.error('Error toggling vote:', error);
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    // Report issue functionality
+    let currentOpenDropdown: HTMLElement | null = null;
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const reportBtn = target.closest('.report-btn') as HTMLButtonElement;
+
+      if (reportBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const resourceId = reportBtn.dataset.resourceId;
+        if (!resourceId) return;
+
+        const dropdown = document.querySelector(`.report-dropdown[data-resource-id="${resourceId}"]`) as HTMLElement;
+        if (!dropdown) return;
+
+        if (currentOpenDropdown && currentOpenDropdown !== dropdown) {
+          currentOpenDropdown.style.display = 'none';
+        }
+
+        const isVisible = dropdown.style.display === 'block';
+        dropdown.style.display = isVisible ? 'none' : 'block';
+        currentOpenDropdown = isVisible ? null : dropdown;
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.report-wrapper') && currentOpenDropdown) {
+        currentOpenDropdown.style.display = 'none';
+        currentOpenDropdown = null;
+      }
+    });
+
+    document.addEventListener('click', async (e) => {
+      const target = e.target as HTMLElement;
+      const reportOption = target.closest('.report-option') as HTMLButtonElement;
+
+      if (!reportOption) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const issueType = reportOption.dataset.issue as 'broken-link' | 'wrong-info' | 'outdated' | 'eligibility' | 'other';
+      const dropdown = reportOption.closest('.report-dropdown') as HTMLElement;
+      const resourceId = dropdown?.dataset.resourceId;
+
+      if (!resourceId || !issueType) return;
+
+      const allOptions = dropdown.querySelectorAll('.report-option') as NodeListOf<HTMLButtonElement>;
+      allOptions.forEach(opt => opt.disabled = true);
+
+      try {
+        const result = await reportIssue(resourceId, issueType);
+
+        if (result.success) {
+          dropdown.style.display = 'none';
+          currentOpenDropdown = null;
+
+          const stickerOffer = confirm(
+            'Thanks for catching that! 🎉\n\n' +
+            'Want a free sticker? Click OK to enter your email, or Cancel if you\'re good.'
+          );
+
+          if (stickerOffer) {
+            const email = prompt('Drop your email here and we\'ll send you a sticker:');
+            if (email && email.trim()) {
+              await reportIssue(resourceId, issueType, undefined, email.trim());
+              alert('Thanks! We\'ll send your sticker soon. 🌲');
+            }
+          } else {
+            alert('Report submitted! Thanks for helping keep this accurate. 🌲');
+          }
+        } else {
+          alert('Oops, something went wrong. Please try again.');
+        }
+      } catch (error) {
+        alert('Oops, something went wrong. Please try again.');
+        console.error('Error submitting report:', error);
+      } finally {
+        allOptions.forEach(opt => opt.disabled = false);
+      }
+    });
+  </script>
+</BaseLayout>

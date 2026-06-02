@@ -209,16 +209,16 @@
     "id": "doc-cabin-rentals",
     "name": "DOC Cabin Rentals",
     "category": "outdoor",
-    "description": "Rent DOC cabins throughout New Hampshire including the Second College Grant and hills near Hanover for cheap weekend getaways.",
+    "description": "Rent DOC cabins throughout New Hampshire including the Second College Grant and hills near Hanover. 18 cabins total with rates ranging from free (undergrads at Grant cabins) to $100/night (Hanover area cabins).",
     "link": "https://outdoors.dartmouth.edu/services/cabins/",
     "eligibility": [
       "student",
       "alumni"
     ],
     "source": "outdoors.dartmouth.edu",
-    "last_verified": "2026-05-27",
+    "last_verified": "2026-05-28",
     "status": "active",
-    "notes": "18 cabins across NH; subsidized rates for students",
+    "notes": "Hanover cabins: $40-$250/night with DOC life member discounts. Grant cabins: Free for undergrads, $7-$35/person for others. DOC life members get 50% off for spouse, 75% off for kids.",
     "added_by": "human",
     "hidden_gem": true,
     "annual_value": 150,
@@ -1123,7 +1123,7 @@
     "name": "Bitwarden Enterprise",
     "category": "software",
     "description": "Open-source password manager with enterprise features. Securely store, share, and manage passwords across all devices with end-to-end encryption.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=168476",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=161177",
     "eligibility": [
       "student",
       "faculty",
@@ -1138,11 +1138,11 @@
     "date_added": "2026-05-28"
   },
   {
-    "id": "github-enterprise",
-    "name": "GitHub Enterprise",
+    "id": "atlassian-access",
+    "name": "Atlassian Access (Jira, Confluence, Trello)",
     "category": "software",
-    "description": "Enterprise version control and collaboration platform with unlimited private repositories, advanced security features, and CI/CD tools.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=128625",
+    "description": "Atlassian cloud products including Jira for project management, Confluence for documentation, Trello for task tracking, and Bitbucket for Git repositories, with Dartmouth SSO authentication.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=151718",
     "eligibility": [
       "student",
       "faculty",
@@ -1151,36 +1151,17 @@
     "source": "services.dartmouth.edu",
     "last_verified": "2026-05-28",
     "status": "active",
-    "notes": "Students also eligible for GitHub Student Developer Pack with additional free tools",
-    "added_by": "agent",
-    "annual_value": 48,
-    "date_added": "2026-05-28"
-  },
-  {
-    "id": "atlassian-suite",
-    "name": "Atlassian Suite (Jira, Confluence, Trello)",
-    "category": "software",
-    "description": "Full Atlassian suite including Jira for project management, Confluence for documentation, Trello for task tracking, and Bitbucket for Git repositories.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=132847",
-    "eligibility": [
-      "student",
-      "faculty",
-      "staff"
-    ],
-    "source": "services.dartmouth.edu",
-    "last_verified": "2026-05-28",
-    "status": "active",
-    "notes": "Academic license; access via Dartmouth SSO",
+    "notes": "Atlassian Access connects cloud products to Dartmouth's identity provider for SSO",
     "added_by": "agent",
     "annual_value": 600,
     "date_added": "2026-05-28"
   },
   {
     "id": "slack-enterprise",
-    "name": "Slack Enterprise",
+    "name": "Slack",
     "category": "software",
-    "description": "Enterprise team communication and collaboration platform with unlimited message history, integrations, and advanced admin controls.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=149726",
+    "description": "Collaboration tool for fast, intuitive, and secure team communication. Includes searchable messaging, file sharing, and integration with tools like Zoom and Google Drive.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=94649",
     "eligibility": [
       "student",
       "faculty",
@@ -1199,7 +1180,7 @@
     "name": "Claude for Education",
     "category": "software",
     "description": "Anthropic's advanced AI assistant (Claude 4.5) for research, writing, coding, and problem-solving with educational access including higher usage limits.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=170213",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=170487",
     "eligibility": [
       "student",
       "faculty",
@@ -1218,7 +1199,7 @@
     "name": "Overleaf Professional",
     "category": "software",
     "description": "Collaborative LaTeX editor for writing and publishing academic papers, theses, and technical documents. Includes version control, thousands of templates, and real-time collaboration.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=165432",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=153940",
     "eligibility": [
       "student",
       "faculty",
@@ -1233,30 +1214,11 @@
     "date_added": "2026-05-28"
   },
   {
-    "id": "zotero-storage",
-    "name": "Zotero Unlimited Storage",
-    "category": "software",
-    "description": "Citation management tool with unlimited cloud storage for PDFs and attachments. Organize research, generate bibliographies, and collaborate on reference libraries.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=157834",
-    "eligibility": [
-      "student",
-      "faculty",
-      "staff"
-    ],
-    "source": "services.dartmouth.edu",
-    "last_verified": "2026-05-28",
-    "status": "active",
-    "notes": "Request unlimited storage upgrade from IT; includes browser plugin and Word/LibreOffice integration",
-    "added_by": "agent",
-    "annual_value": 120,
-    "date_added": "2026-05-28"
-  },
-  {
     "id": "sibelius",
     "name": "Sibelius",
     "category": "software",
     "description": "Professional music notation software for composing, arranging, and engraving scores. Used by composers, arrangers, and publishers worldwide.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64642",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64743",
     "eligibility": [
       "student",
       "faculty",
@@ -1294,7 +1256,7 @@
     "name": "R & RStudio Server",
     "category": "software",
     "description": "Free statistical computing environment with RStudio Server for data analysis, machine learning, and visualization. Access via web browser or desktop installation.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=143256",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=155831",
     "eligibility": [
       "student",
       "faculty",
@@ -1313,7 +1275,7 @@
     "name": "Python, Jupyter, & Anaconda",
     "category": "software",
     "description": "JupyterHub server with Python, Anaconda distribution, and data science packages. Web-based environment for notebooks, code, and data analysis.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=142378",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=155286",
     "eligibility": [
       "student",
       "faculty",
@@ -1332,7 +1294,7 @@
     "name": "CrashPlan Backup",
     "category": "software",
     "description": "Automatic cloud backup for computers and servers. Continuous data protection with unlimited storage for Dartmouth-owned devices.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64588",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64863",
     "eligibility": [
       "faculty",
       "staff"
@@ -1350,16 +1312,15 @@
     "name": "LinkedIn Learning",
     "category": "library",
     "description": "Unlimited access to 16,000+ online courses covering business, technology, creative skills, and professional development with certificates of completion.",
-    "link": "https://researchguides.dartmouth.edu/c.php?g=59725&p=9910238",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64717",
     "eligibility": [
-      "student",
       "faculty",
       "staff"
     ],
-    "source": "library.dartmouth.edu",
+    "source": "services.dartmouth.edu",
     "last_verified": "2026-05-28",
     "status": "active",
-    "notes": "Access via library databases page; formerly Lynda.com",
+    "notes": "For faculty and staff only; formerly Lynda.com",
     "added_by": "agent",
     "annual_value": 300,
     "date_added": "2026-05-28"
@@ -1369,7 +1330,7 @@
     "name": "DocuSign",
     "category": "software",
     "description": "Electronic signature platform for secure document signing, approval workflows, and contract management.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=151729",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/Requests/ServiceDet?ID=32274",
     "eligibility": [
       "faculty",
       "staff"
@@ -1387,7 +1348,7 @@
     "name": "FastX Remote Desktop",
     "category": "software",
     "description": "Remote desktop access to Dartmouth computing resources including Windows and Linux systems. Run graphical applications from anywhere.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=66759",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=81595",
     "eligibility": [
       "student",
       "faculty",
@@ -1406,7 +1367,7 @@
     "name": "MobaXterm",
     "category": "software",
     "description": "Enhanced terminal for Windows with SSH client, X server, and remote computing tools for connecting to Unix/Linux systems.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=116427",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=103989",
     "eligibility": [
       "student",
       "faculty",
@@ -1425,7 +1386,7 @@
     "name": "OnBase ECM",
     "category": "software",
     "description": "Enterprise content management system for document storage, workflow automation, and records management.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64624",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/Requests/ServiceDet?ID=30892",
     "eligibility": [
       "faculty",
       "staff"
@@ -1440,10 +1401,10 @@
   },
   {
     "id": "windows-education",
-    "name": "Windows 10/11 Education",
+    "name": "Windows 10 Education",
     "category": "software",
-    "description": "Windows 10 or 11 Education edition for personal and Dartmouth-owned computers. Free upgrade from Windows Home or Pro.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=64650",
+    "description": "Windows 10 Education edition for students' personal and Dartmouth-owned computers. Free download via OnTheHub.",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=97413",
     "eligibility": [
       "student",
       "faculty",
@@ -1462,7 +1423,7 @@
     "name": "CrowdStrike Falcon",
     "category": "software",
     "description": "Enterprise endpoint protection and antivirus for Dartmouth-owned computers. Cloud-based security platform with threat detection and response.",
-    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=168237",
+    "link": "https://services.dartmouth.edu/TDClient/1806/Portal/KB/ArticleDet?ID=108065",
     "eligibility": [
       "faculty",
       "staff"

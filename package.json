@@ -8,7 +8,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "seed": "node scripts/seed-supabase.js"
+    "seed": "node scripts/seed-supabase.js",
+    "clear": "node scripts/clear-resources.js",
+    "check-reports": "node scripts/add-reports-table.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.2",

@@ -33,6 +33,59 @@ try {
 const categories = [...new Set(resources.map(r => r.category))].sort();
 const eligibilityOptions = [...new Set(resources.flatMap(r => r.eligibility))].sort();
 
+// Define fun category groupings
+const categoryGroups = {
+  'ai-tools': {
+    label: 'AI & Tech Tools',
+    resources: resources.filter(r =>
+      ['Claude for Education', 'GitHub', 'Slack', 'Atlassian'].some(name => r.name.includes(name)) ||
+      r.category === 'software' && ['claude', 'github', 'slack', 'atlassian'].some(kw => r.id?.includes(kw))
+    )
+  },
+  'creative': {
+    label: 'For Creatives',
+    resources: resources.filter(r =>
+      ['Adobe', 'Canva', 'Sibelius', 'Woodworking', 'Ceramics', 'Music Practice'].some(name => r.name.includes(name)) ||
+      r.category === 'campus-life' && (r.name.includes('Hop') || r.name.includes('Art'))
+    )
+  },
+  'data': {
+    label: 'Data & Analytics',
+    resources: resources.filter(r =>
+      ['MATLAB', 'Stata', 'SPSS', 'SAS', 'JMP', 'Python', 'Jupyter', 'RStudio', 'Bloomberg', 'WRDS', 'Qualtrics'].some(name => r.name.includes(name))
+    )
+  },
+  'research': {
+    label: 'Research & Writing',
+    resources: resources.filter(r =>
+      ['Overleaf', 'JSTOR', 'O\'Reilly', 'Web of Science', 'Scopus', 'ProQuest', 'PsycINFO'].some(name => r.name.includes(name)) ||
+      r.category === 'library'
+    )
+  },
+  'outdoor': {
+    label: 'Outdoor & Adventure',
+    resources: resources.filter(r =>
+      r.category === 'outdoor' || r.name.includes('Climbing') || r.name.includes('Recreation')
+    )
+  },
+  'career': {
+    label: 'Career & Professional',
+    resources: resources.filter(r =>
+      r.category === 'career' || ['LinkedIn Learning', 'DocuSign'].some(name => r.name.includes(name))
+    )
+  }
+};
+
+// Serialize category groups for client-side
+const categoryGroupIds = {
+  'ai-tools': categoryGroups['ai-tools'].resources.map(r => r.id),
+  'creative': categoryGroups['creative'].resources.map(r => r.id),
+  'data': categoryGroups['data'].resources.map(r => r.id),
+  'research': categoryGroups['research'].resources.map(r => r.id),
+  'outdoor': categoryGroups['outdoor'].resources.map(r => r.id),
+  'career': categoryGroups['career'].resources.map(r => r.id)
+};
+
 // Filter hidden gems
 const hiddenGems = resources.filter(r => r.hidden_gem === true);
 
@@ -40,14 +93,6 @@ const hiddenGems = resources.filter(r => r.hidden_gem === true);
 const totalValue = resources
   .filter(r => r.annual_value && r.annual_value > 0)
   .reduce((sum, r) => sum + r.annual_value, 0);
-
-// Get recently added resources (last 30 days)
-const thirtyDaysAgo = new Date();
-thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-const recentResources = resources
-  .filter(r => r.date_added && new Date(r.date_added) >= thirtyDaysAgo)
-  .sort((a, b) => new Date(b.date_added).getTime() - new Date(a.date_added).getTime())
-  .slice(0, 3);
 ---
 
 <BaseLayout title="Free Stuff @ Dartmouth">
@@ -71,12 +116,19 @@ const recentResources = resources
     <div class="filter-bar">
       <div class="filter-controls">
         <div class="filter-group">
-          <label for="category-filter" class="filter-label">Category</label>
+          <label for="category-filter" class="filter-label">Browse by</label>
           <select id="category-filter" class="filter-select">
-            <option value="">All categories</option>
-            {categories.map((cat) => (
-              <option value={cat}>{cat.replace(/-/g, ' ')}</option>
-            ))}
+            <option value="">All resources</option>
+            <optgroup label="Curated Collections">
+              {Object.entries(categoryGroups).map(([key, group]) => (
+                <option value={`group:${key}`}>{group.label}</option>
+              ))}
+            </optgroup>
+            <optgroup label="By Category">
+              {categories.map((cat) => (
+                <option value={cat}>{cat.replace(/-/g, ' ')}</option>
+              ))}
+            </optgroup>
           </select>
         </div>
 
@@ -118,21 +170,57 @@ const recentResources = resources
     </div>
   </div>
 
-  <!-- Recently Added Section -->
-  {recentResources.length > 0 && (
-    <div class="recently-added-section">
-      <h3 class="recently-added-title">Just added</h3>
-      <div class="recently-added-grid">
-        {recentResources.map((resource) => (
-          <a href={resource.url} target="_blank" rel="noopener noreferrer" class="recently-added-item">
-            <span class="new-badge">New</span>
-            <span class="recently-added-name">{resource.name}</span>
-            <span class="recently-added-category">{resource.category.replace(/-/g, ' ')}</span>
-          </a>
-        ))}
-      </div>
+  <!-- Scenario-Based Navigation -->
+  <div class="scenarios-section">
+    <div class="scenarios-header">
+      <h2 class="scenarios-title">Not sure where to start? Try these:</h2>
+      <p class="scenarios-deck">Real situations where these perks actually matter</p>
     </div>
-  )}
+
+    <div class="scenarios-grid">
+      <a href="/scenarios/grad-school" class="scenario-card">
+        <div class="scenario-icon">📚</div>
+        <h3 class="scenario-title">Applying to grad school?</h3>
+        <p class="scenario-description">JSTOR, ProQuest dissertations, Interlibrary Loan for research. O'Reilly for technical writing. Free counseling for app stress.</p>
+        <div class="scenario-cta">View resources →</div>
+      </a>
+
+      <a href="/scenarios/job-hunt" class="scenario-card">
+        <div class="scenario-icon">💼</div>
+        <h3 class="scenario-title">Job hunting?</h3>
+        <p class="scenario-description">Bloomberg Terminal ($25k/year). Career coaching for life. Interview clothes. News subscriptions. Technical skills like Python and MATLAB. Build a resume that stands out.</p>
+        <div class="scenario-cta">View resources →</div>
+      </a>
+
+      <a href="/scenarios/data-analysis" class="scenario-card">
+        <div class="scenario-icon">📊</div>
+        <h3 class="scenario-title">Running data analysis?</h3>
+        <p class="scenario-description">$25k Bloomberg Terminal at Feldberg. MATLAB, SPSS, SAS, JMP Pro. WRDS for finance data. Qualtrics for surveys. Statista for market research.</p>
+        <div class="scenario-cta">View resources →</div>
+      </a>
+
+      <a href="/scenarios/creative" class="scenario-card">
+        <div class="scenario-icon">🎨</div>
+        <h3 class="scenario-title">Building a portfolio?</h3>
+        <p class="scenario-description">Adobe Creative Cloud ($660/year free). Canva Pro. Hopkins Center performances and art studios. Hood Museum access. Professional creative tools, all included.</p>
+        <div class="scenario-cta">View resources →</div>
+      </a>
+
+      <a href="/scenarios/adventure" class="scenario-card">
+        <div class="scenario-icon">🏔️</div>
+        <h3 class="scenario-title">Planning an adventure?</h3>
+        <p class="scenario-description">DOC cabins ($0-40/night vs. $200+ hotels). Free outdoor gear rentals. Ledyard Canoe Club. DOC Trips for group adventures.</p>
+        <div class="scenario-cta">View resources →</div>
+      </a>
+
+      <a href="/scenarios/save-money" class="scenario-card">
+        <div class="scenario-icon">💰</div>
+        <h3 class="scenario-title">Tight on cash?</h3>
+        <p class="scenario-description">$75/term printing credit. Free winter clothing. NYT/WSJ subscriptions ($400/year value). Free film screenings and Hop shows. Free gym membership.</p>
+        <div class="scenario-cta">View resources →</div>
+      </a>
+    </div>
+  </div>
 
   <!-- Hidden Gems Section -->
   {hiddenGems.length > 0 && (
@@ -157,6 +245,7 @@ const recentResources = resources
   <div id="resource-grid" class="resource-grid">
     {resources.map((resource) => (
       <div class="resource-item"
+           data-resource-id={resource.id}
            data-category={resource.category}
            data-eligibility={JSON.stringify(resource.eligibility)}
            data-searchable={JSON.stringify({
@@ -335,7 +424,7 @@ const recentResources = resources
       margin: 0 auto;
       padding: 0 var(--space-lg) var(--space-2xl);
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: var(--space-lg);
     }
 
@@ -392,71 +481,94 @@ const recentResources = resources
       opacity: 0.95;
     }
 
-    /* Recently Added Section */
-    .recently-added-section {
+    /* Scenarios Section */
+    .scenarios-section {
       max-width: 90rem;
-      margin: 0 auto var(--space-2xl);
+      margin: 0 auto var(--space-3xl);
       padding: 0 var(--space-lg);
     }
 
-    .recently-added-title {
+    .scenarios-header {
+      max-width: var(--measure);
+      margin-bottom: var(--space-xl);
+    }
+
+    .scenarios-title {
       font-family: var(--font-display);
       font-style: italic;
-      font-size: var(--text-xl);
+      font-size: var(--text-2xl);
       font-weight: 600;
       line-height: var(--leading-tight);
       color: var(--color-ink);
-      margin: 0 0 var(--space-md) 0;
+      margin: 0 0 var(--space-2xs) 0;
     }
 
-    .recently-added-grid {
+    .scenarios-deck {
+      font-size: var(--text-base);
+      line-height: var(--leading-relaxed);
+      color: var(--color-ink-muted);
+      margin: 0;
+    }
+
+    .scenarios-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
-      gap: var(--space-sm);
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      gap: var(--space-md);
     }
 
-    .recently-added-item {
-      position: relative;
+    .scenario-card {
       display: flex;
       flex-direction: column;
-      gap: var(--space-3xs);
-      padding: var(--space-sm) var(--space-md);
-      background: var(--color-paper);
-      border: var(--rule-thin) solid var(--color-border);
-      border-radius: var(--radius-sm);
+      gap: var(--space-sm);
+      padding: var(--space-lg);
+      text-align: left;
       text-decoration: none;
-      transition: border-color var(--dur-fast) var(--ease-out);
+      background: var(--color-paper);
+      border: var(--rule-base) solid var(--color-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--dur-fast) var(--ease-out);
     }
 
-    .recently-added-item:hover {
+    .scenario-card:hover {
       border-color: var(--color-accent);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
-    .new-badge {
-      position: absolute;
-      top: var(--space-xs);
-      right: var(--space-xs);
-      padding: var(--space-3xs) var(--space-xs);
-      font-size: var(--text-xs);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--color-paper);
-      background: var(--color-accent);
-      border-radius: var(--radius-sm);
+    .scenario-icon {
+      font-size: var(--text-3xl);
+      line-height: 1;
+      margin-bottom: var(--space-3xs);
     }
 
-    .recently-added-name {
-      font-size: var(--text-base);
+    .scenario-title {
+      margin: 0;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: var(--text-lg);
       font-weight: 600;
+      line-height: var(--leading-snug);
       color: var(--color-ink);
-      padding-right: var(--space-xl);
     }
 
-    .recently-added-category {
-      font-size: var(--text-xs);
-      text-transform: capitalize;
-      color: var(--color-ink-subtle);
+    .scenario-description {
+      margin: 0;
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
+      color: var(--color-ink-muted);
+      flex: 1;
+    }
+
+    .scenario-cta {
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-accent);
+      transition: color var(--dur-fast) var(--ease-out);
+    }
+
+    .scenario-card:hover .scenario-cta {
+      color: var(--color-accent-hover);
     }
 
     /* Hidden Gems Section */
@@ -571,6 +683,36 @@ const recentResources = resources
         font-size: var(--text-base);
       }
 
+      .scenarios-section {
+        padding: 0 var(--space-md);
+        margin-bottom: var(--space-2xl);
+      }
+
+      .scenarios-title {
+        font-size: var(--text-xl);
+      }
+
+      .scenarios-deck {
+        font-size: var(--text-sm);
+      }
+
+      .scenarios-grid {
+        gap: var(--space-sm);
+        grid-template-columns: 1fr;
+      }
+
+      .scenario-card {
+        padding: var(--space-md);
+      }
+
+      .scenario-icon {
+        font-size: var(--text-2xl);
+      }
+
+      .scenario-title {
+        font-size: var(--text-base);
+      }
+
       .recently-added-section {
         padding: 0 var(--space-md);
         margin-bottom: var(--space-xl);
@@ -597,9 +739,9 @@ const recentResources = resources
     }
   </style>
 
-  <script>
+  <script define:vars={{ categoryGroupIds }}>
     import { getFingerprint } from '../lib/fingerprint';
-    import { upvoteResource, removeUpvote, getUserVotes } from '../lib/supabase';
+    import { upvoteResource, removeUpvote, getUserVotes, reportIssue } from '../lib/supabase';
 
     // Client-side filtering and search
     const searchInput = document.getElementById('search') as HTMLInputElement;
@@ -646,6 +788,9 @@ const recentResources = resources
       resourceItems.forEach(item => resourceGrid.appendChild(item));
     }
 
+    // Category groups data injected from server via define:vars
+    const categoryGroupsData = categoryGroupIds;
+
     function filterResources() {
       const searchTerm = searchInput.value.toLowerCase();
       const selectedCategory = categoryFilter.value;
@@ -653,8 +798,14 @@ const recentResources = resources
 
       let visibleCount = 0;
 
+      // Check if this is a curated group
+      const isGroup = selectedCategory.startsWith('group:');
+      const groupKey = isGroup ? selectedCategory.replace('group:', '') : null;
+      const groupIds = groupKey ? categoryGroupsData[groupKey] || [] : [];
+
       resourceItems.forEach((item) => {
         const category = item.dataset.category || '';
+        const resourceId = item.dataset.resourceId;
         const eligibility = JSON.parse(item.dataset.eligibility || '[]');
         const searchable = JSON.parse(item.dataset.searchable || '{}');
 
@@ -663,7 +814,8 @@ const recentResources = resources
           searchable.description.includes(searchTerm) ||
           searchable.category.includes(searchTerm);
 
-        const matchesCategory = !selectedCategory || category === selectedCategory;
+        const matchesCategory = !selectedCategory ||
+          (isGroup ? groupIds.includes(resourceId) : category === selectedCategory);
         const matchesEligibility = !selectedEligibility || eligibility.includes(selectedEligibility);
 
         if (matchesSearch && matchesCategory && matchesEligibility) {
@@ -756,6 +908,102 @@ const recentResources = resources
         console.error('Error toggling vote:', error);
       } finally {
         button.disabled = false;
+      }
+    });
+
+    // Report issue functionality
+    let currentOpenDropdown: HTMLElement | null = null;
+
+    // Handle report button clicks (toggle dropdown)
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const reportBtn = target.closest('.report-btn') as HTMLButtonElement;
+
+      if (reportBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const resourceId = reportBtn.dataset.resourceId;
+        if (!resourceId) return;
+
+        const dropdown = document.querySelector(`.report-dropdown[data-resource-id="${resourceId}"]`) as HTMLElement;
+        if (!dropdown) return;
+
+        // Close any other open dropdown
+        if (currentOpenDropdown && currentOpenDropdown !== dropdown) {
+          currentOpenDropdown.style.display = 'none';
+        }
+
+        // Toggle this dropdown
+        const isVisible = dropdown.style.display === 'block';
+        dropdown.style.display = isVisible ? 'none' : 'block';
+        currentOpenDropdown = isVisible ? null : dropdown;
+      }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.report-wrapper') && currentOpenDropdown) {
+        currentOpenDropdown.style.display = 'none';
+        currentOpenDropdown = null;
+      }
+    });
+
+    // Handle report option clicks
+    document.addEventListener('click', async (e) => {
+      const target = e.target as HTMLElement;
+      const reportOption = target.closest('.report-option') as HTMLButtonElement;
+
+      if (!reportOption) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      const issueType = reportOption.dataset.issue as 'broken-link' | 'wrong-info' | 'outdated' | 'eligibility' | 'other';
+      const dropdown = reportOption.closest('.report-dropdown') as HTMLElement;
+      const resourceId = dropdown?.dataset.resourceId;
+
+      if (!resourceId || !issueType) return;
+
+      // Disable all report options during submission
+      const allOptions = dropdown.querySelectorAll('.report-option') as NodeListOf<HTMLButtonElement>;
+      allOptions.forEach(opt => opt.disabled = true);
+
+      try {
+        const result = await reportIssue(resourceId, issueType);
+
+        if (result.success) {
+          // Hide dropdown
+          dropdown.style.display = 'none';
+          currentOpenDropdown = null;
+
+          // Show success message with sticker offer
+          const stickerOffer = confirm(
+            'Thanks for catching that! 🎉\n\n' +
+            'Want a free sticker? Click OK to enter your email, or Cancel if you\'re good.'
+          );
+
+          if (stickerOffer) {
+            const email = prompt('Drop your email here and we\'ll send you a sticker:');
+            if (email && email.trim()) {
+              // Submit report again with email
+              await reportIssue(resourceId, issueType, undefined, email.trim());
+              alert('Thanks! We\'ll send your sticker soon. 🌲');
+            }
+          } else {
+            alert('Report submitted! Thanks for helping keep this accurate. 🌲');
+          }
+        } else {
+          alert('Oops, something went wrong. Please try again.');
+          console.error('Report submission error:', result.error);
+        }
+      } catch (error) {
+        alert('Oops, something went wrong. Please try again.');
+        console.error('Error submitting report:', error);
+      } finally {
+        // Re-enable options
+        allOptions.forEach(opt => opt.disabled = false);
       }
     });
   </script>

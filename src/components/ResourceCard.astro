@@ -21,9 +21,8 @@ const { resource, userVotedIds = [] } = Astro.props;
 const hasVoted = userVotedIds.includes(resource.id);
 
 // Check if resource is new (added in last 30 days)
-const isNew = resource.date_added ?
-  (Date.now() - new Date(resource.date_added).getTime()) / (1000 * 60 * 60 * 24) <= 30
-  : false;
+// Disabled for now since all resources are technically new
+const isNew = false;
 ---
 
 <article class="resource-card">
@@ -72,6 +71,27 @@ const isNew = resource.date_added ?
           </svg>
           <span class="upvote-count">{resource.upvotes}</span>
         </button>
+        <div class="report-wrapper">
+          <button
+            class="report-btn"
+            data-resource-id={resource.id}
+            aria-label="Report an issue with this resource"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Flag icon -->
+              <path d="M2 1V13M2 1L11 4L2 7V1Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            Report
+          </button>
+          <div class="report-dropdown" data-resource-id={resource.id} style="display:none;">
+            <div class="report-header">Report an issue</div>
+            <button class="report-option" data-issue="broken-link">Broken link</button>
+            <button class="report-option" data-issue="wrong-info">Wrong information</button>
+            <button class="report-option" data-issue="outdated">Outdated</button>
+            <button class="report-option" data-issue="eligibility">Wrong eligibility</button>
+            <button class="report-option" data-issue="other">Other</button>
+          </div>
+        </div>
         <span class="verified-date">
           Verified {new Date(resource.last_verified).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
         </span>
@@ -222,12 +242,16 @@ const isNew = resource.date_added ?
     align-items: center;
     justify-content: space-between;
     gap: var(--space-sm);
+    flex-wrap: wrap;
   }
 
   .footer-left {
     display: flex;
     align-items: center;
     gap: var(--space-sm);
+    flex-wrap: wrap;
+    flex: 1;
+    min-width: 0;
   }
 
   .upvote-btn {
@@ -284,6 +308,90 @@ const isNew = resource.date_added ?
     color: var(--color-ink-subtle);
   }
 
+  .report-wrapper {
+    position: relative;
+  }
+
+  .report-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    padding: var(--space-3xs) var(--space-xs);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--color-ink-subtle);
+    background: var(--color-paper);
+    border: var(--rule-thin) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-out);
+    white-space: nowrap;
+  }
+
+  .report-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .report-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .report-dropdown {
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: var(--space-2xs);
+    min-width: 180px;
+    background: var(--color-paper);
+    border: var(--rule-thin) solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+
+  .report-header {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-ink-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: var(--rule-thin) solid var(--color-border);
+  }
+
+  .report-option {
+    display: block;
+    width: 100%;
+    padding: var(--space-xs) var(--space-sm);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    text-align: left;
+    color: var(--color-ink);
+    background: none;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+
+  .report-option:first-of-type {
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
+  }
+
+  .report-option:last-child {
+    border-bottom-left-radius: var(--radius-md);
+    border-bottom-right-radius: var(--radius-md);
+  }
+
+  .report-option:hover {
+    background: var(--color-accent-subtle);
+    color: var(--color-accent);
+  }
+
   .visit-link {
     font-size: var(--text-sm);
     font-weight: 500;
@@ -291,6 +399,7 @@ const isNew = resource.date_added ?
     text-decoration: none;
     transition: color var(--dur-fast) var(--ease-out);
     white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .visit-link:hover {

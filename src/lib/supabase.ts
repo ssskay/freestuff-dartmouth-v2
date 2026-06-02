@@ -261,3 +261,31 @@ export async function getUserVotes(fingerprint: string): Promise<string[]> {
 
   return (data || []).map((vote) => vote.resource_id);
 }
+
+/**
+ * Submit a report about a resource issue
+ */
+export async function reportIssue(
+  resourceId: string,
+  issueType: 'broken-link' | 'wrong-info' | 'outdated' | 'eligibility' | 'other',
+  details?: string,
+  email?: string
+): Promise<{ success: boolean; error?: string }> {
+  if (!isSupabaseConfigured()) {
+    return { success: false, error: 'Supabase not configured' };
+  }
+
+  const { error } = await supabase.from('resource_reports').insert({
+    resource_id: resourceId,
+    issue_type: issueType,
+    details: details || null,
+    email: email || null,
+  });
+
+  if (error) {
+    console.error('Error submitting report:', error);
+    return { success: false, error: error.message };
+  }
+
+  return { success: true };
+}
