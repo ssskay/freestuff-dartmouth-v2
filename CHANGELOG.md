@@ -9,10 +9,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### To Deploy
-- Vercel production deployment
+### To Do
 - Beta testing with 10-20 users
 - Analytics integration
+- Custom domain setup (optional)
+
+---
+
+## [2.0.1] - 2026-06-03
+
+### Deployed to Production ✅
+
+**Live URL:** https://freestuff-dartmouth-v2.vercel.app
+
+### Fixed
+- **JavaScript Module Error** - Removed `define:vars` directive that prevented ES module imports in production
+  - Changed category group filtering from UUID lookup to category-based filtering
+  - Fixed "Cannot use import statement outside a module" error
+  - Files: `src/pages/index.astro`
+
+- **Missing Database Table** - Created `resource_reports` table in Supabase
+  - Table schema supports 5 issue types: broken-link, wrong-info, outdated, eligibility, other
+  - Row Level Security (RLS) policies enable public submissions
+  - Verified report submission working in production
+
+### Changed
+- **Deployment Setup** - Configured Vercel with GitHub auto-deployment
+  - Push to main branch = automatic deployment
+  - Environment variables configured in Vercel dashboard
+  - Build time: ~60 seconds per deployment
+
+### Verified Working in Production
+- ✅ Upvote system (browser fingerprinting, vote persistence)
+- ✅ Report system (issue submissions saving to database)
+- ✅ Search and filtering
+- ✅ All 11 pages rendering correctly
+- ✅ Responsive design on mobile
+- ✅ Database connectivity with 78 resources
 
 ---
 
@@ -109,8 +142,14 @@ All scenario pages now working correctly with name-based filtering:
 
 ## Version History
 
+### [2.0.1] - 2026-06-03
+- **Status:** ✅ LIVE IN PRODUCTION
+- **URL:** https://freestuff-dartmouth-v2.vercel.app
+- **Key Changes:** Production deployment, JavaScript module fix, report system setup
+- **Health:** 🟢 GREEN - All systems operational
+
 ### [2.0.0] - 2026-06-01
-- **Status:** Production-ready, pending deployment
+- **Status:** Production-ready (deployed June 3)
 - **Key Change:** UUID filtering fix for scenario pages
 - **Health:** 🟢 GREEN - All systems operational
 
@@ -123,6 +162,24 @@ All scenario pages now working correctly with name-based filtering:
 
 ## Upgrade Notes
 
+### Migrating from 2.0.0 to 2.0.1
+
+**Breaking Changes:**
+- None
+
+**Database Changes:**
+- ✅ **REQUIRED:** Create `resource_reports` table in Supabase
+  - Run SQL from `supabase/add-reports-table.sql` in Supabase SQL Editor
+  - This enables the report functionality
+
+**Code Changes:**
+- JavaScript module imports fixed (automatic with deployment)
+- Category filtering changed from UUID to category-based
+
+**Required Actions:**
+1. Create `resource_reports` table in Supabase (one-time)
+2. Code automatically deploys via Vercel + GitHub integration
+
 ### Migrating from 1.0.0 to 2.0.0
 
 **Breaking Changes:**
@@ -133,7 +190,6 @@ All scenario pages now working correctly with name-based filtering:
 
 **Code Changes:**
 - All scenario page filters now use name-based matching
-- No action required for existing deployments
 
 **Required Actions:**
 1. Pull latest code from repository

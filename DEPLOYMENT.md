@@ -1,21 +1,30 @@
 # Deployment Guide - Free Stuff @ Dartmouth
 
-**Last Updated:** June 1, 2026
+**Last Updated:** June 3, 2026
 **Target Platform:** Vercel
-**Status:** Ready to deploy
+**Status:** ✅ DEPLOYED AND LIVE
+
+**Production URL:** https://freestuff-dartmouth-v2.vercel.app
+**GitHub Repo:** https://github.com/ssskay/freestuff-dartmouth-v2
+**Auto-Deploy:** Enabled (push to main = auto-deploy)
 
 ---
 
-## Pre-Deployment Checklist
+## ✅ Deployment Completed (June 3, 2026)
 
-Before deploying, verify these items are complete:
+Deployment checklist - all items complete:
 
 - [x] Application builds successfully (`npm run build`)
-- [x] All pages render correctly in production preview
-- [x] Supabase credentials configured in `.env`
+- [x] All pages render correctly in production
+- [x] Supabase credentials configured in Vercel
 - [x] All scenario pages showing correct resource counts
 - [x] Interactive features tested (upvote, report, search, filter)
 - [x] Responsive design verified on mobile
+- [x] Deployed to Vercel with GitHub integration
+- [x] Environment variables set in Vercel dashboard
+- [x] Fixed production JavaScript module errors
+- [x] Created resource_reports table in Supabase
+- [x] Verified all features working in production
 - [ ] Custom domain purchased (optional)
 - [ ] Analytics configured (optional)
 
