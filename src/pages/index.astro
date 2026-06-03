@@ -739,9 +739,20 @@ const totalValue = resources
     }
   </style>
 
-  <script define:vars={{ categoryGroupIds }}>
+  <script>
     import { getFingerprint } from '../lib/fingerprint';
     import { upvoteResource, removeUpvote, getUserVotes, reportIssue } from '../lib/supabase';
+
+    // Category groups data for filtering curated collections
+    // These map to resource categories, not IDs (since we use UUIDs now)
+    const categoryGroupsData = {
+      'ai-tools': 'software',  // Will filter by category
+      'creative': 'creative',
+      'data': 'software',
+      'research': 'library',
+      'outdoor': 'outdoor',
+      'career': 'career'
+    };
 
     // Client-side filtering and search
     const searchInput = document.getElementById('search') as HTMLInputElement;
@@ -788,9 +799,6 @@ const totalValue = resources
       resourceItems.forEach(item => resourceGrid.appendChild(item));
     }
 
-    // Category groups data injected from server via define:vars
-    const categoryGroupsData = categoryGroupIds;
-
     function filterResources() {
       const searchTerm = searchInput.value.toLowerCase();
       const selectedCategory = categoryFilter.value;
@@ -801,11 +809,10 @@ const totalValue = resources
       // Check if this is a curated group
       const isGroup = selectedCategory.startsWith('group:');
       const groupKey = isGroup ? selectedCategory.replace('group:', '') : null;
-      const groupIds = groupKey ? categoryGroupsData[groupKey] || [] : [];
+      const groupCategory = groupKey ? categoryGroupsData[groupKey] : null;
 
       resourceItems.forEach((item) => {
         const category = item.dataset.category || '';
-        const resourceId = item.dataset.resourceId;
         const eligibility = JSON.parse(item.dataset.eligibility || '[]');
         const searchable = JSON.parse(item.dataset.searchable || '{}');
 
@@ -815,7 +822,7 @@ const totalValue = resources
           searchable.category.includes(searchTerm);
 
         const matchesCategory = !selectedCategory ||
-          (isGroup ? groupIds.includes(resourceId) : category === selectedCategory);
+          (isGroup ? category === groupCategory : category === selectedCategory);
         const matchesEligibility = !selectedEligibility || eligibility.includes(selectedEligibility);
 
         if (matchesSearch && matchesCategory && matchesEligibility) {
