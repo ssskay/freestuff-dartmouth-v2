@@ -45,4 +45,16 @@ describe('buildMapData', () => {
     const data = buildMapData([res({ id: 'm365', name: 'Microsoft 365', annual_value: 70 })]);
     expect(data.green[0]).toEqual({ id: 'm365', name: 'Microsoft 365', category: 'software', url: 'https://e.com', annual_value: 70 });
   });
+
+  it('routes a resource with coordinates but no place to the Green', () => {
+    const data = buildMapData([res({ id: 'orphan', name: 'Orphan', lat: 43.7035, lng: -72.2876, place: null })]);
+    expect(data.places).toEqual([]);
+    expect(data.green.map((r) => r.id)).toEqual(['orphan']);
+  });
+
+  it('routes a resource with a place but no coordinates to the Green', () => {
+    const data = buildMapData([res({ id: 'noloc', name: 'No Loc', place: 'Hopkins Center' })]);
+    expect(data.places).toEqual([]);
+    expect(data.green.map((r) => r.id)).toEqual(['noloc']);
+  });
 });

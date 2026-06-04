@@ -45,6 +45,8 @@ export function buildMapData(resources: Resource[]): MapData {
   for (const r of resources) {
     if (r.is_active === false) continue;
     const hasCoords = typeof r.lat === 'number' && typeof r.lng === 'number';
+    // A pin requires BOTH coordinates and a place label. Anything missing either
+    // (coords-only, place-only, or neither) belongs to the Green anchor.
     if (hasCoords && r.place) {
       let pin = byPlace.get(r.place);
       if (!pin) {
