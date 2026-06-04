@@ -54,6 +54,7 @@ export interface Database {
           hidden_gem?: boolean
         }
         Update: Partial<Database['public']['Tables']['resources']['Insert']>
+        Relationships: []
       }
       votes: {
         Row: {
@@ -69,6 +70,7 @@ export interface Database {
           voted_at?: string
         }
         Update: Partial<Database['public']['Tables']['votes']['Insert']>
+        Relationships: []
       }
       pending_resources: {
         Row: {
@@ -102,6 +104,7 @@ export interface Database {
           reviewer_notes?: string | null
         }
         Update: Partial<Database['public']['Tables']['pending_resources']['Insert']>
+        Relationships: []
       }
       resource_reports: {
         Row: {
@@ -123,6 +126,7 @@ export interface Database {
           status?: 'pending' | 'reviewed' | 'fixed'
         }
         Update: Partial<Database['public']['Tables']['resource_reports']['Insert']>
+        Relationships: []
       }
     }
     Functions: {
@@ -148,5 +152,8 @@ export interface Database {
         Returns: boolean
       }
     }
+    Views: { [_ in never]: never }
+    Enums: { [_ in never]: never }
+    CompositeTypes: { [_ in never]: never }
   }
 }

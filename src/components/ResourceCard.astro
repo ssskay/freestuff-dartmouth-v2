@@ -1,19 +1,8 @@
 ---
+import type { Resource } from '../lib/catalog';
+
 interface Props {
-  resource: {
-    id: string;
-    name: string;
-    category: string;
-    description: string;
-    url: string;
-    eligibility: string[];
-    last_verified: string;
-    status?: string;
-    notes: string | null;
-    upvotes: number;
-    annual_value?: number | null;
-    date_added?: string;
-  };
+  resource: Resource;
   userVotedIds?: string[];
 }
 

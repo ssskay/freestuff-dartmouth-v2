@@ -55,6 +55,7 @@ interface StaticResource {
 export function normalizeStaticResource(r: StaticResource): Resource {
   return {
     id: r.id,
+    slug: r.id,
     name: r.name,
     description: r.description,
     url: r.link,

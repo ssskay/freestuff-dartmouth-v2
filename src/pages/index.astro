@@ -216,7 +216,7 @@ const totalValue = resources
   <NewsletterSignup source="home" />
 
   <!-- Curated collection membership (slugs), consumed by the client filter -->
-  <script type="application/json" id="category-group-ids" set:html={JSON.stringify(categoryGroupIds)}></script>
+  <script is:inline type="application/json" id="category-group-ids" set:html={JSON.stringify(categoryGroupIds)}></script>
 
   <style>
     /* Hero — Catalogue macrostructure */
