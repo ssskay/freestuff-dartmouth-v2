@@ -178,6 +178,9 @@ begin
     raise exception 'invalid issue type';
   end if;
   v_uuid := resolve_resource_id(p_id);
+  if v_uuid is null then
+    raise exception 'unknown resource';
+  end if;
   insert into resource_reports (resource_id, issue_type, details, email)
     values (v_uuid, p_issue_type, left(p_details, 2000), left(p_email, 254));
   return true;
