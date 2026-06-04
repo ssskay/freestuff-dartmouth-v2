@@ -45,4 +45,18 @@ describe('normalizeStaticResource', () => {
     expect(normalizeStaticResource({ ...base, status: 'needs_review' }).is_active).toBe(true);
     expect(normalizeStaticResource({ ...base, status: 'active' }).is_active).toBe(true);
   });
+
+  it('passes geo fields through when present', () => {
+    const r = normalizeStaticResource({ ...base, lat: 43.7035, lng: -72.2876, place: 'Hopkins Center' });
+    expect(r.lat).toBe(43.7035);
+    expect(r.lng).toBe(-72.2876);
+    expect(r.place).toBe('Hopkins Center');
+  });
+
+  it('leaves geo fields null when absent', () => {
+    const r = normalizeStaticResource(base);
+    expect(r.lat).toBeNull();
+    expect(r.lng).toBeNull();
+    expect(r.place).toBeNull();
+  });
 });

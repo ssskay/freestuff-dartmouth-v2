@@ -28,6 +28,12 @@ export interface Resource extends Omit<ResourceRow, 'id'> {
   hidden_gem: boolean;
   /** Present only on DB-sourced rows: the internal UUID primary key. */
   uuid?: string;
+  /** Geographic pin latitude. Null for online / access-anywhere resources. */
+  lat?: number | null;
+  /** Geographic pin longitude. Null for online / access-anywhere resources. */
+  lng?: number | null;
+  /** Building/landmark label used to group co-located resources into one pin. */
+  place?: string | null;
 }
 
 /** Shape of an entry in resources.json (the authored source of record). */
@@ -46,6 +52,9 @@ interface StaticResource {
   annual_value?: number | null;
   date_added?: string;
   hidden_gem?: boolean;
+  lat?: number;
+  lng?: number;
+  place?: string;
 }
 
 /**
@@ -73,6 +82,9 @@ export function normalizeStaticResource(r: StaticResource): Resource {
     annual_value: r.annual_value ?? null,
     date_added: r.date_added ?? null,
     hidden_gem: r.hidden_gem ?? false,
+    lat: r.lat ?? null,
+    lng: r.lng ?? null,
+    place: r.place ?? null,
   };
 }
 
@@ -105,6 +117,16 @@ export async function loadResources(): Promise<Resource[]> {
   } catch (error) {
     console.error('Error fetching from Supabase, using static data:', error);
   }
+  const staticResources = await import('../content/resources.json');
+  return (staticResources.default as StaticResource[]).map(normalizeStaticResource);
+}
+
+/**
+ * Resolve the catalog from the authored JSON only (never Supabase). The map view
+ * uses this because geo fields (lat/lng/place) are authored solely in the JSON
+ * and are not part of the Supabase projection.
+ */
+export async function loadStaticResources(): Promise<Resource[]> {
   const staticResources = await import('../content/resources.json');
   return (staticResources.default as StaticResource[]).map(normalizeStaticResource);
 }
