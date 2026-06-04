@@ -78,6 +78,91 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
   <!-- Map data for the client island. -->
   <script is:inline type="application/json" id="map-data" set:html={JSON.stringify(mapData)}></script>
 
+  <script>
+    import L from 'leaflet';
+    import 'leaflet/dist/leaflet.css';
+
+    type MapResource = { id: string; name: string; category: string; url: string; annual_value: number | null };
+    type MapPlace = { place: string; lat: number; lng: number; resources: MapResource[] };
+    type MapData = { places: MapPlace[]; green: MapResource[] };
+
+    const GREEN: [number, number] = [43.7045, -72.2887];
+
+    function readData(): MapData | null {
+      const el = document.getElementById('map-data');
+      if (!el?.textContent) return null;
+      try { return JSON.parse(el.textContent) as MapData; } catch { return null; }
+    }
+
+    function cardHtml(r: MapResource): string {
+      const value = r.annual_value && r.annual_value > 0 ? `<span class="pc-value">~$${r.annual_value}/yr</span>` : '';
+      return `<li class="pc-item">
+        <a class="pc-link" href="${r.url}" target="_blank" rel="noopener">${r.name}</a>
+        ${value}
+      </li>`;
+    }
+
+    function renderPanel(title: string, lead: string, resources: MapResource[]): void {
+      const panel = document.getElementById('map-panel');
+      if (!panel) return;
+      panel.innerHTML = `
+        <button type="button" class="pc-close" aria-label="Close">&times;</button>
+        <h2 class="pc-title">${title}</h2>
+        ${lead ? `<p class="pc-lead">${lead}</p>` : ''}
+        <ul class="pc-list">${resources.map(cardHtml).join('')}</ul>`;
+      panel.hidden = false;
+      panel.querySelector<HTMLButtonElement>('.pc-close')?.addEventListener('click', () => { panel.hidden = true; });
+      panel.querySelector<HTMLElement>('.pc-title')?.focus?.();
+    }
+
+    function init(): void {
+      const data = readData();
+      const el = document.getElementById('map');
+      if (!data || !el) return;
+
+      const map = L.map(el, { scrollWheelZoom: false }).setView(GREEN, 15);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        maxZoom: 19,
+      }).addTo(map);
+
+      const placeIcon = L.divIcon({ className: 'pin pin-place', html: '<span></span>', iconSize: [18, 18] });
+      const greenIcon = L.divIcon({ className: 'pin pin-green', html: '<span>WiFi</span>', iconSize: [44, 44] });
+
+      for (const p of data.places) {
+        L.marker([p.lat, p.lng], { icon: placeIcon, keyboard: true, title: p.place, alt: p.place })
+          .addTo(map)
+          .on('click keypress', () => renderPanel(p.place, '', p.resources));
+      }
+
+      L.marker(GREEN, { icon: greenIcon, keyboard: true, title: 'The Green', alt: 'The Dartmouth Green' })
+        .addTo(map)
+        .on('click keypress', () =>
+          renderPanel(
+            'From the Green',
+            'Grab the free campus WiFi, sit on the grass, and from right here you have access to all of this.',
+            data.green,
+          ),
+        );
+
+      // Wire the accessible text-list buttons to open the same panel + pan the map.
+      document.querySelectorAll<HTMLButtonElement>('.place-button').forEach((btn) => {
+        const place = data.places.find((p) => p.place === btn.dataset.place);
+        if (!place) return;
+        btn.addEventListener('click', () => {
+          map.setView([place.lat, place.lng], 16);
+          renderPanel(place.place, '', place.resources);
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+
   <style>
     .map-page { max-width: 90rem; margin: 0 auto; padding: var(--space-3xl) var(--space-lg) var(--space-2xl); }
     .map-hero { max-width: var(--measure); margin: 0 auto var(--space-2xl); text-align: center; }
@@ -97,6 +182,16 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
     .green-group-title { font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-muted); margin: var(--space-md) 0 var(--space-xs); }
     .cta-section { text-align: center; margin-top: var(--space-2xl); }
     .cta-text { color: var(--color-ink-muted); margin: 0 0 var(--space-sm); }
+    :global(.pin-place span) { display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--color-link, #1a5); border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+    :global(.pin-green) { display: grid; place-items: center; }
+    :global(.pin-green span) { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--color-accent, #2e7d32); color: #fff; font-size: 11px; font-weight: 700; border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.35); }
+    .pc-close { float: right; font-size: 1.5rem; line-height: 1; background: none; border: none; cursor: pointer; color: var(--color-ink-muted); }
+    .pc-title { font-family: var(--font-display); font-size: var(--text-lg); color: var(--color-ink); margin: 0 0 var(--space-xs); }
+    .pc-lead { color: var(--color-ink-muted); font-size: var(--text-sm); margin: 0 0 var(--space-md); }
+    .pc-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-sm); }
+    .pc-item { display: flex; justify-content: space-between; gap: var(--space-sm); align-items: baseline; }
+    .pc-link { color: var(--color-link, #1a5); font-weight: 600; }
+    .pc-value { color: var(--color-ink-muted); font-size: var(--text-sm); white-space: nowrap; }
     @media (max-width: 768px) {
       .map-canvas { height: 24rem; }
       .map-panel { position: static; width: 100%; max-height: none; margin-bottom: var(--space-lg); }
