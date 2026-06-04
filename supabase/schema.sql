@@ -251,7 +251,7 @@ security definer
 set search_path = public
 as $$
 begin
-  if p_email is null or p_email !~ '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$' then
+  if p_email is null or p_email !~ '^[^@]+@[^@]+\.[^@]+$' then
     raise exception 'invalid email';
   end if;
   insert into subscribers (email, source)
