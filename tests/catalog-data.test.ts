@@ -68,3 +68,39 @@ describe('resources.json data integrity', () => {
     }
   });
 });
+
+// Hanover/Upper-Valley bounding box. Any pinned resource must fall inside it.
+const HANOVER_BOUNDS = { minLat: 43.69, maxLat: 43.72, minLng: -72.31, maxLng: -72.27 };
+
+describe('resources.json map invariants', () => {
+  it('every pinned resource has numeric lat+lng inside the Hanover box and a place', () => {
+    for (const r of resources) {
+      const hasLat = r.lat !== undefined;
+      const hasLng = r.lng !== undefined;
+      expect(hasLat, `lat/lng must be paired on ${r.id}`).toBe(hasLng);
+      if (!hasLat) continue;
+      expect(typeof r.lat, `lat type on ${r.id}`).toBe('number');
+      expect(typeof r.lng, `lng type on ${r.id}`).toBe('number');
+      expect(r.lat, `lat range on ${r.id}`).toBeGreaterThanOrEqual(HANOVER_BOUNDS.minLat);
+      expect(r.lat, `lat range on ${r.id}`).toBeLessThanOrEqual(HANOVER_BOUNDS.maxLat);
+      expect(r.lng, `lng range on ${r.id}`).toBeGreaterThanOrEqual(HANOVER_BOUNDS.minLng);
+      expect(r.lng, `lng range on ${r.id}`).toBeLessThanOrEqual(HANOVER_BOUNDS.maxLng);
+      expect(r.place, `place required on pinned ${r.id}`).toBeTruthy();
+    }
+  });
+
+  it('each place label maps to exactly one coordinate', () => {
+    const coordsByPlace = new Map<string, string>();
+    for (const r of resources) {
+      if (r.place === undefined || r.lat === undefined) continue;
+      const key = `${r.lat},${r.lng}`;
+      const seen = coordsByPlace.get(r.place);
+      if (seen === undefined) coordsByPlace.set(r.place, key);
+      else expect(seen, `place "${r.place}" has conflicting coords on ${r.id}`).toBe(key);
+    }
+  });
+
+  it('has at least 10 pinned resources (the map is not empty)', () => {
+    expect(resources.filter((r) => r.lat !== undefined).length).toBeGreaterThanOrEqual(10);
+  });
+});

@@ -148,7 +148,10 @@
     "added_by": "human",
     "hidden_gem": true,
     "annual_value": 25000,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7036,
+    "lng": -72.2899,
+    "place": "Feldberg Library"
   },
   {
     "id": "interlibrary-loan",
@@ -186,7 +189,10 @@
     "notes": "Free for all Dartmouth community with ID; one-week rental periods",
     "added_by": "human",
     "annual_value": 100,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7058,
+    "lng": -72.2885,
+    "place": "Robinson Hall (DOC)"
   },
   {
     "id": "doc-trips",
@@ -203,7 +209,10 @@
     "notes": "Free gear rental included; DOC subsidizes trip costs",
     "added_by": "human",
     "annual_value": 200,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7058,
+    "lng": -72.2885,
+    "place": "Robinson Hall (DOC)"
   },
   {
     "id": "doc-cabin-rentals",
@@ -222,7 +231,10 @@
     "added_by": "human",
     "hidden_gem": true,
     "annual_value": 150,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7058,
+    "lng": -72.2885,
+    "place": "Robinson Hall (DOC)"
   },
   {
     "id": "ledyard-canoe-club",
@@ -242,7 +254,10 @@
     "added_by": "human",
     "hidden_gem": true,
     "annual_value": 80,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7028,
+    "lng": -72.2931,
+    "place": "Ledyard Canoe Club"
   },
   {
     "id": "printing-credit",
@@ -294,7 +309,10 @@
     "notes": "Covered by health services fee",
     "added_by": "human",
     "annual_value": null,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7041,
+    "lng": -72.2867,
+    "place": "Dick's House"
   },
   {
     "id": "counseling-sessions",
@@ -311,7 +329,10 @@
     "notes": "All counseling sessions are free; call 603-646-9442 to schedule",
     "added_by": "human",
     "annual_value": 600,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7041,
+    "lng": -72.2867,
+    "place": "Dick's House"
   },
   {
     "id": "cpd-career-advising",
@@ -365,7 +386,10 @@
     "notes": "Open 5AM-10PM weekdays, 8AM-10PM weekends; free with student ID",
     "added_by": "human",
     "annual_value": 500,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7022,
+    "lng": -72.2885,
+    "place": "Alumni Gym"
   },
   {
     "id": "hop-performances",
@@ -382,7 +406,10 @@
     "notes": "Many shows free with student ID",
     "added_by": "human",
     "annual_value": 200,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7035,
+    "lng": -72.2876,
+    "place": "Hopkins Center"
   },
   {
     "id": "hood-museum",
@@ -402,7 +429,10 @@
     "notes": "Free for everyone",
     "added_by": "human",
     "annual_value": 0,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7037,
+    "lng": -72.2872,
+    "place": "Hood Museum of Art"
   },
   {
     "id": "athletic-events",
@@ -419,7 +449,10 @@
     "notes": "Most events free with student ID",
     "added_by": "human",
     "annual_value": 150,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7008,
+    "lng": -72.2876,
+    "place": "Athletic Facilities"
   },
   {
     "id": "library-card-alumni",
@@ -527,7 +560,10 @@
     "added_by": "human",
     "hidden_gem": true,
     "annual_value": null,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7053,
+    "lng": -72.2879,
+    "place": "Webster Hall (Rauner)"
   },
   {
     "id": "tuck-digital-library",
@@ -903,7 +939,10 @@
     "notes": "Most Programming Board events are free and open to all students; Green Key concert is the flagship annual event",
     "added_by": "agent",
     "annual_value": 100,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7027,
+    "lng": -72.2882,
+    "place": "Collis Center"
   },
   {
     "id": "dartmouth-film-society",
@@ -920,7 +959,10 @@
     "notes": "Meetings Tuesdays at 6pm in Wilson Hall 205; email dfs@dartmouth.edu to join",
     "added_by": "agent",
     "annual_value": 120,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7035,
+    "lng": -72.2876,
+    "place": "Hopkins Center"
   },
   {
     "id": "advance-transit",
@@ -940,7 +982,10 @@
     "notes": "All rides free; Dartmouth-Hanover shuttle runs every 10 min during school year",
     "added_by": "agent",
     "annual_value": 0,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7033,
+    "lng": -72.2887,
+    "place": "Advance Transit (Hanover)"
   },
   {
     "id": "cable-makerspace",
@@ -959,7 +1004,10 @@
     "notes": "Safety training required; CAD workstations with SolidWorks and Adobe Suite available",
     "added_by": "agent",
     "annual_value": 200,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7035,
+    "lng": -72.2876,
+    "place": "Hopkins Center"
   },
   {
     "id": "hop-woodworking-shop",
@@ -976,7 +1024,10 @@
     "notes": "One orientation session certifies students to use all power tools; located in Hop lower level",
     "added_by": "agent",
     "annual_value": 150,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7035,
+    "lng": -72.2876,
+    "place": "Hopkins Center"
   },
   {
     "id": "hop-ceramics-studio",
@@ -993,7 +1044,10 @@
     "notes": "Located in Hop lower level Room 61",
     "added_by": "agent",
     "annual_value": 150,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7035,
+    "lng": -72.2876,
+    "place": "Hopkins Center"
   },
   {
     "id": "hop-music-practice-rooms",
@@ -1010,7 +1064,10 @@
     "notes": "Open 7am-11pm daily; instrument storage available for students in ensembles or music courses",
     "added_by": "agent",
     "annual_value": 200,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7035,
+    "lng": -72.2876,
+    "place": "Hopkins Center"
   },
   {
     "id": "climbing-gym",
@@ -1029,7 +1086,10 @@
     "notes": "Open Sun-Fri 8-11am & 4-10pm, Sat 4-10pm; reserve time slots via Trailhead",
     "added_by": "agent",
     "annual_value": 300,
-    "date_added": "2026-05-27"
+    "date_added": "2026-05-27",
+    "lat": 43.7022,
+    "lng": -72.2885,
+    "place": "Alumni Gym"
   },
   {
     "id": "dickey-international-internship-funding",
