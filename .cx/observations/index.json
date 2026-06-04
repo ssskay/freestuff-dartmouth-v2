@@ -1,5 +1,21 @@
 [
   {
+    "id": "obs-mpyv22zw-e78f899c",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] All four shipped and pushed to main (257bbf3..65908e7). Build green, 27 tests pass.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T02:13:03.788Z"
+  },
+  {
+    "id": "obs-mpyv22ka-98bad0d8",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] All four shipped and pushed to main (257bbf3..65908e7). Build green, 27 tests pass.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T02:13:03.226Z"
+  },
+  {
     "id": "obs-mpyutaqo-1e6c1b57",
     "role": "construct",
     "category": "session-summary",

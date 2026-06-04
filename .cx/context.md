@@ -1,11 +1,11 @@
 # Session Context
-Last saved: 2026-06-04 02:06
+Last saved: 2026-06-04 02:13
 
 ## What was in progress
 (no summary available)
 
 ## Session efficiency snapshot
-124 reads · 23 unique files · 101 repeated reads · 86 large reads · 1612 KB read
+126 reads · 23 unique files · 103 repeated reads · 88 large reads · 1633 KB read
 
 ## Open issues
 None
@@ -20,6 +20,7 @@ _None in progress._
 
 ## Recent Decisions
 
+- commit `65908e7bee` — Analytics, newsletter capture, marketing plan, agent maintenance metrics
 - commit `257bbf33a8` — Design/UX/a11y remediation + Phase-0 trust foundation
 - commit `015cb80336` — Remediate full health-and-quality review (construct-review.md)
 - commit `07e2de5fa9` — Update documentation to reflect production deployment

@@ -29,6 +29,5 @@ pnpm-debug.log*
 # Test files
 test-supabase.js
 
-# Agent run metrics (generated)
-agents/metrics/*.json
-agents/metrics/history.jsonl
+# Agent run metrics: ignore per-run snapshots, keep the longitudinal ledger
+agents/metrics/run-*.json
