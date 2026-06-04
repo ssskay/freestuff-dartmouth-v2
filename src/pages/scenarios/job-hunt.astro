@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ResourceCard from '../../components/ResourceCard.astro';
+import ScenarioIcon from '../../components/ScenarioIcon.astro';
 import { loadResources } from '../../lib/catalog';
 import { SCENARIOS } from '../../site.config';
 
@@ -14,7 +15,7 @@ const scenarioResources = resources.filter(SCENARIOS['job-hunt'].match);
 <BaseLayout title="Job Hunting Resources | Free Stuff @ Dartmouth">
   <div class="scenario-page">
     <div class="scenario-hero">
-      <div class="scenario-icon-large">💼</div>
+      <div class="scenario-icon-large"><ScenarioIcon slug="job-hunt" size={48} /></div>
       <h1 class="scenario-title">Job hunting?</h1>
       <p class="scenario-description">
         Whether you're recruiting for consulting, prepping for finance interviews, or landing your first internship — Dartmouth gives you everything. Bloomberg Terminal access. Lifetime career coaching. Interview clothes. Industry news. Technical skills training. Stop paying for career prep when it's already included.

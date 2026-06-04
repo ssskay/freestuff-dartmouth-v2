@@ -44,11 +44,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <section class="about-section">
         <h2 class="section-head">What's Not Here</h2>
         <ul class="list-plain">
-          <li>Third-party student discounts (not Dartmouth-specific)</li>
+          <li>Third-party student discounts — only Dartmouth-specific perks</li>
           <li>Expired or broken perks (flagged and removed)</li>
-          <li>User-submitted content (to avoid spam and quality issues)</li>
-          <li>Login walls or email capture (completely open)</li>
+          <li>Pay-for-placement — no business can buy its way onto this list, rank higher, or be marked "Verified"</li>
+          <li>Login walls — no account is required to browse</li>
         </ul>
+        <p>
+          Community submissions <em>are</em> welcome and reviewed before publishing (see
+          <a href="/submit" class="inline-link">Submit</a>). We collect an optional email only if you
+          choose to give it when submitting or reporting a resource — see our
+          <a href="/privacy" class="inline-link">Privacy Policy</a>.
+        </p>
+      </section>
+
+      <section class="about-section">
+        <h2 class="section-head">How This Is Funded</h2>
+        <p>
+          Two things, kept strictly separate:
+        </p>
+        <ul class="list-plain">
+          <li>
+            <strong>The catalog is editorial and free.</strong> It costs almost nothing to run (it's a static
+            site), it carries no ads, and — as noted above — nothing in it is ever for sale.
+          </li>
+          <li>
+            <strong>The project's costs may be covered by a supporter.</strong> If they ever are, that supporter
+            is shown only in the footer, clearly labeled, as backing for the project — not a spot in the
+            catalog. A supporter can never add an entry, change its ranking, or affect what's listed.
+          </li>
+        </ul>
+        <p>
+          No targeted ads, no third-party trackers, no selling your data. Independent of Dartmouth College —
+          see our <a href="/privacy" class="inline-link">Privacy Policy</a> and
+          <a href="/terms" class="inline-link">Terms</a>.
+        </p>
       </section>
 
       <section class="about-section">
@@ -63,7 +92,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <h2 class="section-head-inverse">Fork This for Your School</h2>
         <p>
           This project is open source and designed to be easily adapted for other schools. The architecture
-          is simple: a static Astro site reading from a single JSON file. No database, no backend, no auth.
+          is a static Astro site, with an optional Supabase backend powering upvotes, reports, and community
+          submissions. Forks can run pure-JSON with no backend at all.
         </p>
         <p>
           <strong>To fork this for your school:</strong>

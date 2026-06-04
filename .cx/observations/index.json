@@ -1,5 +1,85 @@
 [
   {
+    "id": "obs-mpyulqps-afd91e78",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Good eye — that was worth stopping for. Here's the honest answer, then what I changed.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T02:00:21.376Z"
+  },
+  {
+    "id": "obs-mpyulqaf-37e2e69d",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Good eye — that was worth stopping for. Here's the honest answer, then what I changed.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T02:00:20.823Z"
+  },
+  {
+    "id": "obs-mpyteoib-088e827b",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Audit complete — written to docs/construct-monetization-strategy.md. The three specialists converged hard, from different starting points. Here's the honest verdict.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T01:26:52.307Z"
+  },
+  {
+    "id": "obs-mpyteo31-67f58c21",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Audit complete — written to docs/construct-monetization-strategy.md. The three specialists converged hard, from different starting points. Here's the honest verdict.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T01:26:51.757Z"
+  },
+  {
+    "id": "obs-mpyt1kh4-0673d08b",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done — the full P0→P2 design/UX/accessibility fix list is implemented, building, and verified in the rendered output.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T01:16:40.552Z"
+  },
+  {
+    "id": "obs-mpyt1k3b-9fb7aefd",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done — the full P0→P2 design/UX/accessibility fix list is implemented, building, and verified in the rendered output.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T01:16:40.055Z"
+  },
+  {
+    "id": "obs-mpysfip6-8827fbcd",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done — four specialists weighed in (accessibility, visual/UI design, UX/findability, product/IA), I re-verified the concrete claims, and synthesized everything into one shareable report at docs/const…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T00:59:31.818Z"
+  },
+  {
+    "id": "obs-mpysfi9k-50b5e384",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] All verified: badge tokens confirmed unused, software is 31/78 (40%) with four singleton categories, the homepage resource grid is hard-locked to 3 columns while siblings use auto-fill, and the READM…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T00:59:31.256Z"
+  },
+  {
+    "id": "obs-mpyrrfdx-677c0434",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done — pushed to main and live.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T00:40:47.781Z"
+  },
+  {
+    "id": "obs-mpyrrexk-5477b4a0",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Pushed to main (07e2de5..015cb80). Let me confirm and tidy up the now-redundant local branch.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T00:40:47.192Z"
+  },
+  {
     "id": "obs-mpyrja6v-ce889940",
     "role": "construct",
     "category": "session-summary",

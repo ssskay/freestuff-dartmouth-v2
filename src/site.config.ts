@@ -34,6 +34,30 @@ export const CATEGORIES = [
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 
+/**
+ * Student-facing display labels for category slugs. Decouples the human label
+ * from the storage slug so jargon ("tuck", "money") reads clearly without a
+ * data migration. Falls back to a de-hyphenated slug for unknown values.
+ */
+export const CATEGORY_LABELS: Record<Category, string> = {
+  software: 'Software & Apps',
+  news: 'News & Media',
+  library: 'Library & Research',
+  outdoor: 'Outdoor & Adventure',
+  money: 'Funding & Discounts',
+  health: 'Health & Wellness',
+  career: 'Career',
+  'campus-life': 'Arts & Campus Life',
+  'alumni-only': 'Alumni',
+  tuck: 'Tuck (Business School)',
+  transportation: 'Transportation',
+  'off-campus': 'Around Town',
+};
+
+export function categoryLabel(slug: string): string {
+  return (CATEGORY_LABELS as Record<string, string>)[slug] ?? slug.replace(/-/g, ' ');
+}
+
 /** Who a resource can be available to. */
 export const ELIGIBILITY = ['student', 'faculty', 'staff', 'alumni', 'public'] as const;
 export type Eligibility = (typeof ELIGIBILITY)[number];

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ResourceCard from '../../components/ResourceCard.astro';
+import ScenarioIcon from '../../components/ScenarioIcon.astro';
 import { loadResources } from '../../lib/catalog';
 import { SCENARIOS } from '../../site.config';
 
@@ -14,7 +15,7 @@ const scenarioResources = resources.filter(SCENARIOS['creative'].match);
 <BaseLayout title="Creative Resources | Free Stuff @ Dartmouth">
   <div class="scenario-page">
     <div class="scenario-hero">
-      <div class="scenario-icon-large">🎨</div>
+      <div class="scenario-icon-large"><ScenarioIcon slug="creative" size={48} /></div>
       <h1 class="scenario-title">Building a portfolio?</h1>
       <p class="scenario-description">
         Whether you're designing a website, editing videos for a capstone, composing music, or just trying to make something beautiful — you don't need to pirate Adobe or settle for free trials. Dartmouth gives you the professional creative suite, plus access to studios, performances, and galleries that most schools charge extra for.

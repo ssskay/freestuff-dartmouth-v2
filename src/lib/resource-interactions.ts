@@ -1,9 +1,7 @@
 /**
  * Client-side resource interactions: upvoting and issue reporting.
  *
- * This module is the single source for the behavior that was previously
- * copy-pasted into every page's inline <script>. Import it once per page:
- *
+ * Single source for behavior shared across every page. Import once:
  *   import { initResourceInteractions } from '../lib/resource-interactions';
  *   initResourceInteractions();
  *
@@ -15,6 +13,17 @@ import { getFingerprint } from './fingerprint';
 import { upvoteResource, removeUpvote, getUserVotes, reportIssue } from './supabase';
 import type { IssueType } from '../site.config';
 
+/** Show a transient inline status message via the global live region. */
+function toast(message: string): void {
+  const region = document.getElementById('toast-region');
+  if (!region) return;
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = message;
+  region.appendChild(el);
+  window.setTimeout(() => el.remove(), 4000);
+}
+
 export function initResourceInteractions(): void {
   const fingerprint = getFingerprint();
 
@@ -25,7 +34,10 @@ export function initResourceInteractions(): void {
         const btn = document.querySelector(
           `button.upvote-btn[data-resource-id="${CSS.escape(id)}"]`
         ) as HTMLButtonElement | null;
-        if (btn) btn.dataset.voted = 'true';
+        if (btn) {
+          btn.dataset.voted = 'true';
+          btn.setAttribute('aria-pressed', 'true');
+        }
       });
     })
     .catch((error) => console.error('Error loading vote state:', error));
@@ -48,7 +60,9 @@ export function initResourceInteractions(): void {
         : await upvoteResource(resourceId, fingerprint);
 
       if (result.success) {
-        button.dataset.voted = hasVoted ? 'false' : 'true';
+        const nowVoted = !hasVoted;
+        button.dataset.voted = nowVoted ? 'true' : 'false';
+        button.setAttribute('aria-pressed', nowVoted ? 'true' : 'false');
         const countSpan = button.querySelector('.upvote-count') as HTMLSpanElement | null;
         if (countSpan) countSpan.textContent = result.upvotes.toString();
       } else {
@@ -61,42 +75,59 @@ export function initResourceInteractions(): void {
     }
   });
 
-  // Report dropdown: toggle open/closed.
-  let currentOpenDropdown: HTMLElement | null = null;
+  // --- Report menu: accessible disclosure with focus + keyboard support ---
+  let openTrigger: HTMLButtonElement | null = null;
+  let openMenu: HTMLElement | null = null;
+
+  function closeMenu(returnFocus: boolean): void {
+    if (!openMenu || !openTrigger) return;
+    openMenu.hidden = true;
+    openTrigger.setAttribute('aria-expanded', 'false');
+    const trigger = openTrigger;
+    openMenu = null;
+    openTrigger = null;
+    if (returnFocus) trigger.focus();
+  }
+
+  function openMenuFor(trigger: HTMLButtonElement): void {
+    const id = trigger.getAttribute('aria-controls');
+    const menu = id ? document.getElementById(id) : null;
+    if (!menu) return;
+    if (openMenu && openMenu !== menu) closeMenu(false);
+    menu.hidden = false;
+    trigger.setAttribute('aria-expanded', 'true');
+    openTrigger = trigger;
+    openMenu = menu;
+    const first = menu.querySelector('.report-option') as HTMLButtonElement | null;
+    first?.focus();
+  }
 
   document.addEventListener('click', (e) => {
-    const reportBtn = (e.target as HTMLElement).closest('.report-btn') as HTMLButtonElement | null;
-    if (!reportBtn) return;
-
+    const trigger = (e.target as HTMLElement).closest('.report-btn') as HTMLButtonElement | null;
+    if (!trigger) return;
     e.preventDefault();
     e.stopPropagation();
-
-    const resourceId = reportBtn.dataset.resourceId;
-    if (!resourceId) return;
-
-    const dropdown = document.querySelector(
-      `.report-dropdown[data-resource-id="${CSS.escape(resourceId)}"]`
-    ) as HTMLElement | null;
-    if (!dropdown) return;
-
-    if (currentOpenDropdown && currentOpenDropdown !== dropdown) {
-      currentOpenDropdown.style.display = 'none';
+    if (openTrigger === trigger) {
+      closeMenu(true);
+    } else {
+      openMenuFor(trigger);
     }
-    const isVisible = dropdown.style.display === 'block';
-    dropdown.style.display = isVisible ? 'none' : 'block';
-    currentOpenDropdown = isVisible ? null : dropdown;
   });
 
-  // Close the dropdown when clicking outside of it.
+  // Close on outside click or Escape.
   document.addEventListener('click', (e) => {
-    if (!(e.target as HTMLElement).closest('.report-wrapper') && currentOpenDropdown) {
-      currentOpenDropdown.style.display = 'none';
-      currentOpenDropdown = null;
+    if (openMenu && !(e.target as HTMLElement).closest('.report-wrapper')) {
+      closeMenu(false);
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && openMenu) {
+      e.preventDefault();
+      closeMenu(true);
     }
   });
 
-  // Submit a report. Email (for the sticker offer) is collected *before* the
-  // single insert, so opting in no longer creates a duplicate report row.
+  // Submit a report (single insert, no email harvest). Confirmation via toast.
   document.addEventListener('click', async (e) => {
     const reportOption = (e.target as HTMLElement).closest('.report-option') as HTMLButtonElement | null;
     if (!reportOption) return;
@@ -105,42 +136,24 @@ export function initResourceInteractions(): void {
     e.stopPropagation();
 
     const issueType = reportOption.dataset.issue as IssueType | undefined;
-    const dropdown = reportOption.closest('.report-dropdown') as HTMLElement | null;
-    const resourceId = dropdown?.dataset.resourceId;
-    if (!resourceId || !issueType || !dropdown) return;
+    const menu = reportOption.closest('.report-dropdown') as HTMLElement | null;
+    const resourceId = menu?.dataset.resourceId;
+    if (!resourceId || !issueType || !menu) return;
 
-    const allOptions = dropdown.querySelectorAll('.report-option') as NodeListOf<HTMLButtonElement>;
+    const allOptions = menu.querySelectorAll('.report-option') as NodeListOf<HTMLButtonElement>;
     allOptions.forEach((opt) => (opt.disabled = true));
-
-    // Ask about the sticker first so the report is submitted exactly once.
-    let email: string | undefined;
-    const wantsSticker = confirm(
-      'Thanks for catching that! 🎉\n\n' +
-        'Want a free sticker? Click OK to enter your email, or Cancel if you\'re good.'
-    );
-    if (wantsSticker) {
-      const entered = prompt('Drop your email here and we\'ll send you a sticker:');
-      if (entered && entered.trim()) email = entered.trim();
-    }
+    closeMenu(true);
 
     try {
-      const result = await reportIssue(resourceId, issueType, undefined, email);
-
-      dropdown.style.display = 'none';
-      currentOpenDropdown = null;
-
-      if (result.success) {
-        alert(
-          email
-            ? 'Thanks! We\'ll send your sticker soon. 🌲'
-            : 'Report submitted! Thanks for helping keep this accurate. 🌲'
-        );
-      } else {
-        alert('Oops, something went wrong. Please try again.');
-        console.error('Report submission error:', result.error);
-      }
+      const result = await reportIssue(resourceId, issueType);
+      toast(
+        result.success
+          ? 'Thanks — flagged for review. 🌲'
+          : 'Something went wrong. Please try again.'
+      );
+      if (!result.success) console.error('Report submission error:', result.error);
     } catch (error) {
-      alert('Oops, something went wrong. Please try again.');
+      toast('Something went wrong. Please try again.');
       console.error('Error submitting report:', error);
     } finally {
       allOptions.forEach((opt) => (opt.disabled = false));

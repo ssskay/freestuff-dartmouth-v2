@@ -1,11 +1,11 @@
 # Session Context
-Last saved: 2026-06-04 00:34
+Last saved: 2026-06-04 02:00
 
 ## What was in progress
 (no summary available)
 
 ## Session efficiency snapshot
-16 reads · 13 unique files · 3 repeated reads · 12 large reads · 216 KB read
+124 reads · 23 unique files · 101 repeated reads · 86 large reads · 1612 KB read
 
 ## Open issues
 None
@@ -20,6 +20,7 @@ _None in progress._
 
 ## Recent Decisions
 
+- commit `015cb80336` — Remediate full health-and-quality review (construct-review.md)
 - commit `07e2de5fa9` — Update documentation to reflect production deployment
 - commit `8463db9792` — Fix JavaScript module import error on production
 - commit `94ecf5cbad` — Fix UUID filtering bug and add scenario pages

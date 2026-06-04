@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ResourceCard from '../components/ResourceCard.astro';
 import { loadResources } from '../lib/catalog';
+import { categoryLabel } from '../site.config';
 
 // Resolve the catalog (Supabase with static JSON fallback), id = stable slug.
 const allResources = await loadResources();
@@ -36,7 +37,7 @@ const categories = [...new Set(resources.map(r => r.category))].sort();
           <select id="category-filter" class="filter-select">
             <option value="">All categories</option>
             {categories.map((cat) => (
-              <option value={cat}>{cat.replace(/-/g, ' ')}</option>
+              <option value={cat}>{categoryLabel(cat)}</option>
             ))}
           </select>
         </div>

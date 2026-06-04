@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ResourceCard from '../../components/ResourceCard.astro';
+import ScenarioIcon from '../../components/ScenarioIcon.astro';
 import { loadResources } from '../../lib/catalog';
 import { SCENARIOS } from '../../site.config';
 
@@ -14,7 +15,7 @@ const scenarioResources = resources.filter(SCENARIOS['grad-school'].match);
 <BaseLayout title="Grad School Resources | Free Stuff @ Dartmouth">
   <div class="scenario-page">
     <div class="scenario-hero">
-      <div class="scenario-icon-large">📚</div>
+      <div class="scenario-icon-large"><ScenarioIcon slug="grad-school" size={48} /></div>
       <h1 class="scenario-title">Applying to grad school?</h1>
       <p class="scenario-description">
         You're about to write the most important proposal of your life. Here's everything Dartmouth gives you to make it happen — research databases that cost thousands, writing tools the pros use, and support when the stress hits.

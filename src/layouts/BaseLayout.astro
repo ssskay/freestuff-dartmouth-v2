@@ -12,7 +12,7 @@ const { title, description = "A complete, always-current catalog of free perks a
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,14 +22,17 @@ const { title, description = "A complete, always-current catalog of free perks a
     <title>{title}</title>
   </head>
   <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
     <!-- Nav: N7 Inline + Wordmark -->
     <header>
-      <nav class="nav-inline">
+      <nav class="nav-inline" aria-label="Primary">
         <div class="nav-container">
           <a href="/" class="wordmark">Free Stuff @ Dartmouth</a>
           <div class="nav-links">
             <a href="/for-students" class="nav-link">Students</a>
             <a href="/for-alumni" class="nav-link">Alumni</a>
+            <a href="/scenarios" class="nav-link">Scenarios</a>
             <a href="/submit" class="nav-link">Submit</a>
             <a href="/about" class="nav-link">About</a>
           </div>
@@ -37,7 +40,7 @@ const { title, description = "A complete, always-current catalog of free perks a
       </nav>
     </header>
 
-    <main>
+    <main id="main" tabindex="-1">
       <slot />
     </main>
 
@@ -45,8 +48,17 @@ const { title, description = "A complete, always-current catalog of free perks a
     <footer class="footer-terse">
       <div class="footer-container">
         <p>Built by Dartmouth folks, for Dartmouth folks. <a href="https://github.com/sarakay/freestuff-dartmouth-v2" class="footer-link">Fork this for your school</a>.</p>
+        <p class="footer-disclosure">An independent, community-maintained catalog — not an official Dartmouth site. Always verify access details on the linked Dartmouth page.</p>
+        <p class="footer-links">
+          <a href="/privacy" class="footer-link">Privacy</a> ·
+          <a href="/terms" class="footer-link">Terms</a> ·
+          <a href="/about" class="footer-link">About</a>
+        </p>
       </div>
     </footer>
+
+    <!-- Inline status messages (replaces native alert/confirm) -->
+    <div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
 
     <style>
       /* Nav: N7 Inline + Wordmark */
@@ -131,6 +143,17 @@ const { title, description = "A complete, always-current catalog of free perks a
         font-size: var(--text-sm);
         color: var(--color-ink-muted);
         line-height: var(--leading-relaxed);
+      }
+
+      .footer-disclosure {
+        margin-top: var(--space-2xs) !important;
+        font-size: var(--text-xs) !important;
+        color: var(--color-ink-subtle) !important;
+      }
+
+      .footer-links {
+        margin-top: var(--space-xs) !important;
+        font-size: var(--text-sm) !important;
       }
 
       .footer-link {

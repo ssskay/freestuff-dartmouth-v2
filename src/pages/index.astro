@@ -2,7 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ResourceCard from '../components/ResourceCard.astro';
 import { loadResources } from '../lib/catalog';
-import { CURATED_COLLECTIONS } from '../site.config';
+import { CURATED_COLLECTIONS, categoryLabel } from '../site.config';
+import ScenarioIcon from '../components/ScenarioIcon.astro';
 
 // Resolve the catalog (Supabase with static JSON fallback), normalized so that
 // every resource's `id` is its stable slug.
@@ -42,39 +43,47 @@ const totalValue = resources
     </p>
 
     <!-- Search -->
+    <label for="search" class="sr-only">Search resources</label>
     <div class="search-wrapper">
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.6"/>
+        <path d="M12.5 12.5L16 16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
       <input
         type="text"
         id="search"
-        placeholder="Search resources..."
+        placeholder="Search for Adobe, NYT, gear…"
         class="search-input"
+        autocomplete="off"
       />
+    </div>
+    <p class="access-note">Most perks need your Dartmouth NetID login. Each card shows who's eligible.</p>
+
+    <!-- Curated collections (a separate axis from raw categories) -->
+    <div class="collection-chips" role="group" aria-label="Curated collections">
+      <button type="button" class="chip" data-group="" aria-pressed="true">All</button>
+      {categoryGroups.map((group) => (
+        <button type="button" class="chip" data-group={`group:${group.key}`} aria-pressed="false">{group.label}</button>
+      ))}
     </div>
 
     <!-- Filters -->
     <div class="filter-bar">
       <div class="filter-controls">
         <div class="filter-group">
-          <label for="category-filter" class="filter-label">Browse by</label>
+          <label for="category-filter" class="filter-label">Category</label>
           <select id="category-filter" class="filter-select">
-            <option value="">All resources</option>
-            <optgroup label="Curated Collections">
-              {categoryGroups.map((group) => (
-                <option value={`group:${group.key}`}>{group.label}</option>
-              ))}
-            </optgroup>
-            <optgroup label="By Category">
-              {categories.map((cat) => (
-                <option value={cat}>{cat.replace(/-/g, ' ')}</option>
-              ))}
-            </optgroup>
+            <option value="">All categories</option>
+            {categories.map((cat) => (
+              <option value={cat}>{categoryLabel(cat)}</option>
+            ))}
           </select>
         </div>
 
         <div class="filter-group">
-          <label for="eligibility-filter" class="filter-label">Eligibility</label>
+          <label for="eligibility-filter" class="filter-label">Who can use it</label>
           <select id="eligibility-filter" class="filter-select">
-            <option value="">All eligibility</option>
+            <option value="">Anyone</option>
             {eligibilityOptions.map((elig) => (
               <option value={elig}>{elig}</option>
             ))}
@@ -93,7 +102,7 @@ const totalValue = resources
       </div>
 
       <div class="filter-status">
-        <p class="result-count">
+        <p class="result-count" role="status" aria-live="polite">
           Showing <span id="result-count">{resources.length}</span>
         </p>
         <button id="clear-filters" class="clear-btn">Clear filters</button>
@@ -101,7 +110,30 @@ const totalValue = resources
     </div>
   </div>
 
-  <!-- Value Calculator Banner -->
+  <!-- Resource Grid (surfaced directly under search/filters) -->
+  <div id="resource-grid" class="resource-grid">
+    {resources.map((resource) => (
+      <div class="resource-item"
+           data-resource-id={resource.id}
+           data-category={resource.category}
+           data-eligibility={JSON.stringify(resource.eligibility)}
+           data-searchable={JSON.stringify({
+             name: resource.name.toLowerCase(),
+             description: resource.description.toLowerCase(),
+             category: resource.category.toLowerCase(),
+           })}>
+        <ResourceCard resource={resource} />
+      </div>
+    ))}
+  </div>
+
+  <div id="no-results" class="no-results hidden">
+    <p class="no-results-text">No resources found.</p>
+    <p id="no-results-suggestion" class="no-results-suggestion"></p>
+    <button id="clear-filters-alt" class="clear-btn-alt">Clear filters and try again</button>
+  </div>
+
+  <!-- Value strip -->
   <div class="value-banner">
     <div class="value-banner-content">
       <div class="value-amount">${totalValue.toLocaleString()}</div>
@@ -118,42 +150,42 @@ const totalValue = resources
 
     <div class="scenarios-grid">
       <a href="/scenarios/grad-school" class="scenario-card">
-        <div class="scenario-icon">📚</div>
+        <div class="scenario-icon"><ScenarioIcon slug="grad-school" /></div>
         <h3 class="scenario-title">Applying to grad school?</h3>
         <p class="scenario-description">JSTOR, ProQuest dissertations, Interlibrary Loan for research. O'Reilly for technical writing. Free counseling for app stress.</p>
         <div class="scenario-cta">View resources →</div>
       </a>
 
       <a href="/scenarios/job-hunt" class="scenario-card">
-        <div class="scenario-icon">💼</div>
+        <div class="scenario-icon"><ScenarioIcon slug="job-hunt" /></div>
         <h3 class="scenario-title">Job hunting?</h3>
         <p class="scenario-description">Bloomberg Terminal ($25k/year). Career coaching for life. Interview clothes. News subscriptions. Technical skills like Python and MATLAB. Build a resume that stands out.</p>
         <div class="scenario-cta">View resources →</div>
       </a>
 
       <a href="/scenarios/data-analysis" class="scenario-card">
-        <div class="scenario-icon">📊</div>
+        <div class="scenario-icon"><ScenarioIcon slug="data-analysis" /></div>
         <h3 class="scenario-title">Running data analysis?</h3>
         <p class="scenario-description">$25k Bloomberg Terminal at Feldberg. MATLAB, SPSS, SAS, JMP Pro. WRDS for finance data. Qualtrics for surveys. Statista for market research.</p>
         <div class="scenario-cta">View resources →</div>
       </a>
 
       <a href="/scenarios/creative" class="scenario-card">
-        <div class="scenario-icon">🎨</div>
+        <div class="scenario-icon"><ScenarioIcon slug="creative" /></div>
         <h3 class="scenario-title">Building a portfolio?</h3>
         <p class="scenario-description">Adobe Creative Cloud ($660/year free). Canva Pro. Hopkins Center performances and art studios. Hood Museum access. Professional creative tools, all included.</p>
         <div class="scenario-cta">View resources →</div>
       </a>
 
       <a href="/scenarios/adventure" class="scenario-card">
-        <div class="scenario-icon">🏔️</div>
+        <div class="scenario-icon"><ScenarioIcon slug="adventure" /></div>
         <h3 class="scenario-title">Planning an adventure?</h3>
         <p class="scenario-description">DOC cabins ($0-40/night vs. $200+ hotels). Free outdoor gear rentals. Ledyard Canoe Club. DOC Trips for group adventures.</p>
         <div class="scenario-cta">View resources →</div>
       </a>
 
       <a href="/scenarios/save-money" class="scenario-card">
-        <div class="scenario-icon">💰</div>
+        <div class="scenario-icon"><ScenarioIcon slug="save-money" /></div>
         <h3 class="scenario-title">Tight on cash?</h3>
         <p class="scenario-description">$75/term printing credit. Free winter clothing. NYT/WSJ subscriptions ($400/year value). Free film screenings and Hop shows. Free gym membership.</p>
         <div class="scenario-cta">View resources →</div>
@@ -179,28 +211,6 @@ const totalValue = resources
       </div>
     </div>
   )}
-
-  <!-- Resource Grid -->
-  <div id="resource-grid" class="resource-grid">
-    {resources.map((resource) => (
-      <div class="resource-item"
-           data-resource-id={resource.id}
-           data-category={resource.category}
-           data-eligibility={JSON.stringify(resource.eligibility)}
-           data-searchable={JSON.stringify({
-             name: resource.name.toLowerCase(),
-             description: resource.description.toLowerCase(),
-             category: resource.category.toLowerCase(),
-           })}>
-        <ResourceCard resource={resource} />
-      </div>
-    ))}
-  </div>
-
-  <div id="no-results" class="no-results hidden">
-    <p class="no-results-text">No resources found matching your filters.</p>
-    <button id="clear-filters-alt" class="clear-btn-alt">Clear filters and try again</button>
-  </div>
 
   <!-- Curated collection membership (slugs), consumed by the client filter -->
   <script type="application/json" id="category-group-ids" set:html={JSON.stringify(categoryGroupIds)}></script>
@@ -239,18 +249,28 @@ const totalValue = resources
 
     /* Search */
     .search-wrapper {
-      margin-bottom: var(--space-lg);
+      position: relative;
+      margin-bottom: var(--space-sm);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: var(--space-sm);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-ink-muted);
+      pointer-events: none;
     }
 
     .search-input {
       width: 100%;
-      padding: var(--space-sm) var(--space-md);
+      padding: var(--space-sm) var(--space-md) var(--space-sm) calc(var(--space-md) + 18px + var(--space-2xs));
       font-family: var(--font-body);
-      font-size: var(--text-base);
+      font-size: var(--text-lg);
       line-height: var(--leading-normal);
       color: var(--color-ink);
       background: var(--color-paper);
-      border: var(--rule-thin) solid var(--color-border);
+      border: var(--rule-base) solid var(--color-border-input);
       border-radius: var(--radius-md);
       transition: border-color var(--dur-fast) var(--ease-out),
                   box-shadow var(--dur-fast) var(--ease-out);
@@ -267,6 +287,61 @@ const totalValue = resources
     .search-input:focus {
       border-color: var(--color-accent);
       box-shadow: 0 0 0 3px var(--color-accent-subtle);
+    }
+
+    .access-note {
+      margin: 0 0 var(--space-md) 0;
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+    }
+
+    /* Curated-collection chips (separate axis from the category select) */
+    .collection-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2xs);
+      margin-bottom: var(--space-md);
+    }
+
+    .chip {
+      padding: var(--space-2xs) var(--space-sm);
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      font-weight: 500;
+      color: var(--color-ink-muted);
+      background: var(--color-paper);
+      border: var(--rule-thin) solid var(--color-border-strong);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all var(--dur-fast) var(--ease-out);
+      white-space: nowrap;
+    }
+
+    .chip:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+
+    .chip[aria-pressed="true"] {
+      color: var(--color-paper);
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    .no-results-suggestion {
+      margin: 0 0 var(--space-md) 0;
+      font-size: var(--text-base);
+      color: var(--color-ink-muted);
+    }
+
+    .no-results-suggestion button {
+      font: inherit;
+      color: var(--color-accent);
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      text-decoration: underline;
     }
 
     /* Filter bar */
@@ -366,7 +441,7 @@ const totalValue = resources
       margin: 0 auto;
       padding: 0 var(--space-lg) var(--space-2xl);
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
       gap: var(--space-lg);
     }
 
@@ -400,8 +475,13 @@ const totalValue = resources
     }
 
     .value-banner-content {
-      padding: var(--space-xl);
-      background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: center;
+      gap: var(--space-xs);
+      padding: var(--space-md) var(--space-xl);
+      background: var(--color-accent);
       border-radius: var(--radius-md);
       text-align: center;
     }
@@ -409,11 +489,10 @@ const totalValue = resources
     .value-amount {
       font-family: var(--font-display);
       font-style: italic;
-      font-size: var(--text-4xl);
+      font-size: var(--text-3xl);
       font-weight: 600;
       line-height: var(--leading-tight);
       color: var(--color-paper);
-      margin-bottom: var(--space-2xs);
     }
 
     .value-label {
@@ -702,6 +781,36 @@ const totalValue = resources
     const resourceGrid = document.getElementById('resource-grid') as HTMLDivElement;
     const noResults = document.getElementById('no-results') as HTMLDivElement;
     let resourceItems = Array.from(document.querySelectorAll('.resource-item') as NodeListOf<HTMLDivElement>);
+    const collectionChips = Array.from(document.querySelectorAll('.chip')) as HTMLButtonElement[];
+    const suggestionEl = document.getElementById('no-results-suggestion') as HTMLParagraphElement;
+    let currentCollection = '';
+
+    // Levenshtein distance powers typo-tolerant search and the "did you mean" hint.
+    function editDistance(a: string, b: string): number {
+      const m = a.length, n = b.length;
+      if (!m) return n;
+      if (!n) return m;
+      let prev = Array.from({ length: n + 1 }, (_, i) => i);
+      for (let i = 1; i <= m; i++) {
+        const curr = [i];
+        for (let j = 1; j <= n; j++) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+          curr[j] = Math.min(prev[j] + 1, curr[j - 1] + 1, prev[j - 1] + cost);
+        }
+        prev = curr;
+      }
+      return prev[n];
+    }
+
+    // Substring match, plus near-miss tolerance against whole words for typos.
+    function fuzzyIncludes(haystack: string, term: string): boolean {
+      if (haystack.includes(term)) return true;
+      if (term.length < 4) return false;
+      const threshold = term.length <= 6 ? 1 : 2;
+      return haystack.split(/[^a-z0-9]+/).some(
+        (word) => word.length >= 3 && editDistance(word, term) <= threshold
+      );
+    }
 
     function sortResources() {
       const sortBy = sortFilter.value;
@@ -737,16 +846,15 @@ const totalValue = resources
     }
 
     function filterResources() {
-      const searchTerm = searchInput.value.toLowerCase();
+      const searchTerm = searchInput.value.trim().toLowerCase();
       const selectedCategory = categoryFilter.value;
       const selectedEligibility = eligibilityFilter.value;
+      const groupKey = currentCollection.startsWith('group:')
+        ? currentCollection.replace('group:', '')
+        : null;
+      const groupMembers = groupKey ? (categoryGroupIds[groupKey] || []) : null;
 
       let visibleCount = 0;
-
-      // Check if this is a curated group
-      const isGroup = selectedCategory.startsWith('group:');
-      const groupKey = isGroup ? selectedCategory.replace('group:', '') : null;
-      const groupMembers = groupKey ? (categoryGroupIds[groupKey] || []) : null;
 
       resourceItems.forEach((item) => {
         const category = item.dataset.category || '';
@@ -755,15 +863,15 @@ const totalValue = resources
         const searchable = JSON.parse(item.dataset.searchable || '{}');
 
         const matchesSearch = !searchTerm ||
-          searchable.name.includes(searchTerm) ||
           searchable.description.includes(searchTerm) ||
-          searchable.category.includes(searchTerm);
+          fuzzyIncludes(searchable.name, searchTerm) ||
+          fuzzyIncludes(searchable.category, searchTerm);
 
-        const matchesCategory = !selectedCategory ||
-          (isGroup ? (groupMembers as string[]).includes(resourceId) : category === selectedCategory);
+        const matchesCollection = !groupMembers || groupMembers.includes(resourceId);
+        const matchesCategory = !selectedCategory || category === selectedCategory;
         const matchesEligibility = !selectedEligibility || eligibility.includes(selectedEligibility);
 
-        if (matchesSearch && matchesCategory && matchesEligibility) {
+        if (matchesSearch && matchesCollection && matchesCategory && matchesEligibility) {
           item.style.display = 'block';
           visibleCount++;
         } else {
@@ -776,10 +884,52 @@ const totalValue = resources
       if (visibleCount === 0) {
         resourceGrid.classList.add('hidden');
         noResults.classList.remove('hidden');
+        showSuggestion(searchTerm);
       } else {
         resourceGrid.classList.remove('hidden');
         noResults.classList.add('hidden');
       }
+    }
+
+    // On an empty search, offer the closest catalog name as a clickable hint.
+    function showSuggestion(term: string) {
+      suggestionEl.textContent = '';
+      if (!term || term.length < 3) return;
+      let bestItem: HTMLElement | null = null;
+      let bestDist = Infinity;
+      resourceItems.forEach((item) => {
+        const name = JSON.parse(item.dataset.searchable || '{}').name || '';
+        name.split(/[^a-z0-9]+/).forEach((word: string) => {
+          if (word.length < 3) return;
+          const d = editDistance(word, term);
+          if (d < bestDist) {
+            bestDist = d;
+            bestItem = item;
+          }
+        });
+      });
+      if (bestItem && bestDist <= 3) {
+        const title = (bestItem as HTMLElement).querySelector('.card-title')?.textContent?.trim() || '';
+        if (title) {
+          suggestionEl.append('Did you mean ');
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.textContent = title;
+          btn.addEventListener('click', () => {
+            searchInput.value = title;
+            filterResources();
+            searchInput.focus();
+          });
+          suggestionEl.append(btn, '?');
+        }
+      }
+    }
+
+    function setCollection(value: string) {
+      currentCollection = value;
+      collectionChips.forEach((chip) => {
+        chip.setAttribute('aria-pressed', (chip.dataset.group || '') === value ? 'true' : 'false');
+      });
     }
 
     function clearFilters() {
@@ -787,9 +937,17 @@ const totalValue = resources
       categoryFilter.value = '';
       eligibilityFilter.value = '';
       sortFilter.value = 'name';
+      setCollection('');
       sortResources();
       filterResources();
     }
+
+    collectionChips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        setCollection(chip.dataset.group || '');
+        filterResources();
+      });
+    });
 
     searchInput.addEventListener('input', filterResources);
     categoryFilter.addEventListener('change', filterResources);

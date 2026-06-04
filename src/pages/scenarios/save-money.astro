@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ResourceCard from '../../components/ResourceCard.astro';
+import ScenarioIcon from '../../components/ScenarioIcon.astro';
 import { loadResources } from '../../lib/catalog';
 import { SCENARIOS } from '../../site.config';
 
@@ -14,7 +15,7 @@ const scenarioResources = resources.filter(SCENARIOS['save-money'].match);
 <BaseLayout title="Save Money Resources | Free Stuff @ Dartmouth">
   <div class="scenario-page">
     <div class="scenario-hero">
-      <div class="scenario-icon-large">💰</div>
+      <div class="scenario-icon-large"><ScenarioIcon slug="save-money" size={48} /></div>
       <h1 class="scenario-title">Tight on cash?</h1>
       <p class="scenario-description">
         Student budgets are rough. But you're already paying for way more than you realize. NYT and WSJ subscriptions ($400/year). Gym membership ($500/year). Winter clothes if you need them. Movies and shows. Printing credit every term. Stop paying for things Dartmouth already covers.

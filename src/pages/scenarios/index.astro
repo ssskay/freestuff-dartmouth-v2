@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ScenarioIcon from '../../components/ScenarioIcon.astro';
 import { SCENARIO_CARDS } from '../../site.config';
 ---
 
@@ -16,7 +17,7 @@ import { SCENARIO_CARDS } from '../../site.config';
     <div class="scenarios-grid">
       {SCENARIO_CARDS.map((s) => (
         <a href={`/scenarios/${s.slug}`} class="scenario-card">
-          <div class="scenario-icon">{s.icon}</div>
+          <div class="scenario-icon"><ScenarioIcon slug={s.slug} /></div>
           <h2 class="scenario-title">{s.title}</h2>
           <p class="scenario-description">{s.blurb}</p>
           <div class="scenario-cta">View resources →</div>

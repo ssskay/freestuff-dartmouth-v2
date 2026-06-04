@@ -1,22 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { CATEGORIES, ELIGIBILITY, categoryLabel } from '../site.config';
 
-const categories = [
-  'software',
-  'news',
-  'library',
-  'outdoor',
-  'money',
-  'health',
-  'career',
-  'campus-life',
-  'alumni-only',
-  'tuck',
-  'transportation',
-  'off-campus',
-];
-
-const eligibilityOptions = ['student', 'faculty', 'staff', 'alumni', 'public'];
+const categories = CATEGORIES;
+const eligibilityOptions = ELIGIBILITY;
 ---
 
 <BaseLayout title="Submit a Resource | Free Stuff @ Dartmouth">
@@ -26,6 +13,7 @@ const eligibilityOptions = ['student', 'faculty', 'staff', 'alumni', 'public'];
       <p class="page-description">
         Found a free perk that's not listed? Share it with the community. All submissions go through a quick review before going live.
       </p>
+      <p class="required-note">Fields marked <span class="required">*</span> are required.</p>
     </div>
 
     <form id="submit-form" class="submit-form">
@@ -64,15 +52,15 @@ const eligibilityOptions = ['student', 'faculty', 'staff', 'alumni', 'public'];
         <select id="category" name="category" class="form-select" required>
           <option value="">Select a category</option>
           {categories.map((cat) => (
-            <option value={cat}>{cat.replace(/-/g, ' ')}</option>
+            <option value={cat}>{categoryLabel(cat)}</option>
           ))}
         </select>
       </div>
 
-      <div class="form-group">
-        <label class="form-label">
-          Who's eligible? <span class="required">*</span>
-        </label>
+      <fieldset class="form-group eligibility-fieldset">
+        <legend class="form-label">
+          Who's eligible? <span class="required" aria-hidden="true">*</span>
+        </legend>
         <div class="checkbox-group">
           {eligibilityOptions.map((elig) => (
             <label class="checkbox-label">
@@ -86,7 +74,8 @@ const eligibilityOptions = ['student', 'faculty', 'staff', 'alumni', 'public'];
             </label>
           ))}
         </div>
-      </div>
+        <span id="eligibility-error" class="field-error" role="alert"></span>
+      </fieldset>
 
       <div class="form-group">
         <label for="description" class="form-label">
@@ -137,7 +126,7 @@ const eligibilityOptions = ['student', 'faculty', 'staff', 'alumni', 'public'];
         <a href="/" class="cancel-link">Cancel</a>
       </div>
 
-      <div id="form-message" class="form-message hidden"></div>
+      <div id="form-message" class="form-message hidden" role="status" aria-live="polite"></div>
     </form>
   </div>
 
@@ -205,10 +194,39 @@ const eligibilityOptions = ['student', 'faculty', 'staff', 'alumni', 'public'];
       line-height: var(--leading-normal);
       color: var(--color-ink);
       background: var(--color-paper);
-      border: var(--rule-thin) solid var(--color-border);
+      border: var(--rule-thin) solid var(--color-border-input);
       border-radius: var(--radius-md);
       transition: border-color var(--dur-fast) var(--ease-out),
                   box-shadow var(--dur-fast) var(--ease-out);
+    }
+
+    /* Reset the native fieldset chrome so the eligibility group matches others. */
+    .eligibility-fieldset {
+      border: 0;
+      padding: 0;
+      margin: 0;
+      min-width: 0;
+    }
+
+    .eligibility-fieldset .form-label {
+      padding: 0;
+    }
+
+    .required-note {
+      margin: var(--space-xs) 0 0 0;
+      font-size: var(--text-sm);
+      color: var(--color-ink-muted);
+    }
+
+    .field-error {
+      display: block;
+      margin-top: var(--space-2xs);
+      font-size: var(--text-sm);
+      color: oklch(45% 0.15 25);
+    }
+
+    .field-error:empty {
+      display: none;
     }
 
     .form-input::placeholder,
@@ -361,6 +379,7 @@ const eligibilityOptions = ['student', 'faculty', 'staff', 'alumni', 'public'];
     const form = document.getElementById('submit-form') as HTMLFormElement;
     const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
     const formMessage = document.getElementById('form-message') as HTMLDivElement;
+    const eligibilityError = document.getElementById('eligibility-error') as HTMLElement;
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -370,11 +389,13 @@ const eligibilityOptions = ['student', 'faculty', 'staff', 'alumni', 'public'];
       const eligibilityCheckboxes = form.querySelectorAll('input[name="eligibility"]:checked') as NodeListOf<HTMLInputElement>;
       const eligibility = Array.from(eligibilityCheckboxes).map(cb => cb.value);
 
-      // Validate eligibility
+      // Validate eligibility (custom control, so validate and announce here).
       if (eligibility.length === 0) {
-        showMessage('Please select at least one eligibility option.', 'error');
+        eligibilityError.textContent = 'Please select at least one option.';
+        (form.querySelector('input[name="eligibility"]') as HTMLInputElement | null)?.focus();
         return;
       }
+      eligibilityError.textContent = '';
 
       // Prepare submission data
       const submission = {

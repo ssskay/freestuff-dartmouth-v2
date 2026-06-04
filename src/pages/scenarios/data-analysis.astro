@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ResourceCard from '../../components/ResourceCard.astro';
+import ScenarioIcon from '../../components/ScenarioIcon.astro';
 import { loadResources } from '../../lib/catalog';
 import { SCENARIOS } from '../../site.config';
 
@@ -14,7 +15,7 @@ const scenarioResources = resources.filter(SCENARIOS['data-analysis'].match);
 <BaseLayout title="Data Analysis Resources | Free Stuff @ Dartmouth">
   <div class="scenario-page">
     <div class="scenario-hero">
-      <div class="scenario-icon-large">📊</div>
+      <div class="scenario-icon-large"><ScenarioIcon slug="data-analysis" size={48} /></div>
       <h1 class="scenario-title">Running data analysis?</h1>
       <p class="scenario-description">
         Whether you're crunching numbers for an econ thesis, analyzing survey data for psych research, or building models for a finance class — you have access to the same professional tools that analysts at Goldman Sachs and McKinsey use. No student licenses. The real thing.

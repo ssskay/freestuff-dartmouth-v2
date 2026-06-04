@@ -12,7 +12,7 @@ This site is the catalog. The mission is a complete, public, always-current list
 
 ## Features
 
-- **56 verified resources** across software, news, library, outdoor, career, campus life, and more
+- **78 verified resources** across software, news, library, outdoor, career, campus life, and more
 - **Real-time search and filtering** by category and eligibility
 - **Mobile-responsive** design
 - **Always up-to-date** with agent-maintained verification (coming in v2)
@@ -131,7 +131,7 @@ Please include:
 ## Roadmap
 
 ### v1 (Current)
-- [x] Static site with 56 verified resources
+- [x] Static site with 78 verified resources
 - [x] Editorial redesign with refined typography
 - [x] Search and filter functionality
 - [x] Mobile-responsive design

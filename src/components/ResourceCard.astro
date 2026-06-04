@@ -20,6 +20,14 @@ interface Props {
 const { resource, userVotedIds = [] } = Astro.props;
 const hasVoted = userVotedIds.includes(resource.id);
 
+// Destination host, surfaced so the user knows where the outbound link goes.
+let destHost = '';
+try {
+  destHost = new URL(resource.url).hostname.replace(/^www\./, '');
+} catch {
+  destHost = '';
+}
+
 // Check if resource is new (added in last 30 days)
 // Disabled for now since all resources are technically new
 const isNew = false;
@@ -60,9 +68,10 @@ const isNew = false;
           class="upvote-btn"
           data-resource-id={resource.id}
           data-voted={hasVoted ? 'true' : 'false'}
+          aria-pressed={hasVoted ? 'true' : 'false'}
           aria-label={hasVoted ? 'Remove upvote' : 'Upvote this resource'}
         >
-          <svg class="upvote-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg class="upvote-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
             <!-- Pine tree icon -->
             <path d="M8 2L10.5 6H5.5L8 2Z" fill="currentColor" />
             <path d="M8 5L10.5 9H5.5L8 5Z" fill="currentColor" />
@@ -75,28 +84,40 @@ const isNew = false;
           <button
             class="report-btn"
             data-resource-id={resource.id}
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-controls={`report-menu-${resource.id}`}
             aria-label="Report an issue with this resource"
           >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
               <!-- Flag icon -->
               <path d="M2 1V13M2 1L11 4L2 7V1Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
             </svg>
             Report
           </button>
-          <div class="report-dropdown" data-resource-id={resource.id} style="display:none;">
+          <div class="report-dropdown" id={`report-menu-${resource.id}`} data-resource-id={resource.id} role="menu" hidden>
             <div class="report-header">Report an issue</div>
-            <button class="report-option" data-issue="broken-link">Broken link</button>
-            <button class="report-option" data-issue="wrong-info">Wrong information</button>
-            <button class="report-option" data-issue="outdated">Outdated</button>
-            <button class="report-option" data-issue="eligibility">Wrong eligibility</button>
-            <button class="report-option" data-issue="other">Other</button>
+            <button class="report-option" role="menuitem" data-issue="broken-link">Broken link</button>
+            <button class="report-option" role="menuitem" data-issue="wrong-info">Wrong information</button>
+            <button class="report-option" role="menuitem" data-issue="outdated">Outdated</button>
+            <button class="report-option" role="menuitem" data-issue="eligibility">Wrong eligibility</button>
+            <button class="report-option" role="menuitem" data-issue="other">Other</button>
           </div>
         </div>
         <span class="verified-date">
+          <svg class="verified-check" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
           Verified {new Date(resource.last_verified).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
         </span>
       </div>
-      <a href={resource.url} target="_blank" rel="noopener noreferrer" class="visit-link">Visit →</a>
+      <a href={resource.url} target="_blank" rel="noopener noreferrer" class="visit-link">
+        Get access
+        <svg class="external-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.5 2H10V7.5M10 2L5 7M9 8.5V10H2V3H3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        {destHost && <span class="visit-domain sr-only">(opens {destHost})</span>}
+      </a>
     </div>
   </div>
 </article>
@@ -142,8 +163,10 @@ const isNew = false;
 
   .card-title {
     margin: 0;
+    /* Upright (not italic) so repeated catalog titles read as data, not as
+       dozens of competing headlines, and stay legible at small sizes. */
     font-family: var(--font-display);
-    font-style: italic;
+    font-style: normal;
     font-size: var(--text-xl);
     font-weight: 600;
     line-height: var(--leading-snug);
@@ -191,6 +214,21 @@ const isNew = false;
     border-radius: var(--radius-sm);
     white-space: nowrap;
   }
+
+  /* Per-category tint so categories are scannable at a glance across the grid.
+     Backgrounds are 92% L pastels; ink-muted text clears contrast on all. */
+  .category-badge[data-category="software"] { background: oklch(92% 0.03 240); }
+  .category-badge[data-category="news"] { background: oklch(92% 0.03 25); }
+  .category-badge[data-category="library"] { background: oklch(92% 0.03 155); }
+  .category-badge[data-category="outdoor"] { background: oklch(92% 0.04 135); }
+  .category-badge[data-category="money"] { background: oklch(92% 0.04 85); }
+  .category-badge[data-category="health"] { background: oklch(92% 0.03 350); }
+  .category-badge[data-category="career"] { background: oklch(92% 0.03 280); }
+  .category-badge[data-category="campus-life"] { background: oklch(92% 0.03 320); }
+  .category-badge[data-category="alumni-only"] { background: oklch(92% 0.03 265); }
+  .category-badge[data-category="tuck"] { background: oklch(92% 0.04 50); }
+  .category-badge[data-category="transportation"] { background: oklch(92% 0.03 200); }
+  .category-badge[data-category="off-campus"] { background: oklch(92% 0.04 15); }
 
   .card-description {
     margin: 0;
@@ -304,8 +342,16 @@ const isNew = false;
   }
 
   .verified-date {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3xs);
     font-size: var(--text-xs);
-    color: var(--color-ink-subtle);
+    color: var(--color-ink-muted);
+  }
+
+  .verified-check {
+    color: var(--color-accent);
+    flex-shrink: 0;
   }
 
   .report-wrapper {
@@ -337,6 +383,10 @@ const isNew = false;
   .report-btn svg {
     width: 14px;
     height: 14px;
+  }
+
+  .report-dropdown[hidden] {
+    display: none;
   }
 
   .report-dropdown {
@@ -392,19 +442,30 @@ const isNew = false;
     color: var(--color-accent);
   }
 
+  /* Primary action: a filled button so "get access" is the clear next step,
+     visually dominant over the secondary upvote/report controls. */
   .visit-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    padding: var(--space-2xs) var(--space-sm);
     font-size: var(--text-sm);
-    font-weight: 500;
-    color: var(--color-accent);
+    font-weight: 600;
+    color: var(--color-paper);
+    background: var(--color-accent);
+    border-radius: var(--radius-sm);
     text-decoration: none;
-    transition: color var(--dur-fast) var(--ease-out);
+    transition: background var(--dur-fast) var(--ease-out);
     white-space: nowrap;
     flex-shrink: 0;
   }
 
   .visit-link:hover {
-    color: var(--color-accent-hover);
-    text-decoration: underline;
+    background: var(--color-accent-hover);
+  }
+
+  .external-icon {
+    flex-shrink: 0;
   }
 
   @media (max-width: 768px) {
@@ -418,6 +479,13 @@ const isNew = false;
 
     .card-description {
       font-size: var(--text-sm);
+    }
+
+    /* Primary action spans the card on phones for an unmissable tap target. */
+    .visit-link {
+      width: 100%;
+      justify-content: center;
+      padding: var(--space-xs) var(--space-sm);
     }
   }
 </style>
