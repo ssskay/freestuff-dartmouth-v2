@@ -104,6 +104,12 @@ function normalizeDbResource(row: ResourceRow & { slug?: string | null }): Resou
   };
 }
 
+/** Load and normalize the authored JSON catalog. Shared by both loaders below. */
+async function loadJsonResources(): Promise<Resource[]> {
+  const staticResources = await import('../content/resources.json');
+  return (staticResources.default as StaticResource[]).map(normalizeStaticResource);
+}
+
 /**
  * Resolve the catalog. Tries Supabase first; falls back to the authored JSON if
  * the database is empty or the call fails. Always returns normalized resources.
@@ -117,8 +123,7 @@ export async function loadResources(): Promise<Resource[]> {
   } catch (error) {
     console.error('Error fetching from Supabase, using static data:', error);
   }
-  const staticResources = await import('../content/resources.json');
-  return (staticResources.default as StaticResource[]).map(normalizeStaticResource);
+  return loadJsonResources();
 }
 
 /**
@@ -127,6 +132,5 @@ export async function loadResources(): Promise<Resource[]> {
  * and are not part of the Supabase projection.
  */
 export async function loadStaticResources(): Promise<Resource[]> {
-  const staticResources = await import('../content/resources.json');
-  return (staticResources.default as StaticResource[]).map(normalizeStaticResource);
+  return loadJsonResources();
 }
