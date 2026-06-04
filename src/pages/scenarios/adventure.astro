@@ -1,41 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ResourceCard from '../../components/ResourceCard.astro';
-import { getAllResources } from '../../lib/supabase';
+import { loadResources } from '../../lib/catalog';
+import { SCENARIOS } from '../../site.config';
 
-// Fetch resources
-let resources;
-try {
-  resources = await getAllResources();
-  if (resources.length === 0) {
-    const staticResources = await import('../../content/resources.json');
-    resources = staticResources.default.map(r => ({
-      ...r,
-      url: r.link,
-      upvotes: 0,
-      is_active: r.status === 'active'
-    }));
-  }
-} catch (error) {
-  console.error('Error fetching from Supabase:', error);
-  const staticResources = await import('../../content/resources.json');
-  resources = staticResources.default.map(r => ({
-    ...r,
-    url: r.link,
-    upvotes: 0,
-    is_active: r.status === 'active'
-  }));
-}
+// Resolve the catalog (Supabase with static JSON fallback), id = stable slug.
+const resources = await loadResources();
 
-// Filter resources for this scenario
-const scenarioResources = resources.filter(r =>
-  r.category === 'outdoor' ||
-  r.name.includes('DOC') ||
-  r.name.includes('Ledyard') ||
-  r.name.includes('Rental') ||
-  r.name.includes('Climb') ||
-  r.name.includes('Recreation')
-);
+// Resources curated for this scenario (membership defined in site.config).
+const scenarioResources = resources.filter(SCENARIOS['adventure'].match);
 ---
 
 <BaseLayout title="Adventure Resources | Free Stuff @ Dartmouth">
@@ -245,142 +218,9 @@ const scenarioResources = resources.filter(r =>
 
 
   <script>
-    import { getFingerprint } from '../../lib/fingerprint';
-    import { upvoteResource, removeUpvote, getUserVotes, reportIssue } from '../../lib/supabase';
+    import { initResourceInteractions } from '../../lib/resource-interactions';
 
-    const fingerprint = getFingerprint();
-
-    // Get user's existing votes and update UI
-    getUserVotes(fingerprint).then(votedIds => {
-      votedIds.forEach(id => {
-        const btn = document.querySelector(`button[data-resource-id="${id}"]`) as HTMLButtonElement;
-        if (btn && btn.classList.contains('upvote-btn')) {
-          btn.dataset.voted = 'true';
-        }
-      });
-    });
-
-    // Handle upvote button clicks
-    document.addEventListener('click', async (e) => {
-      const target = e.target as HTMLElement;
-      const button = target.closest('.upvote-btn') as HTMLButtonElement;
-
-      if (!button) return;
-
-      e.preventDefault();
-
-      const resourceId = button.dataset.resourceId;
-      const hasVoted = button.dataset.voted === 'true';
-
-      if (!resourceId) return;
-
-      button.disabled = true;
-
-      try {
-        let result;
-        if (hasVoted) {
-          result = await removeUpvote(resourceId, fingerprint);
-        } else {
-          result = await upvoteResource(resourceId, fingerprint);
-        }
-
-        if (result.success) {
-          button.dataset.voted = hasVoted ? 'false' : 'true';
-          const countSpan = button.querySelector('.upvote-count') as HTMLSpanElement;
-          if (countSpan) {
-            countSpan.textContent = result.upvotes.toString();
-          }
-        }
-      } catch (error) {
-        console.error('Error toggling vote:', error);
-      } finally {
-        button.disabled = false;
-      }
-    });
-
-    // Report issue functionality
-    let currentOpenDropdown: HTMLElement | null = null;
-
-    document.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      const reportBtn = target.closest('.report-btn') as HTMLButtonElement;
-
-      if (reportBtn) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const resourceId = reportBtn.dataset.resourceId;
-        if (!resourceId) return;
-
-        const dropdown = document.querySelector(`.report-dropdown[data-resource-id="${resourceId}"]`) as HTMLElement;
-        if (!dropdown) return;
-
-        if (currentOpenDropdown && currentOpenDropdown !== dropdown) {
-          currentOpenDropdown.style.display = 'none';
-        }
-
-        const isVisible = dropdown.style.display === 'block';
-        dropdown.style.display = isVisible ? 'none' : 'block';
-        currentOpenDropdown = isVisible ? null : dropdown;
-      }
-    });
-
-    document.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      if (!target.closest('.report-wrapper') && currentOpenDropdown) {
-        currentOpenDropdown.style.display = 'none';
-        currentOpenDropdown = null;
-      }
-    });
-
-    document.addEventListener('click', async (e) => {
-      const target = e.target as HTMLElement;
-      const reportOption = target.closest('.report-option') as HTMLButtonElement;
-
-      if (!reportOption) return;
-
-      e.preventDefault();
-      e.stopPropagation();
-
-      const issueType = reportOption.dataset.issue as 'broken-link' | 'wrong-info' | 'outdated' | 'eligibility' | 'other';
-      const dropdown = reportOption.closest('.report-dropdown') as HTMLElement;
-      const resourceId = dropdown?.dataset.resourceId;
-
-      if (!resourceId || !issueType) return;
-
-      const allOptions = dropdown.querySelectorAll('.report-option') as NodeListOf<HTMLButtonElement>;
-      allOptions.forEach(opt => opt.disabled = true);
-
-      try {
-        const result = await reportIssue(resourceId, issueType);
-
-        if (result.success) {
-          dropdown.style.display = 'none';
-          currentOpenDropdown = null;
-
-          const stickerOffer = confirm(
-            'Thanks for catching that! 🎉\n\n' +
-            'Want a free sticker? Click OK to enter your email, or Cancel if you\'re good.'
-          );
-
-          if (stickerOffer) {
-            const email = prompt('Drop your email here and we\'ll send you a sticker:');
-            if (email && email.trim()) {
-              await reportIssue(resourceId, issueType, undefined, email.trim());
-              alert('Thanks! We\'ll send your sticker soon. 🌲');
-            }
-          } else {
-            alert('Report submitted! Thanks for helping keep this accurate. 🌲');
-          }
-        } else {
-          alert('Oops, something went wrong. Please try again.');
-        }
-      } catch (error) {
-        alert('Oops, something went wrong. Please try again.');
-        console.error('Error submitting report:', error);
-      } finally {
-        allOptions.forEach(opt => opt.disabled = false);
-      }
-    });
+    // Upvote + report behavior (shared across all pages).
+    initResourceInteractions();
   </script>
 </BaseLayout>

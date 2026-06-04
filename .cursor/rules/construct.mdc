@@ -1,0 +1,10 @@
+---
+description: Construct front-door — invoke `construct` for orchestration
+alwaysApply: false
+---
+
+This project uses Construct (`@geraldmaron/construct`) as the single agent
+entry point. Route work through the `construct` persona; specialists are
+internal and dispatched by Construct itself.
+
+See `.claude/agents/` for the registered agents in this project.

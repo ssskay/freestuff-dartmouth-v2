@@ -1,10 +1,17 @@
 {
   "format": "json",
-  "savedAt": "2026-05-28T00:57:01.893Z",
-  "source": "construct-init",
+  "savedAt": "2026-06-04T00:34:27.782Z",
+  "source": "pre-compact",
   "projectName": "freestuff-dartmouth-v2",
+  "lastSummary": "",
+  "filesChanged": [],
+  "decisions": [],
+  "pendingTodos": [],
+  "efficiencySummary": "16 reads · 13 unique files · 3 repeated reads · 12 large reads · 216 KB read",
+  "warnFlags": "None",
+  "contextSummary": "",
+  "lastRefreshAt": "2026-06-04T00:34:27.767Z",
   "activeWork": [],
   "recentDecisions": [],
-  "architectureNotes": [],
-  "openQuestions": []
+  "architectureNotes": []
 }

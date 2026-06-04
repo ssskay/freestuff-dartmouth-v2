@@ -1,38 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ResourceCard from '../components/ResourceCard.astro';
-import { getAllResources } from '../lib/supabase';
+import { loadResources } from '../lib/catalog';
 
-// Fetch resources from Supabase, filtered for alumni
-let resources;
-try {
-  resources = await getAllResources();
-  // Filter for alumni eligibility
-  resources = resources.filter(r => r.eligibility.includes('alumni'));
-
-  if (resources.length === 0) {
-    const staticResources = await import('../content/resources.json');
-    resources = staticResources.default
-      .filter(r => r.eligibility.includes('alumni'))
-      .map(r => ({
-        ...r,
-        url: r.link,
-        upvotes: 0,
-        is_active: r.status === 'active'
-      }));
-  }
-} catch (error) {
-  console.error('Error fetching from Supabase, using static data:', error);
-  const staticResources = await import('../content/resources.json');
-  resources = staticResources.default
-    .filter(r => r.eligibility.includes('alumni'))
-    .map(r => ({
-      ...r,
-      url: r.link,
-      upvotes: 0,
-      is_active: r.status === 'active'
-    }));
-}
+// Resolve the catalog (Supabase with static JSON fallback), id = stable slug.
+const allResources = await loadResources();
+const resources = allResources.filter(r => r.eligibility.includes('alumni'));
 
 // Get unique categories
 const categories = [...new Set(resources.map(r => r.category))].sort();
@@ -296,61 +269,9 @@ const categories = [...new Set(resources.map(r => r.category))].sort();
   </style>
 
   <script>
-    // Client-side filtering and search
-    const searchInput = document.getElementById('search') as HTMLInputElement;
-    const categoryFilter = document.getElementById('category-filter') as HTMLSelectElement;
-    const clearFiltersBtn = document.getElementById('clear-filters') as HTMLButtonElement;
-    const clearFiltersBtnAlt = document.getElementById('clear-filters-alt') as HTMLButtonElement;
-    const resultCount = document.getElementById('result-count') as HTMLSpanElement;
-    const resourceGrid = document.getElementById('resource-grid') as HTMLDivElement;
-    const noResults = document.getElementById('no-results') as HTMLDivElement;
-    const resourceItems = document.querySelectorAll('.resource-item') as NodeListOf<HTMLDivElement>;
+    import { initResourceInteractions } from '../lib/resource-interactions';
 
-    function filterResources() {
-      const searchTerm = searchInput.value.toLowerCase();
-      const selectedCategory = categoryFilter.value;
-
-      let visibleCount = 0;
-
-      resourceItems.forEach((item) => {
-        const category = item.dataset.category || '';
-        const searchable = JSON.parse(item.dataset.searchable || '{}');
-
-        const matchesSearch = !searchTerm ||
-          searchable.name.includes(searchTerm) ||
-          searchable.description.includes(searchTerm) ||
-          searchable.category.includes(searchTerm);
-
-        const matchesCategory = !selectedCategory || category === selectedCategory;
-
-        if (matchesSearch && matchesCategory) {
-          item.style.display = 'block';
-          visibleCount++;
-        } else {
-          item.style.display = 'none';
-        }
-      });
-
-      resultCount.textContent = visibleCount.toString();
-
-      if (visibleCount === 0) {
-        resourceGrid.classList.add('hidden');
-        noResults.classList.remove('hidden');
-      } else {
-        resourceGrid.classList.remove('hidden');
-        noResults.classList.add('hidden');
-      }
-    }
-
-    function clearFilters() {
-      searchInput.value = '';
-      categoryFilter.value = '';
-      filterResources();
-    }
-
-    searchInput.addEventListener('input', filterResources);
-    categoryFilter.addEventListener('change', filterResources);
-    clearFiltersBtn.addEventListener('click', clearFilters);
-    clearFiltersBtnAlt.addEventListener('click', clearFilters);
+    // Upvote + report behavior (shared across all pages).
+    initResourceInteractions();
   </script>
 </BaseLayout>

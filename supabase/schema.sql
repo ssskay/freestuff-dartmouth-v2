@@ -1,183 +1,237 @@
--- Free Stuff at Big Green - Supabase Schema
--- Phase 1: Core tables for hybrid static->dynamic migration
--- Run this in your Supabase SQL editor
+-- Free Stuff @ Dartmouth — canonical Supabase schema.
+-- This single file describes the full database for a FRESH install.
+-- For an existing database, apply supabase/migrations/* instead.
+-- Run this in your Supabase SQL editor.
 
--- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+create extension if not exists "uuid-ossp";
 
--- Resources table (main catalog)
-CREATE TABLE IF NOT EXISTS resources (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  name text NOT NULL,
-  description text NOT NULL,
-  url text NOT NULL,
-  category text NOT NULL CHECK (category IN (
+-- ============================================================
+-- Resources (main catalog)
+-- ============================================================
+create table if not exists resources (
+  id uuid primary key default gen_random_uuid(),
+  slug text not null unique,                 -- stable, human-readable public id
+  name text not null,
+  description text not null,
+  url text not null,
+  category text not null check (category in (
     'software', 'news', 'library', 'outdoor', 'money', 'health',
     'career', 'campus-life', 'alumni-only', 'tuck', 'transportation',
     'off-campus'
   )),
-  eligibility text[] NOT NULL DEFAULT '{}',
-  last_verified date NOT NULL DEFAULT CURRENT_DATE,
+  eligibility text[] not null default '{}',
+  last_verified date not null default current_date,
   notes text,
   source text,
-  added_at timestamptz NOT NULL DEFAULT now(),
-  added_by text DEFAULT 'human',
-  upvotes integer NOT NULL DEFAULT 0 CHECK (upvotes >= 0),
-  is_active boolean NOT NULL DEFAULT true,
-
-  -- Indexes for common queries
-  CONSTRAINT url_unique UNIQUE (url)
+  added_at timestamptz not null default now(),
+  added_by text default 'human',
+  upvotes integer not null default 0 check (upvotes >= 0),
+  is_active boolean not null default true,
+  annual_value integer,                      -- null = value not estimated
+  date_added date default current_date,
+  hidden_gem boolean not null default false,
+  constraint url_unique unique (url)
 );
 
-CREATE INDEX IF NOT EXISTS idx_resources_category ON resources(category);
-CREATE INDEX IF NOT EXISTS idx_resources_eligibility ON resources USING GIN(eligibility);
-CREATE INDEX IF NOT EXISTS idx_resources_upvotes ON resources(upvotes DESC);
-CREATE INDEX IF NOT EXISTS idx_resources_active ON resources(is_active) WHERE is_active = true;
+create index if not exists idx_resources_category on resources(category);
+create index if not exists idx_resources_eligibility on resources using gin(eligibility);
+create index if not exists idx_resources_upvotes on resources(upvotes desc);
+create index if not exists idx_resources_active on resources(is_active) where is_active = true;
 
--- Votes table (upvote tracking)
-CREATE TABLE IF NOT EXISTS votes (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  resource_id uuid NOT NULL REFERENCES resources(id) ON DELETE CASCADE,
-  fingerprint text NOT NULL,
-  voted_at timestamptz NOT NULL DEFAULT now(),
-
-  -- Prevent double voting from same fingerprint
-  CONSTRAINT unique_vote UNIQUE (resource_id, fingerprint)
+-- ============================================================
+-- Votes (upvote tracking)
+-- ============================================================
+create table if not exists votes (
+  id uuid primary key default gen_random_uuid(),
+  resource_id uuid not null references resources(id) on delete cascade,
+  fingerprint text not null,
+  voted_at timestamptz not null default now(),
+  constraint unique_vote unique (resource_id, fingerprint)
 );
 
-CREATE INDEX IF NOT EXISTS idx_votes_resource ON votes(resource_id);
-CREATE INDEX IF NOT EXISTS idx_votes_fingerprint ON votes(fingerprint);
+create index if not exists idx_votes_resource on votes(resource_id);
+create index if not exists idx_votes_fingerprint on votes(fingerprint);
 
--- Pending resources table (moderation queue)
-CREATE TABLE IF NOT EXISTS pending_resources (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  name text NOT NULL,
+-- ============================================================
+-- Pending resources (moderation queue)
+-- ============================================================
+create table if not exists pending_resources (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
   description text,
-  url text NOT NULL,
+  url text not null,
   category text,
-  eligibility text[] DEFAULT '{}',
+  eligibility text[] default '{}',
   notes text,
   submitted_by text,
-  submitted_at timestamptz NOT NULL DEFAULT now(),
-  status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
-  agent_source text CHECK (agent_source IN ('verify', 'discover', 'draft', NULL)),
+  submitted_at timestamptz not null default now(),
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected')),
+  agent_source text check (agent_source in ('verify', 'discover', 'draft', null)),
   reviewed_at timestamptz,
   reviewer_notes text
 );
 
-CREATE INDEX IF NOT EXISTS idx_pending_status ON pending_resources(status);
-CREATE INDEX IF NOT EXISTS idx_pending_submitted ON pending_resources(submitted_at DESC);
+create index if not exists idx_pending_status on pending_resources(status);
+create index if not exists idx_pending_submitted on pending_resources(submitted_at desc);
 
--- Function: Atomic upvote (increments resource.upvotes, creates vote record)
-CREATE OR REPLACE FUNCTION upvote_resource(
-  p_resource_id uuid,
-  p_fingerprint text
-)
-RETURNS TABLE(success boolean, upvotes integer, message text)
-LANGUAGE plpgsql
-SECURITY DEFINER
-AS $$
-DECLARE
-  v_upvotes integer;
-BEGIN
-  -- Check if vote already exists
-  IF EXISTS (SELECT 1 FROM votes WHERE resource_id = p_resource_id AND fingerprint = p_fingerprint) THEN
-    SELECT resources.upvotes INTO v_upvotes FROM resources WHERE id = p_resource_id;
-    RETURN QUERY SELECT false, v_upvotes, 'Already voted'::text;
-    RETURN;
-  END IF;
+-- ============================================================
+-- Resource reports (user-submitted issue reports)
+-- ============================================================
+create table if not exists resource_reports (
+  id uuid primary key default gen_random_uuid(),
+  resource_id uuid references resources(id) on delete cascade,
+  issue_type text not null check (issue_type in ('broken-link', 'wrong-info', 'outdated', 'eligibility', 'other')),
+  details text,
+  email text,
+  created_at timestamptz default now(),
+  status text default 'pending' check (status in ('pending', 'reviewed', 'fixed'))
+);
 
-  -- Insert vote record
-  INSERT INTO votes (resource_id, fingerprint) VALUES (p_resource_id, p_fingerprint);
+create index if not exists idx_reports_resource_id on resource_reports(resource_id);
+create index if not exists idx_reports_status on resource_reports(status);
 
-  -- Increment resource upvote count
-  UPDATE resources SET upvotes = resources.upvotes + 1 WHERE id = p_resource_id RETURNING resources.upvotes INTO v_upvotes;
-
-  RETURN QUERY SELECT true, v_upvotes, 'Vote recorded'::text;
-END;
+-- ============================================================
+-- Functions
+-- ============================================================
+-- Resolve a public id (slug or UUID) to the internal UUID.
+-- Imperative so the ::uuid cast runs ONLY for uuid-shaped input — a guarded
+-- cast inside a single OR/AND is not safe (Postgres may evaluate both sides).
+create or replace function resolve_resource_id(p_id text)
+returns uuid
+language plpgsql
+stable
+security definer
+set search_path = public
+as $$
+declare v_uuid uuid;
+begin
+  select id into v_uuid from resources where slug = p_id limit 1;
+  if v_uuid is not null then
+    return v_uuid;
+  end if;
+  if p_id ~ '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$' then
+    select id into v_uuid from resources where id = p_id::uuid limit 1;
+  end if;
+  return v_uuid;
+end;
 $$;
 
--- Function: Remove upvote (decrements resource.upvotes, removes vote record)
-CREATE OR REPLACE FUNCTION remove_upvote(
-  p_resource_id uuid,
-  p_fingerprint text
-)
-RETURNS TABLE(success boolean, upvotes integer, message text)
-LANGUAGE plpgsql
-SECURITY DEFINER
-AS $$
-DECLARE
-  v_upvotes integer;
-BEGIN
-  -- Check if vote exists
-  IF NOT EXISTS (SELECT 1 FROM votes WHERE resource_id = p_resource_id AND fingerprint = p_fingerprint) THEN
-    SELECT resources.upvotes INTO v_upvotes FROM resources WHERE id = p_resource_id;
-    RETURN QUERY SELECT false, v_upvotes, 'Vote not found'::text;
-    RETURN;
-  END IF;
-
-  -- Remove vote record
-  DELETE FROM votes WHERE resource_id = p_resource_id AND fingerprint = p_fingerprint;
-
-  -- Decrement resource upvote count (don't go below 0)
-  UPDATE resources
-  SET upvotes = GREATEST(resources.upvotes - 1, 0)
-  WHERE id = p_resource_id
-  RETURNING resources.upvotes INTO v_upvotes;
-
-  RETURN QUERY SELECT true, v_upvotes, 'Vote removed'::text;
-END;
+-- Atomic upvote (slug-or-uuid in, new count out).
+create or replace function upvote_resource(p_id text, p_fingerprint text)
+returns table(success boolean, upvotes integer, message text)
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare v_uuid uuid; v_upvotes integer;
+begin
+  v_uuid := resolve_resource_id(p_id);
+  if v_uuid is null then
+    return query select false, 0, 'Resource not found'::text; return;
+  end if;
+  if exists (select 1 from votes where resource_id = v_uuid and fingerprint = p_fingerprint) then
+    select resources.upvotes into v_upvotes from resources where id = v_uuid;
+    return query select false, v_upvotes, 'Already voted'::text; return;
+  end if;
+  insert into votes (resource_id, fingerprint) values (v_uuid, p_fingerprint);
+  update resources set upvotes = resources.upvotes + 1 where id = v_uuid
+    returning resources.upvotes into v_upvotes;
+  return query select true, v_upvotes, 'Vote recorded'::text;
+end;
 $$;
 
--- Row Level Security (RLS) Policies
--- Enable RLS on all tables
-ALTER TABLE resources ENABLE ROW LEVEL SECURITY;
-ALTER TABLE votes ENABLE ROW LEVEL SECURITY;
-ALTER TABLE pending_resources ENABLE ROW LEVEL SECURITY;
+-- Atomic remove-upvote.
+create or replace function remove_upvote(p_id text, p_fingerprint text)
+returns table(success boolean, upvotes integer, message text)
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare v_uuid uuid; v_upvotes integer;
+begin
+  v_uuid := resolve_resource_id(p_id);
+  if v_uuid is null then
+    return query select false, 0, 'Resource not found'::text; return;
+  end if;
+  if not exists (select 1 from votes where resource_id = v_uuid and fingerprint = p_fingerprint) then
+    select resources.upvotes into v_upvotes from resources where id = v_uuid;
+    return query select false, v_upvotes, 'Vote not found'::text; return;
+  end if;
+  delete from votes where resource_id = v_uuid and fingerprint = p_fingerprint;
+  update resources set upvotes = greatest(resources.upvotes - 1, 0) where id = v_uuid
+    returning resources.upvotes into v_upvotes;
+  return query select true, v_upvotes, 'Vote removed'::text;
+end;
+$$;
 
--- Resources: Public read access
-CREATE POLICY "Public read access for active resources"
-  ON resources
-  FOR SELECT
-  USING (is_active = true);
+-- Record a report. Reports are written ONLY through this function so the table
+-- itself need not be writable/readable by the anon role.
+create or replace function report_issue(p_id text, p_issue_type text, p_details text, p_email text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare v_uuid uuid;
+begin
+  if p_issue_type not in ('broken-link','wrong-info','outdated','eligibility','other') then
+    raise exception 'invalid issue type';
+  end if;
+  v_uuid := resolve_resource_id(p_id);
+  insert into resource_reports (resource_id, issue_type, details, email)
+    values (v_uuid, p_issue_type, left(p_details, 2000), left(p_email, 254));
+  return true;
+end;
+$$;
 
--- Votes: Users can read their own votes
-CREATE POLICY "Users can read all votes"
-  ON votes
-  FOR SELECT
-  USING (true);
+-- ============================================================
+-- Row Level Security
+-- ============================================================
+alter table resources enable row level security;
+alter table votes enable row level security;
+alter table pending_resources enable row level security;
+alter table resource_reports enable row level security;
 
--- Votes: Users can insert votes (function handles validation)
-CREATE POLICY "Users can insert votes"
-  ON votes
-  FOR INSERT
-  WITH CHECK (true);
+-- Resources: public can read active rows.
+create policy "Public read access for active resources"
+  on resources for select using (is_active = true);
 
--- Votes: Users can delete their own votes by fingerprint
-CREATE POLICY "Users can delete their own votes"
-  ON votes
-  FOR DELETE
-  USING (true);
+-- Votes: readable (no PII) so the UI can reflect vote state. Inserts/deletes
+-- happen only via the SECURITY DEFINER functions, so no write policies exist.
+create policy "Users can read all votes"
+  on votes for select using (true);
 
--- Pending resources: Public can insert (submit new resources)
-CREATE POLICY "Public can submit resources"
-  ON pending_resources
-  FOR INSERT
-  WITH CHECK (true);
+-- Pending resources: public can submit; the queue is NOT readable by anon
+-- (admin reads use the service role, which bypasses RLS).
+create policy "Public can submit resources"
+  on pending_resources for insert with check (true);
 
--- Pending resources: Public can read their own submissions
-CREATE POLICY "Public can read pending resources"
-  ON pending_resources
-  FOR SELECT
-  USING (true);
+-- resource_reports: no anon policies. Writes go through report_issue();
+-- admin reads use the service role.
 
--- Grant execute permissions on functions
-GRANT EXECUTE ON FUNCTION upvote_resource TO anon, authenticated;
-GRANT EXECUTE ON FUNCTION remove_upvote TO anon, authenticated;
+-- ============================================================
+-- Grants
+-- ============================================================
+grant execute on function resolve_resource_id(text) to anon, authenticated;
+grant execute on function upvote_resource(text, text) to anon, authenticated;
+grant execute on function remove_upvote(text, text) to anon, authenticated;
+grant execute on function report_issue(text, text, text, text) to anon, authenticated;
 
--- Comments for documentation
-COMMENT ON TABLE resources IS 'Main catalog of free resources available to Dartmouth community';
-COMMENT ON TABLE votes IS 'Upvote tracking with fingerprint-based deduplication';
-COMMENT ON TABLE pending_resources IS 'Moderation queue for community and agent submissions';
-COMMENT ON FUNCTION upvote_resource IS 'Atomically record an upvote and increment counter';
-COMMENT ON FUNCTION remove_upvote IS 'Atomically remove an upvote and decrement counter';
+-- ============================================================
+-- Reconciliation view: stored upvote counter vs. actual vote rows (see M6).
+-- Rows where stored_upvotes <> actual_votes indicate drift.
+-- ============================================================
+create or replace view resource_vote_counts as
+select r.id, r.slug, r.name, r.upvotes as stored_upvotes, count(v.id)::int as actual_votes
+from resources r
+left join votes v on v.resource_id = r.id
+group by r.id, r.slug, r.name, r.upvotes;
+
+-- ============================================================
+-- Documentation
+-- ============================================================
+comment on table resources is 'Main catalog of free resources. slug is the stable public id; id (uuid) is internal.';
+comment on table votes is 'Upvote tracking with fingerprint-based deduplication. Written only via functions.';
+comment on table pending_resources is 'Moderation queue for community and agent submissions. Not anon-readable.';
+comment on table resource_reports is 'User issue reports. Written only via report_issue(); not anon-readable.';
+comment on view resource_vote_counts is 'Reconciliation: compare stored upvote counter against actual vote rows.';

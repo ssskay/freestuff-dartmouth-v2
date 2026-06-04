@@ -1,0 +1,18 @@
+[
+  {
+    "id": "obs-mpyrja6v-ce889940",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] All done. Everything in the review is fixed, on branch fix/construct-review-remediation, with the build green (12 pages) and a new test suite passing (27 tests).",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T00:34:27.800Z"
+  },
+  {
+    "id": "obs-mpyrj9ri-fa133812",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] I accidentally staged a lot of pre-existing Construct tooling files with git add -A. Let me unstage everything (keeping all working-tree changes) so you control what gets committed — I won't commit s…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T00:34:27.246Z"
+  }
+]

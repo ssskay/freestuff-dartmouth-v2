@@ -1,0 +1,44 @@
+{
+  "mcpServers": {
+    "memory": {
+      "command": "node",
+      "args": [
+        "/Users/sarakay/.npm-global/lib/node_modules/@geraldmaron/construct/lib/mcp/memory-bridge.mjs"
+      ],
+      "env": {
+        "CONSTRUCT_MEMORY_BRIDGE_URL": "http://127.0.0.1:8765/"
+      }
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ]
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "construct-mcp": {
+      "command": "node",
+      "args": [
+        "/Users/sarakay/.npm-global/lib/node_modules/@geraldmaron/construct/lib/mcp/server.mjs"
+      ]
+    }
+  }
+}

@@ -213,6 +213,8 @@ def verify_resource(resource: Dict[str, Any]) -> tuple[Dict[str, Any], List[str]
             result['status'] = 'active'
             result['last_verified'] = str(date.today())
         else:
+            # 'needs_review' keeps the resource visible (catalog treats only
+            # 'broken'/'inactive' as hidden) while flagging it for human review.
             log(f"  ⚠ NEEDS REVIEW: {explanation}")
             result['status'] = 'needs_review'
             notes.append(f"Content mismatch: {explanation}")

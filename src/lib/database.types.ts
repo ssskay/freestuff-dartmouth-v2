@@ -1,6 +1,6 @@
 /**
  * Supabase Database Types
- * Generated for Free Stuff at Big Green schema
+ * Hand-maintained to match supabase/schema.sql.
  */
 
 export type Json =
@@ -17,6 +17,7 @@ export interface Database {
       resources: {
         Row: {
           id: string
+          slug: string
           name: string
           description: string
           url: string
@@ -29,9 +30,13 @@ export interface Database {
           added_by: string
           upvotes: number
           is_active: boolean
+          annual_value: number | null
+          date_added: string | null
+          hidden_gem: boolean
         }
         Insert: {
           id?: string
+          slug: string
           name: string
           description: string
           url: string
@@ -44,22 +49,11 @@ export interface Database {
           added_by?: string
           upvotes?: number
           is_active?: boolean
+          annual_value?: number | null
+          date_added?: string | null
+          hidden_gem?: boolean
         }
-        Update: {
-          id?: string
-          name?: string
-          description?: string
-          url?: string
-          category?: string
-          eligibility?: string[]
-          last_verified?: string
-          notes?: string | null
-          source?: string | null
-          added_at?: string
-          added_by?: string
-          upvotes?: number
-          is_active?: boolean
-        }
+        Update: Partial<Database['public']['Tables']['resources']['Insert']>
       }
       votes: {
         Row: {
@@ -74,12 +68,7 @@ export interface Database {
           fingerprint: string
           voted_at?: string
         }
-        Update: {
-          id?: string
-          resource_id?: string
-          fingerprint?: string
-          voted_at?: string
-        }
+        Update: Partial<Database['public']['Tables']['votes']['Insert']>
       }
       pending_resources: {
         Row: {
@@ -112,45 +101,47 @@ export interface Database {
           reviewed_at?: string | null
           reviewer_notes?: string | null
         }
-        Update: {
-          id?: string
-          name?: string
-          description?: string | null
-          url?: string
-          category?: string | null
-          eligibility?: string[]
-          notes?: string | null
-          submitted_by?: string | null
-          submitted_at?: string
-          status?: 'pending' | 'approved' | 'rejected'
-          agent_source?: 'verify' | 'discover' | 'draft' | null
-          reviewed_at?: string | null
-          reviewer_notes?: string | null
+        Update: Partial<Database['public']['Tables']['pending_resources']['Insert']>
+      }
+      resource_reports: {
+        Row: {
+          id: string
+          resource_id: string | null
+          issue_type: 'broken-link' | 'wrong-info' | 'outdated' | 'eligibility' | 'other'
+          details: string | null
+          email: string | null
+          created_at: string
+          status: 'pending' | 'reviewed' | 'fixed'
         }
+        Insert: {
+          id?: string
+          resource_id?: string | null
+          issue_type: 'broken-link' | 'wrong-info' | 'outdated' | 'eligibility' | 'other'
+          details?: string | null
+          email?: string | null
+          created_at?: string
+          status?: 'pending' | 'reviewed' | 'fixed'
+        }
+        Update: Partial<Database['public']['Tables']['resource_reports']['Insert']>
       }
     }
     Functions: {
       upvote_resource: {
-        Args: {
-          p_resource_id: string
-          p_fingerprint: string
-        }
-        Returns: {
-          success: boolean
-          upvotes: number
-          message: string
-        }[]
+        Args: { p_id: string; p_fingerprint: string }
+        Returns: { success: boolean; upvotes: number; message: string }[]
       }
       remove_upvote: {
+        Args: { p_id: string; p_fingerprint: string }
+        Returns: { success: boolean; upvotes: number; message: string }[]
+      }
+      report_issue: {
         Args: {
-          p_resource_id: string
-          p_fingerprint: string
+          p_id: string
+          p_issue_type: string
+          p_details: string | null
+          p_email: string | null
         }
-        Returns: {
-          success: boolean
-          upvotes: number
-          message: string
-        }[]
+        Returns: boolean
       }
     }
   }

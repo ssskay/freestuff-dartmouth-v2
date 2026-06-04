@@ -1,0 +1,70 @@
+import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { CATEGORIES, ELIGIBILITY } from '../src/site.config';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const resources = JSON.parse(
+  readFileSync(join(__dirname, '../src/content/resources.json'), 'utf-8')
+) as any[];
+
+// Catalog schema contract: every authored entry must satisfy these invariants.
+describe('resources.json data integrity', () => {
+  it('has at least one resource', () => {
+    expect(resources.length).toBeGreaterThan(0);
+  });
+
+  it('every entry has the required non-empty fields', () => {
+    for (const r of resources) {
+      expect(r.id, `id on ${JSON.stringify(r.name)}`).toBeTruthy();
+      expect(typeof r.id).toBe('string');
+      expect(r.name, `name on ${r.id}`).toBeTruthy();
+      expect(r.description, `description on ${r.id}`).toBeTruthy();
+      expect(r.link, `link on ${r.id}`).toBeTruthy();
+      expect(r.category, `category on ${r.id}`).toBeTruthy();
+      expect(r.last_verified, `last_verified on ${r.id}`).toBeTruthy();
+      expect(Array.isArray(r.eligibility), `eligibility on ${r.id}`).toBe(true);
+      expect(r.eligibility.length, `eligibility on ${r.id}`).toBeGreaterThan(0);
+    }
+  });
+
+  it('ids, names, and urls are unique', () => {
+    const dupes = (arr: string[]) =>
+      arr.filter((v, i) => arr.indexOf(v) !== i);
+    expect(dupes(resources.map((r) => r.id))).toEqual([]);
+    expect(dupes(resources.map((r) => r.name))).toEqual([]);
+    expect(dupes(resources.map((r) => r.link))).toEqual([]);
+  });
+
+  it('every link is a valid https URL', () => {
+    for (const r of resources) {
+      let url: URL | undefined;
+      expect(() => (url = new URL(r.link)), `link on ${r.id}`).not.toThrow();
+      expect(url!.protocol, `protocol on ${r.id}`).toBe('https:');
+    }
+  });
+
+  it('category and eligibility values are within the configured vocabulary', () => {
+    for (const r of resources) {
+      expect(CATEGORIES, `category on ${r.id}`).toContain(r.category);
+      for (const e of r.eligibility) {
+        expect(ELIGIBILITY, `eligibility "${e}" on ${r.id}`).toContain(e);
+      }
+    }
+  });
+
+  it('annual_value is a number or null (never NaN/undefined)', () => {
+    for (const r of resources) {
+      const v = r.annual_value;
+      const ok = v === null || (typeof v === 'number' && Number.isFinite(v));
+      expect(ok, `annual_value on ${r.id} is ${v}`).toBe(true);
+    }
+  });
+
+  it('last_verified is a parseable date', () => {
+    for (const r of resources) {
+      expect(Number.isNaN(Date.parse(r.last_verified)), `last_verified on ${r.id}`).toBe(false);
+    }
+  });
+});

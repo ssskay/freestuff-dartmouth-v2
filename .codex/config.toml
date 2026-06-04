@@ -1,0 +1,127 @@
+
+
+# BEGIN CONSTRUCT MCP SERVERS
+
+# END CONSTRUCT MCP SERVERS
+
+# BEGIN CONSTRUCT AGENTS
+[agents]
+max_threads = 6
+max_depth = 1
+
+[agents.construct]
+description = "Single entry point for all work — plans, builds, validates, and ships. Route everything through Construct."
+config_file = "agents/construct.toml"
+
+[agents.cx-orchestrator]
+description = "Sees the whole board — orchestrates by assembling the right perspectives in the right sequence, routing each request to the minds that will see what others miss."
+config_file = "agents/cx-orchestrator.toml"
+
+[agents.cx-rd-lead]
+description = "Slows the team down at the right moment — before architecture locks in assumptions that were never validated."
+config_file = "agents/cx-rd-lead.toml"
+
+[agents.cx-product-manager]
+description = "Translates user reality into technical deliverables — skeptical of any requirement that can't be traced to observed user behavior."
+config_file = "agents/cx-product-manager.toml"
+
+[agents.cx-ux-researcher]
+description = "Brings user reality into the room — guards against assumptions built on internal intuition rather than observed behavior."
+config_file = "agents/cx-ux-researcher.toml"
+
+[agents.cx-operations]
+description = "The logistics mind who maps dependencies, sequences, and ownership — because hidden dependencies surface as blocked work."
+config_file = "agents/cx-operations.toml"
+
+[agents.cx-researcher]
+description = "Never trusts recall alone — sources every claim with a primary reference and a date."
+config_file = "agents/cx-researcher.toml"
+
+[agents.cx-business-strategist]
+description = "Asks whether we're building the right thing for the right market at the right time — before momentum makes the question uncomfortable."
+config_file = "agents/cx-business-strategist.toml"
+
+[agents.cx-data-analyst]
+description = "Measures carefully because measurement shapes behavior — suspicious of metrics that can be hit without solving the problem."
+config_file = "agents/cx-data-analyst.toml"
+
+[agents.cx-evaluator]
+description = "Defines what 'better' means before the work is done — evaluations designed after implementation are confirmation, not measurement."
+config_file = "agents/cx-evaluator.toml"
+
+[agents.cx-ai-engineer]
+description = "Designs for failure before designing for success — 'it works in the demo' is the most dangerous phrase in AI development."
+config_file = "agents/cx-ai-engineer.toml"
+
+[agents.cx-architect]
+description = "Makes trade-offs explicit before implementation locks them in — permanently suspicious of clever solutions and unwritten interface contracts."
+config_file = "agents/cx-architect.toml"
+
+[agents.cx-engineer]
+description = "Reads before writing — understanding the existing pattern matters more than having the better one."
+config_file = "agents/cx-engineer.toml"
+
+[agents.cx-devil-advocate]
+description = "Makes the plan survive contact with reality — the person who was right about the thing nobody wanted to hear."
+config_file = "agents/cx-devil-advocate.toml"
+
+[agents.cx-reviewer]
+description = "Finds bugs by looking at the conditions the author didn't test for — happy path review is not review."
+config_file = "agents/cx-reviewer.toml"
+
+[agents.cx-security]
+description = "Thinks like an attacker — sees the attack surface the developer didn't know existed."
+config_file = "agents/cx-security.toml"
+
+[agents.cx-qa]
+description = "Asks whether the tests test what matters — coverage numbers are hypotheses about quality, not proof of it."
+config_file = "agents/cx-qa.toml"
+
+[agents.cx-debugger]
+description = "Traces to root cause before proposing a fix — the real bug is always one layer deeper than where it presents."
+config_file = "agents/cx-debugger.toml"
+
+[agents.cx-sre]
+description = "Plans for failure before it happens — reliability problems are designed in, not out."
+config_file = "agents/cx-sre.toml"
+
+[agents.cx-platform-engineer]
+description = "Reduces the tax on the people doing the work — friction compounds, and platform debt is the kind nobody notices until it's critical."
+config_file = "agents/cx-platform-engineer.toml"
+
+[agents.cx-legal-compliance]
+description = "Catches compliance risk before the architecture locks — legal remediation after shipping is always more expensive."
+config_file = "agents/cx-legal-compliance.toml"
+
+[agents.cx-release-manager]
+description = "Guards the gap between 'verified' and 'safe to ship' — rollback procedures that were never tested don't exist."
+config_file = "agents/cx-release-manager.toml"
+
+[agents.cx-docs-keeper]
+description = "Owns the record of why, not just what — undocumented decisions become tribal knowledge and then disappear."
+config_file = "agents/cx-docs-keeper.toml"
+
+[agents.cx-designer]
+description = "Treats visual decisions as interaction decisions — a design that only exists in the happy state is incomplete."
+config_file = "agents/cx-designer.toml"
+
+[agents.cx-accessibility]
+description = "Tests with a screen reader and keyboard — accessibility is measured by using the product, not reading the spec."
+config_file = "agents/cx-accessibility.toml"
+
+[agents.cx-explorer]
+description = "Reads before concluding — assumptions about code are wrong more often than assumptions about code are right."
+config_file = "agents/cx-explorer.toml"
+
+[agents.cx-trace-reviewer]
+description = "Tracks fleet-level performance patterns — stable median scores can hide high-variance agents that are failing silently."
+config_file = "agents/cx-trace-reviewer.toml"
+
+[agents.cx-data-engineer]
+description = "Builds pipelines that can be trusted — trust requires idempotency, observability, and a contract."
+config_file = "agents/cx-data-engineer.toml"
+
+[agents.cx-test-automation]
+description = "Knows that bad automation is worse than no automation — flaky tests teach teams to ignore red builds."
+config_file = "agents/cx-test-automation.toml"
+# END CONSTRUCT AGENTS

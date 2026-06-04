@@ -1,98 +1,37 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ResourceCard from '../components/ResourceCard.astro';
-import { getAllResources } from '../lib/supabase';
+import { loadResources } from '../lib/catalog';
+import { CURATED_COLLECTIONS } from '../site.config';
 
-// Fetch resources from Supabase
-// Fallback to static JSON if Supabase is not configured
-let resources;
-try {
-  resources = await getAllResources();
-  if (resources.length === 0) {
-    // Fallback to static data if database is empty
-    const staticResources = await import('../content/resources.json');
-    resources = staticResources.default.map(r => ({
-      ...r,
-      url: r.link,
-      upvotes: 0,
-      is_active: r.status === 'active'
-    }));
-  }
-} catch (error) {
-  console.error('Error fetching from Supabase, using static data:', error);
-  const staticResources = await import('../content/resources.json');
-  resources = staticResources.default.map(r => ({
-    ...r,
-    url: r.link,
-    upvotes: 0,
-    is_active: r.status === 'active'
-  }));
-}
+// Resolve the catalog (Supabase with static JSON fallback), normalized so that
+// every resource's `id` is its stable slug.
+const resources = await loadResources();
 
 // Get unique categories and eligibility options
 const categories = [...new Set(resources.map(r => r.category))].sort();
 const eligibilityOptions = [...new Set(resources.flatMap(r => r.eligibility))].sort();
 
-// Define fun category groupings
-const categoryGroups = {
-  'ai-tools': {
-    label: 'AI & Tech Tools',
-    resources: resources.filter(r =>
-      ['Claude for Education', 'GitHub', 'Slack', 'Atlassian'].some(name => r.name.includes(name)) ||
-      r.category === 'software' && ['claude', 'github', 'slack', 'atlassian'].some(kw => r.id?.includes(kw))
-    )
-  },
-  'creative': {
-    label: 'For Creatives',
-    resources: resources.filter(r =>
-      ['Adobe', 'Canva', 'Sibelius', 'Woodworking', 'Ceramics', 'Music Practice'].some(name => r.name.includes(name)) ||
-      r.category === 'campus-life' && (r.name.includes('Hop') || r.name.includes('Art'))
-    )
-  },
-  'data': {
-    label: 'Data & Analytics',
-    resources: resources.filter(r =>
-      ['MATLAB', 'Stata', 'SPSS', 'SAS', 'JMP', 'Python', 'Jupyter', 'RStudio', 'Bloomberg', 'WRDS', 'Qualtrics'].some(name => r.name.includes(name))
-    )
-  },
-  'research': {
-    label: 'Research & Writing',
-    resources: resources.filter(r =>
-      ['Overleaf', 'JSTOR', 'O\'Reilly', 'Web of Science', 'Scopus', 'ProQuest', 'PsycINFO'].some(name => r.name.includes(name)) ||
-      r.category === 'library'
-    )
-  },
-  'outdoor': {
-    label: 'Outdoor & Adventure',
-    resources: resources.filter(r =>
-      r.category === 'outdoor' || r.name.includes('Climbing') || r.name.includes('Recreation')
-    )
-  },
-  'career': {
-    label: 'Career & Professional',
-    resources: resources.filter(r =>
-      r.category === 'career' || ['LinkedIn Learning', 'DocuSign'].some(name => r.name.includes(name))
-    )
-  }
-};
+// Curated homepage collections, computed from the shared config.
+const categoryGroups = CURATED_COLLECTIONS.map(group => ({
+  key: group.key,
+  label: group.label,
+  resources: resources.filter(group.match),
+}));
 
-// Serialize category groups for client-side
-const categoryGroupIds = {
-  'ai-tools': categoryGroups['ai-tools'].resources.map(r => r.id),
-  'creative': categoryGroups['creative'].resources.map(r => r.id),
-  'data': categoryGroups['data'].resources.map(r => r.id),
-  'research': categoryGroups['research'].resources.map(r => r.id),
-  'outdoor': categoryGroups['outdoor'].resources.map(r => r.id),
-  'career': categoryGroups['career'].resources.map(r => r.id)
-};
+// Serialize each collection's member slugs so the client filters by membership
+// (matching data-resource-id) rather than re-deriving by category.
+const categoryGroupIds: Record<string, string[]> = Object.fromEntries(
+  categoryGroups.map(group => [group.key, group.resources.map(r => r.id)])
+);
 
 // Filter hidden gems
 const hiddenGems = resources.filter(r => r.hidden_gem === true);
 
-// Calculate total annual value
+// Calculate total annual value (annual_value may be null = "not estimated").
 const totalValue = resources
-  .filter(r => r.annual_value && r.annual_value > 0)
-  .reduce((sum, r) => sum + r.annual_value, 0);
+  .filter(r => typeof r.annual_value === 'number' && r.annual_value > 0)
+  .reduce((sum, r) => sum + (r.annual_value as number), 0);
 ---
 
 <BaseLayout title="Free Stuff @ Dartmouth">
@@ -120,8 +59,8 @@ const totalValue = resources
           <select id="category-filter" class="filter-select">
             <option value="">All resources</option>
             <optgroup label="Curated Collections">
-              {Object.entries(categoryGroups).map(([key, group]) => (
-                <option value={`group:${key}`}>{group.label}</option>
+              {categoryGroups.map((group) => (
+                <option value={`group:${group.key}`}>{group.label}</option>
               ))}
             </optgroup>
             <optgroup label="By Category">
@@ -262,6 +201,9 @@ const totalValue = resources
     <p class="no-results-text">No resources found matching your filters.</p>
     <button id="clear-filters-alt" class="clear-btn-alt">Clear filters and try again</button>
   </div>
+
+  <!-- Curated collection membership (slugs), consumed by the client filter -->
+  <script type="application/json" id="category-group-ids" set:html={JSON.stringify(categoryGroupIds)}></script>
 
   <style>
     /* Hero — Catalogue macrostructure */
@@ -740,19 +682,14 @@ const totalValue = resources
   </style>
 
   <script>
-    import { getFingerprint } from '../lib/fingerprint';
-    import { upvoteResource, removeUpvote, getUserVotes, reportIssue } from '../lib/supabase';
+    import { initResourceInteractions } from '../lib/resource-interactions';
 
-    // Category groups data for filtering curated collections
-    // These map to resource categories, not IDs (since we use UUIDs now)
-    const categoryGroupsData = {
-      'ai-tools': 'software',  // Will filter by category
-      'creative': 'creative',
-      'data': 'software',
-      'research': 'library',
-      'outdoor': 'outdoor',
-      'career': 'career'
-    };
+    // Curated collection membership: { groupKey: [slug, ...] }, serialized by
+    // the server so filtering matches by membership (not by re-deriving category).
+    const groupIdsEl = document.getElementById('category-group-ids');
+    const categoryGroupIds: Record<string, string[]> = groupIdsEl
+      ? JSON.parse(groupIdsEl.textContent || '{}')
+      : {};
 
     // Client-side filtering and search
     const searchInput = document.getElementById('search') as HTMLInputElement;
@@ -809,10 +746,11 @@ const totalValue = resources
       // Check if this is a curated group
       const isGroup = selectedCategory.startsWith('group:');
       const groupKey = isGroup ? selectedCategory.replace('group:', '') : null;
-      const groupCategory = groupKey ? categoryGroupsData[groupKey] : null;
+      const groupMembers = groupKey ? (categoryGroupIds[groupKey] || []) : null;
 
       resourceItems.forEach((item) => {
         const category = item.dataset.category || '';
+        const resourceId = item.dataset.resourceId || '';
         const eligibility = JSON.parse(item.dataset.eligibility || '[]');
         const searchable = JSON.parse(item.dataset.searchable || '{}');
 
@@ -822,7 +760,7 @@ const totalValue = resources
           searchable.category.includes(searchTerm);
 
         const matchesCategory = !selectedCategory ||
-          (isGroup ? category === groupCategory : category === selectedCategory);
+          (isGroup ? (groupMembers as string[]).includes(resourceId) : category === selectedCategory);
         const matchesEligibility = !selectedEligibility || eligibility.includes(selectedEligibility);
 
         if (matchesSearch && matchesCategory && matchesEligibility) {
@@ -863,155 +801,7 @@ const totalValue = resources
     // Initial sort
     sortResources();
 
-    // Upvote functionality
-    const fingerprint = getFingerprint();
-
-    // Get user's existing votes and update UI
-    getUserVotes(fingerprint).then(votedIds => {
-      votedIds.forEach(id => {
-        const btn = document.querySelector(`button[data-resource-id="${id}"]`) as HTMLButtonElement;
-        if (btn) {
-          btn.dataset.voted = 'true';
-        }
-      });
-    });
-
-    // Handle upvote button clicks
-    document.addEventListener('click', async (e) => {
-      const target = e.target as HTMLElement;
-      const button = target.closest('.upvote-btn') as HTMLButtonElement;
-
-      if (!button) return;
-
-      e.preventDefault();
-
-      const resourceId = button.dataset.resourceId;
-      const hasVoted = button.dataset.voted === 'true';
-
-      if (!resourceId) return;
-
-      // Disable button during request
-      button.disabled = true;
-
-      try {
-        let result;
-        if (hasVoted) {
-          result = await removeUpvote(resourceId, fingerprint);
-        } else {
-          result = await upvoteResource(resourceId, fingerprint);
-        }
-
-        if (result.success) {
-          // Update UI optimistically
-          button.dataset.voted = hasVoted ? 'false' : 'true';
-          const countSpan = button.querySelector('.upvote-count') as HTMLSpanElement;
-          if (countSpan) {
-            countSpan.textContent = result.upvotes.toString();
-          }
-        } else {
-          console.warn('Vote action failed:', result.message);
-        }
-      } catch (error) {
-        console.error('Error toggling vote:', error);
-      } finally {
-        button.disabled = false;
-      }
-    });
-
-    // Report issue functionality
-    let currentOpenDropdown: HTMLElement | null = null;
-
-    // Handle report button clicks (toggle dropdown)
-    document.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      const reportBtn = target.closest('.report-btn') as HTMLButtonElement;
-
-      if (reportBtn) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const resourceId = reportBtn.dataset.resourceId;
-        if (!resourceId) return;
-
-        const dropdown = document.querySelector(`.report-dropdown[data-resource-id="${resourceId}"]`) as HTMLElement;
-        if (!dropdown) return;
-
-        // Close any other open dropdown
-        if (currentOpenDropdown && currentOpenDropdown !== dropdown) {
-          currentOpenDropdown.style.display = 'none';
-        }
-
-        // Toggle this dropdown
-        const isVisible = dropdown.style.display === 'block';
-        dropdown.style.display = isVisible ? 'none' : 'block';
-        currentOpenDropdown = isVisible ? null : dropdown;
-      }
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      if (!target.closest('.report-wrapper') && currentOpenDropdown) {
-        currentOpenDropdown.style.display = 'none';
-        currentOpenDropdown = null;
-      }
-    });
-
-    // Handle report option clicks
-    document.addEventListener('click', async (e) => {
-      const target = e.target as HTMLElement;
-      const reportOption = target.closest('.report-option') as HTMLButtonElement;
-
-      if (!reportOption) return;
-
-      e.preventDefault();
-      e.stopPropagation();
-
-      const issueType = reportOption.dataset.issue as 'broken-link' | 'wrong-info' | 'outdated' | 'eligibility' | 'other';
-      const dropdown = reportOption.closest('.report-dropdown') as HTMLElement;
-      const resourceId = dropdown?.dataset.resourceId;
-
-      if (!resourceId || !issueType) return;
-
-      // Disable all report options during submission
-      const allOptions = dropdown.querySelectorAll('.report-option') as NodeListOf<HTMLButtonElement>;
-      allOptions.forEach(opt => opt.disabled = true);
-
-      try {
-        const result = await reportIssue(resourceId, issueType);
-
-        if (result.success) {
-          // Hide dropdown
-          dropdown.style.display = 'none';
-          currentOpenDropdown = null;
-
-          // Show success message with sticker offer
-          const stickerOffer = confirm(
-            'Thanks for catching that! 🎉\n\n' +
-            'Want a free sticker? Click OK to enter your email, or Cancel if you\'re good.'
-          );
-
-          if (stickerOffer) {
-            const email = prompt('Drop your email here and we\'ll send you a sticker:');
-            if (email && email.trim()) {
-              // Submit report again with email
-              await reportIssue(resourceId, issueType, undefined, email.trim());
-              alert('Thanks! We\'ll send your sticker soon. 🌲');
-            }
-          } else {
-            alert('Report submitted! Thanks for helping keep this accurate. 🌲');
-          }
-        } else {
-          alert('Oops, something went wrong. Please try again.');
-          console.error('Report submission error:', result.error);
-        }
-      } catch (error) {
-        alert('Oops, something went wrong. Please try again.');
-        console.error('Error submitting report:', error);
-      } finally {
-        // Re-enable options
-        allOptions.forEach(opt => opt.disabled = false);
-      }
-    });
+    // Upvote + report behavior (shared across all pages).
+    initResourceInteractions();
   </script>
 </BaseLayout>

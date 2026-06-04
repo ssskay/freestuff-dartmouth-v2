@@ -855,7 +855,7 @@
     "name": "PsycINFO",
     "category": "library",
     "description": "The best resource for scholarly publications in psychology and the brain sciences. Indexes citations and summaries of journal articles, book chapters, books, and technical reports.",
-    "link": "http://search.ebscohost.com/login.aspx?authtype=ip,shib&profile=ehost&defaultdb=psyh&custid=dartcol&groupid=main",
+    "link": "https://search.ebscohost.com/login.aspx?authtype=ip,shib&profile=ehost&defaultdb=psyh&custid=dartcol&groupid=main",
     "eligibility": [
       "student",
       "faculty",
@@ -874,7 +874,7 @@
     "name": "ProQuest Dissertations & Theses Global",
     "category": "library",
     "description": "Citations for dissertations and theses from 1861 to present with full text from 1997 forward. Includes millions of pages of scholarly content for text and data mining.",
-    "link": "http://dartmouth.idm.oclc.org/login?url=http://search.proquest.com/pqdtglobal/advanced?accountid=10422",
+    "link": "https://dartmouth.idm.oclc.org/login?url=https://search.proquest.com/pqdtglobal/advanced?accountid=10422",
     "eligibility": [
       "student",
       "faculty",

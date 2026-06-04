@@ -1,10 +1,15 @@
 /**
- * Supabase Client for Free Stuff at Big Green
- * Typed helpers for database operations
+ * Supabase Client for Free Stuff @ Dartmouth
+ * Typed helpers for database operations.
+ *
+ * Public-facing resource identity is the stable slug (see catalog.ts). The
+ * upvote/report RPCs accept either the slug or the internal UUID and resolve it
+ * server-side, so the client never needs to know the UUID.
  */
 
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './database.types';
+import { ISSUE_TYPES, type IssueType } from '../site.config';
 
 // Environment variables (set these in .env)
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
@@ -21,8 +26,9 @@ if (typeof window === 'undefined') {
   }
 }
 
-// Create Supabase client (with fallback for build time)
-// If env vars are missing, client will be created but operations will fail gracefully
+// Create Supabase client (with fallback for build time).
+// If env vars are missing, the client is created but helpers short-circuit via
+// isSupabaseConfigured() rather than issuing requests to a placeholder host.
 export const supabase = createClient<Database>(
   supabaseUrl || 'https://placeholder.supabase.co',
   supabaseAnonKey || 'placeholder-key',
@@ -30,63 +36,42 @@ export const supabase = createClient<Database>(
     auth: {
       persistSession: false, // Disable session persistence for server-side
     },
-    realtime: WebSocket ? {
-      transport: WebSocket
-    } : undefined
+    realtime: WebSocket ? { transport: WebSocket } : undefined,
   }
 );
 
-// Helper to check if Supabase is configured
+type ResourceRow = Database['public']['Tables']['resources']['Row'];
+type PendingResource = Database['public']['Tables']['pending_resources']['Row'];
+
+// Validation bounds for user-submitted content.
+const LIMITS = {
+  name: 200,
+  description: 2000,
+  url: 2000,
+  notes: 2000,
+  email: 254,
+  details: 2000,
+} as const;
+
+/** Helper to check if Supabase is configured. */
 export function isSupabaseConfigured(): boolean {
   return !!(supabaseUrl && supabaseAnonKey);
 }
 
-// Type definitions for our domain models
-export interface Resource {
-  id: string;
-  name: string;
-  description: string;
-  url: string;
-  category: string;
-  eligibility: string[];
-  last_verified: string;
-  notes: string | null;
-  source: string | null;
-  added_at: string;
-  added_by: string;
-  upvotes: number;
-  is_active: boolean;
+function isValidHttpUrl(value: string): boolean {
+  try {
+    const u = new URL(value);
+    return u.protocol === 'http:' || u.protocol === 'https:';
+  } catch {
+    return false;
+  }
 }
-
-export interface Vote {
-  id: string;
-  resource_id: string;
-  fingerprint: string;
-  voted_at: string;
-}
-
-export interface PendingResource {
-  id: string;
-  name: string;
-  description: string | null;
-  url: string;
-  category: string | null;
-  eligibility: string[];
-  notes: string | null;
-  submitted_by: string | null;
-  submitted_at: string;
-  status: 'pending' | 'approved' | 'rejected';
-  agent_source: 'verify' | 'discover' | 'draft' | null;
-  reviewed_at: string | null;
-  reviewer_notes: string | null;
-}
-
-// Helper functions
 
 /**
- * Fetch all active resources with upvote counts
+ * Fetch all active resources (including their slug) ordered by name.
+ * Returns raw rows; callers normalize via catalog.ts.
  */
-export async function getAllResources(): Promise<Resource[]> {
+export async function getAllResources(): Promise<ResourceRow[]> {
   if (!isSupabaseConfigured()) {
     console.warn('Supabase not configured, returning empty array');
     return [];
@@ -106,15 +91,15 @@ export async function getAllResources(): Promise<Resource[]> {
   return data || [];
 }
 
-/**
- * Fetch a single resource by ID
- */
-export async function getResourceById(id: string): Promise<Resource | null> {
+/** Fetch a single resource by slug. */
+export async function getResourceBySlug(slug: string): Promise<ResourceRow | null> {
+  if (!isSupabaseConfigured()) return null;
+
   const { data, error } = await supabase
     .from('resources')
     .select('*')
-    .eq('id', id)
-    .single();
+    .eq('slug', slug)
+    .maybeSingle();
 
   if (error) {
     console.error('Error fetching resource:', error);
@@ -124,37 +109,24 @@ export async function getResourceById(id: string): Promise<Resource | null> {
   return data;
 }
 
-/**
- * Check if a user has already voted for a resource
- */
-export async function hasUserVoted(
-  resourceId: string,
-  fingerprint: string
-): Promise<boolean> {
-  const { data, error } = await supabase
-    .from('votes')
-    .select('id')
-    .eq('resource_id', resourceId)
-    .eq('fingerprint', fingerprint)
-    .maybeSingle();
+/** Check if a user has already voted for a resource (by slug or UUID). */
+export async function hasUserVoted(resourceId: string, fingerprint: string): Promise<boolean> {
+  if (!isSupabaseConfigured()) return false;
 
-  if (error) {
-    console.error('Error checking vote:', error);
-    return false;
-  }
-
-  return data !== null;
+  const votes = await getUserVotes(fingerprint);
+  return votes.includes(resourceId);
 }
 
 /**
- * Upvote a resource (calls database function for atomic operation)
+ * Upvote a resource. `resourceId` may be the slug or the internal UUID; the
+ * database function resolves it. Returns the new count.
  */
 export async function upvoteResource(
   resourceId: string,
   fingerprint: string
 ): Promise<{ success: boolean; upvotes: number; message: string }> {
   const { data, error } = await supabase.rpc('upvote_resource', {
-    p_resource_id: resourceId,
+    p_id: resourceId,
     p_fingerprint: fingerprint,
   });
 
@@ -163,20 +135,17 @@ export async function upvoteResource(
     return { success: false, upvotes: 0, message: 'Error recording vote' };
   }
 
-  // RPC returns array of rows, get first result
   const result = Array.isArray(data) ? data[0] : data;
   return result || { success: false, upvotes: 0, message: 'Unknown error' };
 }
 
-/**
- * Remove an upvote from a resource
- */
+/** Remove an upvote from a resource (by slug or UUID). */
 export async function removeUpvote(
   resourceId: string,
   fingerprint: string
 ): Promise<{ success: boolean; upvotes: number; message: string }> {
   const { data, error } = await supabase.rpc('remove_upvote', {
-    p_resource_id: resourceId,
+    p_id: resourceId,
     p_fingerprint: fingerprint,
   });
 
@@ -190,7 +159,27 @@ export async function removeUpvote(
 }
 
 /**
- * Submit a new resource to the moderation queue
+ * Get the slugs (public ids) a user has voted for, for reflecting vote state.
+ * Joins through to the resource slug so it matches data-resource-id in the DOM.
+ */
+export async function getUserVotes(fingerprint: string): Promise<string[]> {
+  if (!isSupabaseConfigured()) return [];
+
+  const { data, error } = await supabase
+    .from('votes')
+    .select('resource_id, resources(slug)')
+    .eq('fingerprint', fingerprint);
+
+  if (error) {
+    console.error('Error fetching user votes:', error);
+    return [];
+  }
+
+  return (data || []).map((vote: any) => vote.resources?.slug || vote.resource_id);
+}
+
+/**
+ * Submit a new resource to the moderation queue. Validates and trims input.
  */
 export async function submitResource(resource: {
   name: string;
@@ -201,16 +190,45 @@ export async function submitResource(resource: {
   notes?: string;
   submitted_by?: string;
 }): Promise<{ success: boolean; message: string; id?: string }> {
+  if (!isSupabaseConfigured()) {
+    return { success: false, message: 'Submissions are temporarily unavailable.' };
+  }
+
+  const name = resource.name?.trim() || '';
+  const description = resource.description?.trim() || '';
+  const url = resource.url?.trim() || '';
+  const notes = resource.notes?.trim() || '';
+  const submittedBy = resource.submitted_by?.trim() || '';
+
+  if (!name || name.length > LIMITS.name) {
+    return { success: false, message: 'Please provide a name (under 200 characters).' };
+  }
+  if (!description || description.length > LIMITS.description) {
+    return { success: false, message: 'Please provide a description (under 2000 characters).' };
+  }
+  if (!isValidHttpUrl(url) || url.length > LIMITS.url) {
+    return { success: false, message: 'Please provide a valid http(s) URL.' };
+  }
+  if (!resource.eligibility?.length) {
+    return { success: false, message: 'Please select at least one eligibility option.' };
+  }
+  if (notes.length > LIMITS.notes) {
+    return { success: false, message: 'Notes are too long (under 2000 characters).' };
+  }
+  if (submittedBy.length > LIMITS.email) {
+    return { success: false, message: 'That email looks too long.' };
+  }
+
   const { data, error } = await supabase
     .from('pending_resources')
     .insert({
-      name: resource.name,
-      description: resource.description,
-      url: resource.url,
+      name,
+      description,
+      url,
       category: resource.category,
       eligibility: resource.eligibility,
-      notes: resource.notes || null,
-      submitted_by: resource.submitted_by || 'anonymous',
+      notes: notes || null,
+      submitted_by: submittedBy || 'anonymous',
       status: 'pending',
     })
     .select('id')
@@ -218,20 +236,16 @@ export async function submitResource(resource: {
 
   if (error) {
     console.error('Error submitting resource:', error);
-    return { success: false, message: 'Failed to submit resource' };
+    return { success: false, message: 'Failed to submit resource.' };
   }
 
-  return {
-    success: true,
-    message: 'Resource submitted successfully',
-    id: data.id,
-  };
+  return { success: true, message: 'Resource submitted successfully', id: data.id };
 }
 
-/**
- * Fetch pending resources (for admin view)
- */
+/** Fetch pending resources (admin view — requires service-role access). */
 export async function getPendingResources(): Promise<PendingResource[]> {
+  if (!isSupabaseConfigured()) return [];
+
   const { data, error } = await supabase
     .from('pending_resources')
     .select('*')
@@ -246,45 +260,37 @@ export async function getPendingResources(): Promise<PendingResource[]> {
 }
 
 /**
- * Get user's voted resource IDs (for showing vote state in UI)
- */
-export async function getUserVotes(fingerprint: string): Promise<string[]> {
-  const { data, error } = await supabase
-    .from('votes')
-    .select('resource_id')
-    .eq('fingerprint', fingerprint);
-
-  if (error) {
-    console.error('Error fetching user votes:', error);
-    return [];
-  }
-
-  return (data || []).map((vote) => vote.resource_id);
-}
-
-/**
- * Submit a report about a resource issue
+ * Submit a report about a resource issue. Routes through a SECURITY DEFINER
+ * function so the reports table is not writable/readable directly by anon.
+ * `resourceId` may be the slug or the internal UUID.
  */
 export async function reportIssue(
   resourceId: string,
-  issueType: 'broken-link' | 'wrong-info' | 'outdated' | 'eligibility' | 'other',
+  issueType: IssueType,
   details?: string,
   email?: string
 ): Promise<{ success: boolean; error?: string }> {
   if (!isSupabaseConfigured()) {
-    return { success: false, error: 'Supabase not configured' };
+    return { success: false, error: 'Reporting is temporarily unavailable.' };
+  }
+  if (!ISSUE_TYPES.includes(issueType)) {
+    return { success: false, error: 'Invalid issue type.' };
   }
 
-  const { error } = await supabase.from('resource_reports').insert({
-    resource_id: resourceId,
-    issue_type: issueType,
-    details: details || null,
-    email: email || null,
+  const trimmedDetails = details?.trim().slice(0, LIMITS.details) || null;
+  const trimmedEmail = email?.trim().slice(0, LIMITS.email) || null;
+
+  const { error } = await supabase.rpc('report_issue', {
+    p_id: resourceId,
+    p_issue_type: issueType,
+    p_details: trimmedDetails,
+    p_email: trimmedEmail,
   });
 
   if (error) {
+    // Generic message to the caller; details only to the console.
     console.error('Error submitting report:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: 'Could not submit report.' };
   }
 
   return { success: true };
