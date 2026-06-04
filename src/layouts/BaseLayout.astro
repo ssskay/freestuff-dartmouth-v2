@@ -1,4 +1,6 @@
 ---
+import Analytics from '@vercel/analytics/astro';
+
 interface Props {
   title: string;
   description?: string;
@@ -59,6 +61,9 @@ const { title, description = "A complete, always-current catalog of free perks a
 
     <!-- Inline status messages (replaces native alert/confirm) -->
     <div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+
+    <!-- Cookieless, privacy-friendly aggregate analytics (see /privacy) -->
+    <Analytics />
 
     <style>
       /* Nav: N7 Inline + Wordmark */

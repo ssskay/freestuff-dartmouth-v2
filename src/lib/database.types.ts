@@ -143,6 +143,10 @@ export interface Database {
         }
         Returns: boolean
       }
+      subscribe_email: {
+        Args: { p_email: string; p_source: string | null }
+        Returns: boolean
+      }
     }
   }
 }

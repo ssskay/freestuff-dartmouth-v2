@@ -28,3 +28,7 @@ pnpm-debug.log*
 
 # Test files
 test-supabase.js
+
+# Agent run metrics (generated)
+agents/metrics/*.json
+agents/metrics/history.jsonl

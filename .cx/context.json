@@ -1,6 +1,6 @@
 {
   "format": "json",
-  "savedAt": "2026-06-04T02:00:21.335Z",
+  "savedAt": "2026-06-04T02:06:13.894Z",
   "source": "pre-compact",
   "projectName": "freestuff-dartmouth-v2",
   "lastSummary": "",
@@ -10,7 +10,7 @@
   "efficiencySummary": "124 reads · 23 unique files · 101 repeated reads · 86 large reads · 1612 KB read",
   "warnFlags": "None",
   "contextSummary": "",
-  "lastRefreshAt": "2026-06-04T02:00:21.323Z",
+  "lastRefreshAt": "2026-06-04T02:06:13.882Z",
   "activeWork": [],
   "recentDecisions": [],
   "architectureNotes": []

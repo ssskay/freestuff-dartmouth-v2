@@ -7,6 +7,7 @@ Checks all entries in resources.json for broken links and content drift
 import json
 import os
 import sys
+import time
 from datetime import date
 from typing import Dict, List, Any
 import requests
@@ -15,8 +16,19 @@ from anthropic import Anthropic
 # Configuration
 RESOURCES_PATH = "src/content/resources.json"
 REPORT_PATH = "verification-report.md"
+METRICS_DIR = "agents/metrics"
+MODEL = "claude-sonnet-4-5-20250929"
 TIMEOUT = 10  # seconds
 USER_AGENT = "Dartmouth-Verifier/1.0 (freestuff-dartmouth; link verification)"
+
+# Sonnet 4.5 list price, USD per 1M tokens (update if pricing changes).
+PRICE_INPUT_PER_MTOK = 3.0
+PRICE_OUTPUT_PER_MTOK = 15.0
+# Assumed minutes of human review per flagged (broken / needs-review) item.
+REVIEW_MINUTES_PER_ITEM = 2.0
+
+# Per-run usage accumulator for cost reporting.
+METRICS = {"claude_calls": 0, "input_tokens": 0, "output_tokens": 0}
 
 # Initialize Anthropic client
 client = Anthropic()
@@ -24,6 +36,14 @@ client = Anthropic()
 def log(message: str):
     """Print timestamped log message"""
     print(f"[{date.today()}] {message}")
+
+def _record_usage(message) -> None:
+    """Accumulate Claude token usage from a response for the run metrics."""
+    METRICS["claude_calls"] += 1
+    usage = getattr(message, "usage", None)
+    if usage is not None:
+        METRICS["input_tokens"] += getattr(usage, "input_tokens", 0) or 0
+        METRICS["output_tokens"] += getattr(usage, "output_tokens", 0) or 0
 
 def load_resources() -> List[Dict[str, Any]]:
     """Load resources from JSON file"""
@@ -101,11 +121,12 @@ Be strict but not pedantic. If the page is about the right service/perk but the 
 
     try:
         message = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model=MODEL,
             max_tokens=200,
             messages=[{"role": "user", "content": prompt}]
         )
 
+        _record_usage(message)
         response_text = message.content[0].text.strip()
         log(f"  Claude says: {response_text[:100]}")
 
@@ -168,11 +189,12 @@ site:{search_domain} "{resource['name']}"
 
     try:
         message = client.messages.create(
-            model="claude-sonnet-4-5-20250929",
+            model=MODEL,
             max_tokens=100,
             messages=[{"role": "user", "content": prompt}]
         )
 
+        _record_usage(message)
         search_query = message.content[0].text.strip()
         log(f"  Suggested search: {search_query}")
         return f"SEARCH: {search_query}"
@@ -283,7 +305,51 @@ def generate_report(original: List[Dict], verified: List[Dict]) -> str:
 
     return "\n".join(report_lines)
 
+def write_metrics(verified: List[Dict[str, Any]], duration_s: float) -> Dict[str, Any]:
+    """Compute and persist per-run maintenance metrics: status counts, the
+    human-review queue size and its estimated minutes, LLM token cost, and wall
+    time. Output supports tracking the real cost-to-maintain over successive runs."""
+    total = len(verified)
+    active = sum(1 for r in verified if r.get('status') == 'active')
+    broken = sum(1 for r in verified if r.get('status') == 'broken')
+    needs_review = sum(1 for r in verified if r.get('status') == 'needs_review')
+    flagged = broken + needs_review
+    in_tok = METRICS["input_tokens"]
+    out_tok = METRICS["output_tokens"]
+    est_cost = (in_tok / 1_000_000) * PRICE_INPUT_PER_MTOK + (out_tok / 1_000_000) * PRICE_OUTPUT_PER_MTOK
+    est_minutes = flagged * REVIEW_MINUTES_PER_ITEM
+
+    metrics = {
+        "date": str(date.today()),
+        "duration_seconds": round(duration_s, 1),
+        "resources_checked": total,
+        "active": active,
+        "broken": broken,
+        "needs_review": needs_review,
+        "items_needing_human_review": flagged,
+        "est_human_review_minutes": round(est_minutes, 1),
+        "claude_calls": METRICS["claude_calls"],
+        "input_tokens": in_tok,
+        "output_tokens": out_tok,
+        "est_llm_cost_usd": round(est_cost, 4),
+    }
+
+    os.makedirs(METRICS_DIR, exist_ok=True)
+    with open(os.path.join(METRICS_DIR, f"run-{date.today()}.json"), 'w') as f:
+        json.dump(metrics, f, indent=2)
+    with open(os.path.join(METRICS_DIR, "history.jsonl"), 'a') as f:
+        f.write(json.dumps(metrics) + "\n")
+
+    log("")
+    log("=== Maintenance metrics ===")
+    log(f"  Checked {total}: active {active} / broken {broken} / needs-review {needs_review}")
+    log(f"  Human-review queue: {flagged} item(s), ~{est_minutes:.0f} min")
+    log(f"  LLM: {METRICS['claude_calls']} calls, {in_tok} in / {out_tok} out tokens, ~${est_cost:.4f}")
+    log(f"  Wall time: {duration_s:.1f}s")
+    return metrics
+
 def main():
+    start = time.monotonic()
     log("Starting verification run")
 
     # Check for API key
@@ -328,6 +394,8 @@ def main():
     with open(REPORT_PATH, 'w') as f:
         f.write(report)
     log(f"Report saved to {REPORT_PATH}")
+
+    write_metrics(verified, time.monotonic() - start)
 
     log("Verification complete!")
 

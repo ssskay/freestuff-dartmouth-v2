@@ -4,6 +4,7 @@ import ResourceCard from '../components/ResourceCard.astro';
 import { loadResources } from '../lib/catalog';
 import { CURATED_COLLECTIONS, categoryLabel } from '../site.config';
 import ScenarioIcon from '../components/ScenarioIcon.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
 
 // Resolve the catalog (Supabase with static JSON fallback), normalized so that
 // every resource's `id` is its stable slug.
@@ -211,6 +212,8 @@ const totalValue = resources
       </div>
     </div>
   )}
+
+  <NewsletterSignup source="home" />
 
   <!-- Curated collection membership (slugs), consumed by the client filter -->
   <script type="application/json" id="category-group-ids" set:html={JSON.stringify(categoryGroupIds)}></script>

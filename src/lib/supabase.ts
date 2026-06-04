@@ -295,3 +295,33 @@ export async function reportIssue(
 
   return { success: true };
 }
+
+/**
+ * Opt in to the newsletter. Routes through a SECURITY DEFINER function so the
+ * subscriber list is not readable/writable directly by anon. `source` records
+ * where the signup happened (e.g. "home", "for-students").
+ */
+export async function subscribeEmail(
+  email: string,
+  source?: string
+): Promise<{ success: boolean; error?: string }> {
+  if (!isSupabaseConfigured()) {
+    return { success: false, error: 'Signups are temporarily unavailable.' };
+  }
+  const trimmed = email?.trim() || '';
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(trimmed) || trimmed.length > LIMITS.email) {
+    return { success: false, error: 'Please enter a valid email address.' };
+  }
+
+  const { error } = await supabase.rpc('subscribe_email', {
+    p_email: trimmed,
+    p_source: source ? source.slice(0, 100) : null,
+  });
+
+  if (error) {
+    console.error('Error subscribing:', error);
+    return { success: false, error: 'Could not sign you up. Please try again.' };
+  }
+
+  return { success: true };
+}

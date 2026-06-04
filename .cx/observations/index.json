@@ -1,5 +1,37 @@
 [
   {
+    "id": "obs-mpyutaqo-1e6c1b57",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Analytics is wired and verified — the vercel-analytics element + /vercel/insights script are in the build, 27 tests still pass, and the privacy policy was updated truthfully (it now discloses cookiel…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T02:06:13.921Z"
+  },
+  {
+    "id": "obs-mpyuta3l-f2a4b250",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Analytics is wired and verified — the vercel-analytics element + /vercel/insights script are in the build, 27 tests still pass, and the privacy policy was updated truthfully (it now discloses cookiel…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T02:06:13.089Z"
+  },
+  {
+    "id": "obs-mpyuo30z-06c0e4b7",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Pushed to main (015cb80..257bbf3). Vercel will pick it up and deploy.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T02:02:10.643Z"
+  },
+  {
+    "id": "obs-mpyuo2is-34d570ec",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] On main, build + tests already green (14 pages, 27 tests). Committing everything and pushing to main (matching your earlier preference).",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T02:02:09.988Z"
+  },
+  {
     "id": "obs-mpyulqps-afd91e78",
     "role": "construct",
     "category": "session-summary",

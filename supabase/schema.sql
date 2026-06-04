@@ -228,6 +228,39 @@ left join votes v on v.resource_id = r.id
 group by r.id, r.slug, r.name, r.upvotes;
 
 -- ============================================================
+-- Newsletter subscribers (opt-in). Emails are PII: not anon-readable;
+-- writes go only through subscribe_email().
+-- ============================================================
+create table if not exists subscribers (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  source text,
+  created_at timestamptz not null default now(),
+  unsubscribed boolean not null default false
+);
+create index if not exists idx_subscribers_created on subscribers(created_at desc);
+alter table subscribers enable row level security;
+
+create or replace function subscribe_email(p_email text, p_source text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if p_email is null or p_email !~ '^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$' then
+    raise exception 'invalid email';
+  end if;
+  insert into subscribers (email, source)
+    values (lower(trim(p_email)), left(p_source, 100))
+    on conflict (email) do update set unsubscribed = false;
+  return true;
+end;
+$$;
+
+grant execute on function subscribe_email(text, text) to anon, authenticated;
+
+-- ============================================================
 -- Documentation
 -- ============================================================
 comment on table resources is 'Main catalog of free resources. slug is the stable public id; id (uuid) is internal.';

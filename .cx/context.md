@@ -1,5 +1,5 @@
 # Session Context
-Last saved: 2026-06-04 02:00
+Last saved: 2026-06-04 02:06
 
 ## What was in progress
 (no summary available)
@@ -20,6 +20,7 @@ _None in progress._
 
 ## Recent Decisions
 
+- commit `257bbf33a8` — Design/UX/a11y remediation + Phase-0 trust foundation
 - commit `015cb80336` — Remediate full health-and-quality review (construct-review.md)
 - commit `07e2de5fa9` — Update documentation to reflect production deployment
 - commit `8463db9792` — Fix JavaScript module import error on production
