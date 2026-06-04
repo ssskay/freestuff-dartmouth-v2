@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { loadStaticResources } from '../lib/catalog';
+import { buildMapData } from '../lib/map-data';
+import { categoryLabel } from '../site.config';
+
+const resources = await loadStaticResources();
+const mapData = buildMapData(resources);
+
+// Group the Green's resources by category for the readable text list.
+const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
+  .sort()
+  .map((cat) => ({
+    label: categoryLabel(cat),
+    resources: mapData.green.filter((r) => r.category === cat),
+  }));
+---
+
+<BaseLayout
+  title="Map | Free Stuff @ Dartmouth"
+  description="The campus is your backyard. An interactive map of free and affordable things to do around Dartmouth — and everything you can access from the Green."
+>
+  <div class="map-page">
+    <div class="map-hero">
+      <h1 class="page-title">The campus is your backyard</h1>
+      <p class="page-deck">
+        Free movies, makerspaces, museums, gyms, the river, the free bus — and from a bench
+        on the Green, every online resource Dartmouth gives you. Get out there.
+      </p>
+    </div>
+
+    <div class="map-layout">
+      <!-- Leaflet mounts here; hidden from assistive tech, which uses the list below. -->
+      <div id="map" class="map-canvas" role="presentation" aria-hidden="true"></div>
+
+      <!-- Detail panel populated by the client script on pin click. -->
+      <aside id="map-panel" class="map-panel" aria-live="polite" hidden></aside>
+    </div>
+
+    <!-- Accessible, no-JS baseline: every place and the full Green set, as real links. -->
+    <section class="map-list" aria-label="All places on the map">
+      <h2 class="map-list-title">Places on campus</h2>
+      <ul class="place-list">
+        {mapData.places.map((p) => (
+          <li class="place-item">
+            <button type="button" class="place-button" data-place={p.place}>{p.place}</button>
+            <ul class="place-resources">
+              {p.resources.map((r) => (
+                <li><a href={r.url} class="resource-link">{r.name}</a></li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+
+      <h2 class="map-list-title">From the Green — online &amp; access-anywhere</h2>
+      <p class="green-blurb">
+        Grab the free campus WiFi, sit on the grass, and from right here you have all of this:
+      </p>
+      {greenByCategory.map((g) => (
+        <div class="green-group">
+          <h3 class="green-group-title">{g.label}</h3>
+          <ul class="place-resources">
+            {g.resources.map((r) => (
+              <li><a href={r.url} class="resource-link">{r.name}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+
+    <div class="cta-section">
+      <p class="cta-text">Want the full searchable list?</p>
+      <a href="/" class="cta-button">Browse all 78 resources</a>
+    </div>
+  </div>
+
+  <!-- Map data for the client island. -->
+  <script is:inline type="application/json" id="map-data" set:html={JSON.stringify(mapData)}></script>
+
+  <style>
+    .map-page { max-width: 90rem; margin: 0 auto; padding: var(--space-3xl) var(--space-lg) var(--space-2xl); }
+    .map-hero { max-width: var(--measure); margin: 0 auto var(--space-2xl); text-align: center; }
+    .page-title { font-family: var(--font-display); font-style: italic; font-size: var(--text-display); font-weight: 600; line-height: var(--leading-tight); color: var(--color-ink); margin: 0 0 var(--space-md) 0; }
+    .page-deck { font-size: var(--text-lg); line-height: var(--leading-relaxed); color: var(--color-ink-muted); margin: 0; }
+    .map-layout { position: relative; }
+    .map-canvas { width: 100%; height: 32rem; border-radius: var(--radius-lg, 12px); background: var(--color-surface, #f5f5f2); margin-bottom: var(--space-2xl); }
+    .map-panel { position: absolute; top: var(--space-md); right: var(--space-md); width: min(22rem, 90%); max-height: calc(32rem - 2 * var(--space-md)); overflow-y: auto; background: var(--color-bg, #fff); border: 1px solid var(--color-border, #e5e5e0); border-radius: var(--radius-lg, 12px); padding: var(--space-lg); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
+    .map-list { max-width: var(--measure); margin: 0 auto; }
+    .map-list-title { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-ink); margin: var(--space-2xl) 0 var(--space-md); }
+    .place-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-lg); }
+    .place-button { font: inherit; font-weight: 600; color: var(--color-ink); background: none; border: none; padding: 0; cursor: pointer; text-align: left; }
+    .place-button:hover { text-decoration: underline; }
+    .place-resources { margin: var(--space-xs) 0 0; padding-left: var(--space-lg); }
+    .resource-link { color: var(--color-link, #1a5); }
+    .green-blurb { color: var(--color-ink-muted); margin: 0 0 var(--space-md); }
+    .green-group-title { font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-muted); margin: var(--space-md) 0 var(--space-xs); }
+    .cta-section { text-align: center; margin-top: var(--space-2xl); }
+    .cta-text { color: var(--color-ink-muted); margin: 0 0 var(--space-sm); }
+    @media (max-width: 768px) {
+      .map-canvas { height: 24rem; }
+      .map-panel { position: static; width: 100%; max-height: none; margin-bottom: var(--space-lg); }
+    }
+  </style>
+</BaseLayout>

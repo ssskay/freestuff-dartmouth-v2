@@ -50,3 +50,15 @@ describe('internal links resolve to real pages', () => {
     expect(routeExists('/scenarios')).toBe(true);
   });
 });
+
+describe('/map page', () => {
+  it('the /map route exists', () => {
+    expect(routeExists('/map')).toBe(true);
+  });
+
+  it('renders the hero headline and an inline map-data blob', () => {
+    const src = readFileSync(join(pagesDir, 'map.astro'), 'utf-8');
+    expect(src).toContain('The campus is your backyard');
+    expect(src).toContain('id="map-data"');
+  });
+});
