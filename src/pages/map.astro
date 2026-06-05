@@ -70,7 +70,7 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
 
     <div class="cta-section">
       <p class="cta-text">Want the full searchable list?</p>
-      <a href="/" class="cta-button">Browse all 78 resources</a>
+      <a href="/" class="cta-button">Browse all {resources.length} resources</a>
     </div>
   </div>
 
@@ -156,15 +156,18 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
 
       // Popups open AT the pin and auto-pan into view — feedback lands where you
       // clicked, instead of in a corner panel far from a wide map's center.
+      // keyboard:false — the map is aria-hidden, so focusable pins would be
+      // tab-stops that announce nothing (WCAG "focusable but hidden"). The
+      // accessible text list below is the canonical keyboard/screen-reader path.
       const byPlace = new Map<string, L.Marker>();
       for (const p of data.places) {
-        const m = L.marker([p.lat, p.lng], { icon: placeIcon, keyboard: true, title: p.place, alt: p.place })
+        const m = L.marker([p.lat, p.lng], { icon: placeIcon, keyboard: false, title: p.place, alt: p.place })
           .addTo(map)
           .bindPopup(placeHtml(p), popupOpts);
         byPlace.set(p.place, m);
       }
 
-      L.marker(GREEN, { icon: greenIcon, keyboard: true, title: 'The Green', alt: 'The Dartmouth Green' })
+      L.marker(GREEN, { icon: greenIcon, keyboard: false, title: 'The Green', alt: 'The Dartmouth Green' })
         .addTo(map)
         .bindPopup(greenHtml(data.green), popupOpts);
 

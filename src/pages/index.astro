@@ -31,6 +31,8 @@ const categoryGroupIds: Record<string, string[]> = Object.fromEntries(
 const hiddenGems = resources.filter(r => r.hidden_gem === true);
 
 // Calculate total annual value (annual_value may be null = "not estimated").
+// This is a conservative floor: resources we couldn't price are excluded, so
+// the figure is shown with a "+" rather than implying it's the complete total.
 const totalValue = resources
   .filter(r => typeof r.annual_value === 'number' && r.annual_value > 0)
   .reduce((sum, r) => sum + (r.annual_value as number), 0);
@@ -137,7 +139,7 @@ const totalValue = resources
   <!-- Value strip -->
   <div class="value-banner">
     <div class="value-banner-content">
-      <div class="value-amount">${totalValue.toLocaleString()}</div>
+      <div class="value-amount">${totalValue.toLocaleString()}+</div>
       <div class="value-label">in free resources you already have access to</div>
     </div>
   </div>

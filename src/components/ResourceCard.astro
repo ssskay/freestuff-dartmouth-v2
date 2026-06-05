@@ -20,6 +20,16 @@ try {
 // Check if resource is new (added in last 30 days)
 // Disabled for now since all resources are technically new
 const isNew = false;
+
+// The verification date is a trust signal only while it's recent. If it ages
+// past ~6 months (e.g. the weekly verifier hasn't run), a stale "Verified May
+// 2026" erodes trust more than it builds — fall back to a neutral label.
+// Computed at build time, so it refreshes on every deploy.
+const verifiedAt = new Date(resource.last_verified);
+const monthsSinceVerified = (Date.now() - verifiedAt.getTime()) / (1000 * 60 * 60 * 24 * 30.44);
+const verifiedLabel = Number.isFinite(monthsSinceVerified) && monthsSinceVerified <= 6
+  ? `Verified ${verifiedAt.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`
+  : 'Community-maintained';
 ---
 
 <article class="resource-card">
@@ -97,7 +107,7 @@ const isNew = false;
           <svg class="verified-check" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
             <path d="M2.5 6.5L4.5 8.5L9.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          Verified {new Date(resource.last_verified).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+          {verifiedLabel}
         </span>
       </div>
       <a href={resource.url} target="_blank" rel="noopener noreferrer" class="visit-link">

@@ -113,12 +113,27 @@ body {
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  /* Also remove the decorative hover-lifts so there's zero positional shift.
+     Scoped to specific elements — a blanket `transform: none` would break
+     Leaflet, which positions map markers with transforms. */
+  .resource-card:hover,
+  .scenario-card:hover,
+  .scenario-tile:hover,
+  .pin-place:hover span,
+  .pin-place:focus span {
+    transform: none !important;
   }
 }
 

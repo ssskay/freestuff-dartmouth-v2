@@ -113,6 +113,12 @@ async function loadJsonResources(): Promise<Resource[]> {
 /**
  * Resolve the catalog. Tries Supabase first; falls back to the authored JSON if
  * the database is empty or the call fails. Always returns normalized resources.
+ *
+ * Drift risk: this (DB-first) and loadStaticResources (JSON-only) can disagree
+ * if a resource is added to resources.json without re-running the Supabase seed
+ * (scripts/seed-supabase.js) — the homepage would show the DB set while the map
+ * shows the JSON set. resources.json is the source of record; always re-seed
+ * after editing it so the two stay in sync.
  */
 export async function loadResources(): Promise<Resource[]> {
   try {
