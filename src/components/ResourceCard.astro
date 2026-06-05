@@ -29,7 +29,7 @@ const isNew = false;
     </a>
     <div class="card-badges">
       {isNew && <span class="new-badge">New</span>}
-      {resource.annual_value && resource.annual_value > 0 && (
+      {resource.annual_value != null && resource.annual_value > 0 && (
         <span class="value-badge">${resource.annual_value}/yr</span>
       )}
       <span class="category-badge" data-category={resource.category}>
