@@ -4,9 +4,18 @@ import Analytics from '@vercel/analytics/astro';
 interface Props {
   title: string;
   description?: string;
+  /** Social-share image, resolved against the site origin. Defaults to /og.png. */
+  image?: string;
 }
 
-const { title, description = "A complete, always-current catalog of free perks available to Dartmouth students and alumni." } = Astro.props;
+const { title, description = "A complete, always-current catalog of free perks available to Dartmouth students and alumni.", image = "/og.png" } = Astro.props;
+
+// Absolute URLs for canonical + Open Graph (share cards need full origins).
+// Astro.site is set in astro.config; fall back gracefully if a page renders
+// outside a configured site.
+const siteOrigin = Astro.site ?? new URL(Astro.url.origin);
+const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
+const imageURL = new URL(image, siteOrigin);
 ---
 
 <!doctype html>
@@ -15,12 +24,29 @@ const { title, description = "A complete, always-current catalog of free perks a
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/tokens.css" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph / Twitter: links shared in GroupMe, iMessage, Slack render
+         as a real card instead of a naked URL — this site grows by word of mouth. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Free Stuff @ Dartmouth" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+
     <title>{title}</title>
   </head>
   <body>
@@ -50,7 +76,7 @@ const { title, description = "A complete, always-current catalog of free perks a
     <!-- Footer: Ft2 Terse statement -->
     <footer class="footer-terse">
       <div class="footer-container">
-        <p>Built by Dartmouth folks, for Dartmouth folks. <a href="https://github.com/sarakay/freestuff-dartmouth-v2" class="footer-link">Fork this for your school</a>.</p>
+        <p>Built by Dartmouth folks, for Dartmouth folks. <a href="https://github.com/ssskay/freestuff-dartmouth-v2" class="footer-link">Fork this for your school</a>.</p>
         <p class="footer-disclosure">An independent, community-maintained catalog — not an official Dartmouth site. Always verify access details on the linked Dartmouth page.</p>
         <p class="footer-links">
           <a href="/privacy" class="footer-link">Privacy</a> ·
@@ -117,9 +143,19 @@ const { title, description = "A complete, always-current catalog of free perks a
       }
 
       @media (max-width: 768px) {
+        /* Let the wordmark + 6 links wrap instead of crowding into one shrinking
+           row — on a narrow phone the links drop to a second line under the
+           wordmark rather than colliding with it. */
         .nav-container {
           padding: var(--space-sm) var(--space-md);
-          gap: var(--space-sm);
+          gap: var(--space-2xs) var(--space-sm);
+          flex-wrap: wrap;
+          align-items: center;
+        }
+
+        .nav-links {
+          flex-wrap: wrap;
+          gap: var(--space-2xs) var(--space-md);
         }
 
         .wordmark {
