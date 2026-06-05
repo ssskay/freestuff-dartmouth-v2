@@ -23,19 +23,38 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Until ANTHROPIC_API_KEY is set (see one-time setup above), skip the run
+      # cleanly instead of failing — a dormant verifier should be green, not a
+      # weekly red X in your inbox. Adding the secret activates it automatically.
+      - name: Check for API key
+        id: check
+        env:
+          KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -n "$KEY" ]; then
+            echo "has_key=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_key=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::ANTHROPIC_API_KEY not set — skipping verifier run. Add the secret to activate it."
+          fi
+
       - uses: actions/setup-python@v5
+        if: steps.check.outputs.has_key == 'true'
         with:
           python-version: '3.12'
 
       - name: Install agent dependencies
+        if: steps.check.outputs.has_key == 'true'
         run: pip install -r agents/requirements.txt
 
       - name: Run verifier
+        if: steps.check.outputs.has_key == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python3 agents/verify.py
 
       - name: Open pull request with changes
+        if: steps.check.outputs.has_key == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
           branch: agent/verify
