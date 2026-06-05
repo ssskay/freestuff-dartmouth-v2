@@ -84,7 +84,7 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
     type MapPlace = { place: string; lat: number; lng: number; resources: MapResource[] };
     type MapData = { places: MapPlace[]; green: MapResource[] };
 
-    const GREEN: [number, number] = [43.7045, -72.2887];
+    const GREEN: [number, number] = [43.7033, -72.2886];
 
     function readData(): MapData | null {
       const el = document.getElementById('map-data');
@@ -100,8 +100,9 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
     function listHtml(resources: MapResource[]): string {
       return `<ul class="pc-list">${resources
         .map((r) => {
-          const value = r.annual_value && r.annual_value > 0 ? `<span class="pc-value">~$${r.annual_value}/yr</span>` : '';
-          return `<li class="pc-item"><a class="pc-link" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a>${value}</li>`;
+          // The map answers "where are the free resources?" — not "what do they cost?".
+          // Showing a per-year dollar figure reads like a price tag, so omit it here.
+          return `<li class="pc-item"><a class="pc-link" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a></li>`;
         })
         .join('')}</ul>`;
     }
@@ -207,7 +208,6 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
     :global(.map-popup .pc-list) { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-sm); }
     :global(.map-popup .pc-item) { display: flex; justify-content: space-between; gap: var(--space-sm); align-items: baseline; }
     :global(.map-popup .pc-link) { color: var(--color-accent); font-weight: 600; }
-    :global(.map-popup .pc-value) { color: var(--color-ink-muted); font-size: var(--text-sm); white-space: nowrap; }
     @media (max-width: 768px) {
       .map-canvas { height: 24rem; }
     }
