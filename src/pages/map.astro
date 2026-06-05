@@ -153,7 +153,18 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
       // the closest zoom that still shows every pin, adapting to any viewport.
       const pinPoints: [number, number][] = data.places.map((p) => [p.lat, p.lng]);
       pinPoints.push(GREEN);
-      map.fitBounds(L.latLngBounds(pinPoints), { padding: [36, 36], maxZoom: 17 });
+      const bounds = L.latLngBounds(pinPoints);
+      const fitOpts: L.FitBoundsOptions = { padding: [36, 36], maxZoom: 17 };
+      map.fitBounds(bounds, fitOpts);
+      // fitBounds floors to the zoom that frames every pin with slack to spare,
+      // which reads as too much empty margin on a wide desktop frame. Tighten one
+      // notch to fill it — but only keep that if every pin still fits, since a
+      // narrow/short phone viewport crops the campus spread (Ledyard to athletics)
+      // at +1. Self-correcting: desktop gets the tighter frame, mobile keeps all pins.
+      map.setZoom(Math.min(map.getZoom() + 1, 17), { animate: false });
+      if (!pinPoints.every((pt) => map.getBounds().contains(pt))) {
+        map.fitBounds(bounds, fitOpts);
+      }
 
       // The accessible text-list buttons pan to and open the matching pin's popup.
       document.querySelectorAll<HTMLButtonElement>('.place-button').forEach((btn) => {
