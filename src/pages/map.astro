@@ -194,7 +194,19 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
     .pc-value { color: var(--color-ink-muted); font-size: var(--text-sm); white-space: nowrap; }
     @media (max-width: 768px) {
       .map-canvas { height: 24rem; }
-      .map-panel { position: static; width: 100%; max-height: none; margin-bottom: var(--space-lg); }
+      /* Bottom sheet: a static panel renders below a full-height map and lands
+         off-screen, so tapping a pin looked like nothing happened. Fixed to the
+         viewport bottom, it overlays the map and is visible the instant it opens. */
+      .map-panel {
+        position: fixed;
+        left: 0; right: 0; bottom: 0; top: auto;
+        width: auto;
+        max-height: 70vh;
+        margin: 0;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        z-index: 1000;
+        box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.18);
+      }
     }
   </style>
 </BaseLayout>
