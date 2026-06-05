@@ -30,11 +30,9 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
     </div>
 
     <div class="map-layout">
-      <!-- Leaflet mounts here; hidden from assistive tech, which uses the list below. -->
+      <!-- Leaflet mounts here; hidden from assistive tech, which uses the list below.
+           Pin clicks open a Leaflet popup anchored at the pin (auto-pans into view). -->
       <div id="map" class="map-canvas" role="presentation" aria-hidden="true"></div>
-
-      <!-- Detail panel populated by the client script on pin click. -->
-      <aside id="map-panel" class="map-panel" aria-live="polite" hidden></aside>
     </div>
 
     <!-- Accessible, no-JS baseline: every place and the full Green set, as real links. -->
@@ -94,25 +92,30 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
       try { return JSON.parse(el.textContent) as MapData; } catch { return null; }
     }
 
-    function cardHtml(r: MapResource): string {
-      const value = r.annual_value && r.annual_value > 0 ? `<span class="pc-value">~$${r.annual_value}/yr</span>` : '';
-      return `<li class="pc-item">
-        <a class="pc-link" href="${r.url}" target="_blank" rel="noopener">${r.name}</a>
-        ${value}
-      </li>`;
+    // Escape catalog text before injecting it into popup HTML (names contain '&').
+    function esc(s: string): string {
+      return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] as string);
     }
 
-    function renderPanel(title: string, lead: string, resources: MapResource[]): void {
-      const panel = document.getElementById('map-panel');
-      if (!panel) return;
-      panel.innerHTML = `
-        <button type="button" class="pc-close" aria-label="Close">&times;</button>
-        <h2 class="pc-title">${title}</h2>
-        ${lead ? `<p class="pc-lead">${lead}</p>` : ''}
-        <ul class="pc-list">${resources.map(cardHtml).join('')}</ul>`;
-      panel.hidden = false;
-      panel.querySelector<HTMLButtonElement>('.pc-close')?.addEventListener('click', () => { panel.hidden = true; });
-      panel.querySelector<HTMLElement>('.pc-title')?.focus?.();
+    function listHtml(resources: MapResource[]): string {
+      return `<ul class="pc-list">${resources
+        .map((r) => {
+          const value = r.annual_value && r.annual_value > 0 ? `<span class="pc-value">~$${r.annual_value}/yr</span>` : '';
+          return `<li class="pc-item"><a class="pc-link" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.name)}</a>${value}</li>`;
+        })
+        .join('')}</ul>`;
+    }
+
+    function placeHtml(p: MapPlace): string {
+      return `<div class="pc"><h3 class="pc-title">${esc(p.place)}</h3>${listHtml(p.resources)}</div>`;
+    }
+
+    function greenHtml(green: MapResource[]): string {
+      return (
+        `<div class="pc"><h3 class="pc-title">From the Green</h3>` +
+        `<p class="pc-lead">Grab the free campus WiFi, sit on the grass, and from right here you have access to all of this.</p>` +
+        `${listHtml(green)}</div>`
+      );
     }
 
     function init(): void {
@@ -126,32 +129,31 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
         maxZoom: 19,
       }).addTo(map);
 
-      const placeIcon = L.divIcon({ className: 'pin pin-place', html: '<span></span>', iconSize: [18, 18] });
-      const greenIcon = L.divIcon({ className: 'pin pin-green', html: '<span>WiFi</span>', iconSize: [44, 44] });
+      const placeIcon = L.divIcon({ className: 'pin pin-place', html: '<span></span>', iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -12] });
+      const greenIcon = L.divIcon({ className: 'pin pin-green', html: '<span>WiFi</span>', iconSize: [50, 50], iconAnchor: [25, 25], popupAnchor: [0, -22] });
+      const popupOpts: L.PopupOptions = { maxHeight: 260, minWidth: 220, maxWidth: 300, className: 'map-popup' };
 
+      // Popups open AT the pin and auto-pan into view — feedback lands where you
+      // clicked, instead of in a corner panel far from a wide map's center.
+      const byPlace = new Map<string, L.Marker>();
       for (const p of data.places) {
-        L.marker([p.lat, p.lng], { icon: placeIcon, keyboard: true, title: p.place, alt: p.place })
+        const m = L.marker([p.lat, p.lng], { icon: placeIcon, keyboard: true, title: p.place, alt: p.place })
           .addTo(map)
-          .on('click keypress', () => renderPanel(p.place, '', p.resources));
+          .bindPopup(placeHtml(p), popupOpts);
+        byPlace.set(p.place, m);
       }
 
       L.marker(GREEN, { icon: greenIcon, keyboard: true, title: 'The Green', alt: 'The Dartmouth Green' })
         .addTo(map)
-        .on('click keypress', () =>
-          renderPanel(
-            'From the Green',
-            'Grab the free campus WiFi, sit on the grass, and from right here you have access to all of this.',
-            data.green,
-          ),
-        );
+        .bindPopup(greenHtml(data.green), popupOpts);
 
-      // Wire the accessible text-list buttons to open the same panel + pan the map.
+      // The accessible text-list buttons pan to and open the matching pin's popup.
       document.querySelectorAll<HTMLButtonElement>('.place-button').forEach((btn) => {
-        const place = data.places.find((p) => p.place === btn.dataset.place);
-        if (!place) return;
+        const m = btn.dataset.place ? byPlace.get(btn.dataset.place) : undefined;
+        if (!m) return;
         btn.addEventListener('click', () => {
-          map.setView([place.lat, place.lng], 16);
-          renderPanel(place.place, '', place.resources);
+          map.setView(m.getLatLng(), 16);
+          m.openPopup();
         });
       });
     }
@@ -170,7 +172,6 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
     .page-deck { font-size: var(--text-lg); line-height: var(--leading-relaxed); color: var(--color-ink-muted); margin: 0; }
     .map-layout { position: relative; }
     .map-canvas { width: 100%; height: 32rem; border-radius: var(--radius-lg, 12px); background: var(--color-paper-2); margin-bottom: var(--space-2xl); }
-    .map-panel { position: absolute; top: var(--space-md); right: var(--space-md); width: min(22rem, 90%); max-height: calc(32rem - 2 * var(--space-md)); overflow-y: auto; background: var(--color-paper); border: 1px solid var(--color-border, #e5e5e0); border-radius: var(--radius-lg, 12px); padding: var(--space-lg); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
     .map-list { max-width: var(--measure); margin: 0 auto; }
     .map-list-title { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-ink); margin: var(--space-2xl) 0 var(--space-md); }
     .place-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-lg); }
@@ -182,31 +183,24 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
     .green-group-title { font-size: var(--text-sm); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-ink-muted); margin: var(--space-md) 0 var(--space-xs); }
     .cta-section { text-align: center; margin-top: var(--space-2xl); }
     .cta-text { color: var(--color-ink-muted); margin: 0 0 var(--space-sm); }
-    :global(.pin-place span) { display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--color-accent); border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
-    :global(.pin-green) { display: grid; place-items: center; }
-    :global(.pin-green span) { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--color-accent, #2e7d32); color: #fff; font-size: 11px; font-weight: 700; border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.35); }
-    .pc-close { float: right; font-size: 1.5rem; line-height: 1; background: none; border: none; cursor: pointer; color: var(--color-ink-muted); }
-    .pc-title { font-family: var(--font-display); font-size: var(--text-lg); color: var(--color-ink); margin: 0 0 var(--space-xs); }
-    .pc-lead { color: var(--color-ink-muted); font-size: var(--text-sm); margin: 0 0 var(--space-md); }
-    .pc-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-sm); }
-    .pc-item { display: flex; justify-content: space-between; gap: var(--space-sm); align-items: baseline; }
-    .pc-link { color: var(--color-accent); font-weight: 600; }
-    .pc-value { color: var(--color-ink-muted); font-size: var(--text-sm); white-space: nowrap; }
+    /* Pins — large enough to see and tap on a clustered campus. The whole icon
+       box is the click target; the visible circle sits centered inside it. */
+    :global(.pin-place span) { display: block; width: 20px; height: 20px; border-radius: 50%; background: var(--color-accent); border: 3px solid #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.4); transition: transform 0.12s ease; cursor: pointer; }
+    :global(.pin-place:hover span), :global(.pin-place:focus span) { transform: scale(1.25); }
+    :global(.pin-green) { display: grid; place-items: center; cursor: pointer; }
+    :global(.pin-green span) { display: grid; place-items: center; width: 50px; height: 50px; border-radius: 50%; background: var(--color-accent); color: #fff; font-size: 12px; font-weight: 700; border: 3px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,0.4); }
+
+    /* Popup content is injected by Leaflet (outside Astro's scope) — style globally. */
+    :global(.map-popup .leaflet-popup-content-wrapper) { border-radius: var(--radius-lg, 12px); box-shadow: 0 8px 30px rgba(0,0,0,0.18); }
+    :global(.map-popup .leaflet-popup-content) { margin: var(--space-md); }
+    :global(.map-popup .pc-title) { font-family: var(--font-display); font-size: var(--text-lg); color: var(--color-ink); margin: 0 0 var(--space-xs); }
+    :global(.map-popup .pc-lead) { color: var(--color-ink-muted); font-size: var(--text-sm); margin: 0 0 var(--space-sm); }
+    :global(.map-popup .pc-list) { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-sm); }
+    :global(.map-popup .pc-item) { display: flex; justify-content: space-between; gap: var(--space-sm); align-items: baseline; }
+    :global(.map-popup .pc-link) { color: var(--color-accent); font-weight: 600; }
+    :global(.map-popup .pc-value) { color: var(--color-ink-muted); font-size: var(--text-sm); white-space: nowrap; }
     @media (max-width: 768px) {
       .map-canvas { height: 24rem; }
-      /* Bottom sheet: a static panel renders below a full-height map and lands
-         off-screen, so tapping a pin looked like nothing happened. Fixed to the
-         viewport bottom, it overlays the map and is visible the instant it opens. */
-      .map-panel {
-        position: fixed;
-        left: 0; right: 0; bottom: 0; top: auto;
-        width: auto;
-        max-height: 70vh;
-        margin: 0;
-        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-        z-index: 1000;
-        box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.18);
-      }
     }
   </style>
 </BaseLayout>
