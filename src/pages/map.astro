@@ -147,6 +147,13 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
         .addTo(map)
         .bindPopup(greenHtml(data.green), popupOpts);
 
+      // Frame the view on the pinned campus core, not the empty outskirts — the
+      // fixed zoom-15 left every pin in a tiny central cluster. fitBounds picks
+      // the closest zoom that still shows every pin, adapting to any viewport.
+      const pinPoints: [number, number][] = data.places.map((p) => [p.lat, p.lng]);
+      pinPoints.push(GREEN);
+      map.fitBounds(L.latLngBounds(pinPoints), { padding: [36, 36], maxZoom: 17 });
+
       // The accessible text-list buttons pan to and open the matching pin's popup.
       document.querySelectorAll<HTMLButtonElement>('.place-button').forEach((btn) => {
         const m = btn.dataset.place ? byPlace.get(btn.dataset.place) : undefined;
@@ -171,7 +178,9 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
     .page-title { font-family: var(--font-display); font-style: italic; font-size: var(--text-display); font-weight: 600; line-height: var(--leading-tight); color: var(--color-ink); margin: 0 0 var(--space-md) 0; }
     .page-deck { font-size: var(--text-lg); line-height: var(--leading-relaxed); color: var(--color-ink-muted); margin: 0; }
     .map-layout { position: relative; }
-    .map-canvas { width: 100%; height: 32rem; border-radius: var(--radius-lg, 12px); background: var(--color-paper-2); margin-bottom: var(--space-2xl); }
+    /* Cap the width: a full-90rem map is so wide that even a tight zoom leaves
+       empty outskirts on the sides. A centered ~60rem frame keeps it on campus. */
+    .map-canvas { width: 100%; max-width: 60rem; height: 32rem; border-radius: var(--radius-lg, 12px); background: var(--color-paper-2); margin: 0 auto var(--space-2xl); }
     .map-list { max-width: var(--measure); margin: 0 auto; }
     .map-list-title { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-ink); margin: var(--space-2xl) 0 var(--space-md); }
     .place-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-lg); }
