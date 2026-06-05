@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { loadStaticResources } from '../lib/catalog';
 import { buildMapData } from '../lib/map-data';
 import { categoryLabel } from '../site.config';
+import buildingFootprints from '../content/building-footprints.json';
 
 const resources = await loadStaticResources();
 const mapData = buildMapData(resources);
@@ -75,6 +76,9 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
 
   <!-- Map data for the client island. -->
   <script is:inline type="application/json" id="map-data" set:html={JSON.stringify(mapData)}></script>
+  <!-- Real OSM building footprints, softly tinted under the pins to show which
+       buildings these resources live in (see /tmp fetch in commit history). -->
+  <script is:inline type="application/json" id="map-footprints" set:html={JSON.stringify(buildingFootprints)}></script>
 
   <script>
     import L from 'leaflet';
@@ -129,6 +133,22 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
         maxZoom: 19,
       }).addTo(map);
+
+      // Softly tint the real building footprints under the pins so the map shows
+      // which buildings hold these resources — turning empty white space into
+      // signal. Styled via the .building-fp class (CSS owns the brand color and
+      // opacity); markers live in a higher pane, so pins always sit on top.
+      const fpEl = document.getElementById('map-footprints');
+      if (fpEl?.textContent) {
+        try {
+          map.createPane('footprints').style.zIndex = '350'; // above tiles, below markers
+          L.geoJSON(JSON.parse(fpEl.textContent), {
+            pane: 'footprints',
+            interactive: false,
+            style: () => ({ className: 'building-fp', weight: 1.5 }),
+          }).addTo(map);
+        } catch { /* footprints are decorative — skip silently if they fail to parse */ }
+      }
 
       const placeIcon = L.divIcon({ className: 'pin pin-place', html: '<span></span>', iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -12] });
       const greenIcon = L.divIcon({ className: 'pin pin-green', html: '<span>WiFi</span>', iconSize: [50, 50], iconAnchor: [25, 25], popupAnchor: [0, -22] });
@@ -210,6 +230,9 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
     :global(.pin-place:hover span), :global(.pin-place:focus span) { transform: scale(1.25); }
     :global(.pin-green) { display: grid; place-items: center; cursor: pointer; }
     :global(.pin-green span) { display: grid; place-items: center; width: 50px; height: 50px; border-radius: 50%; background: var(--color-accent); color: #fff; font-size: 12px; font-weight: 700; border: 3px solid #fff; box-shadow: 0 3px 10px rgba(0,0,0,0.4); }
+    /* Real OSM building footprints, softly tinted in the brand green so the
+       applicable buildings read as "here" without competing with the pins. */
+    :global(.building-fp) { fill: var(--color-accent); fill-opacity: 0.16; stroke: var(--color-accent); stroke-opacity: 0.5; }
 
     /* Popup content is injected by Leaflet (outside Astro's scope) — style globally. */
     :global(.map-popup .leaflet-popup-content-wrapper) { border-radius: var(--radius-lg, 12px); box-shadow: 0 8px 30px rgba(0,0,0,0.18); }
@@ -220,7 +243,14 @@ const greenByCategory = [...new Set(mapData.green.map((r) => r.category))]
     :global(.map-popup .pc-item) { display: flex; justify-content: space-between; gap: var(--space-sm); align-items: baseline; }
     :global(.map-popup .pc-link) { color: var(--color-accent); font-weight: 600; }
     @media (max-width: 768px) {
-      .map-canvas { height: 24rem; }
+      /* The map is the point of this page — let it dominate the phone screen
+         instead of sitting below a full-height hero. Shrink the hero, then give
+         the map most of the viewport so you land on pins, not a wall of text. */
+      .map-page { padding: var(--space-xl) var(--space-md) var(--space-2xl); }
+      .map-hero { margin-bottom: var(--space-lg); }
+      .page-title { font-size: var(--text-3xl); }
+      .page-deck { font-size: var(--text-base); }
+      .map-canvas { height: 68vh; min-height: 26rem; margin-bottom: var(--space-xl); }
     }
   </style>
 </BaseLayout>
