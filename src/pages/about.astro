@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site.config';
 ---
 
 <BaseLayout title="About | Free Stuff @ Dartmouth" description="Learn about Free Stuff @ Dartmouth and how to fork this for your school">
@@ -84,7 +85,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <h2 class="section-head">How to Report Issues</h2>
         <p>
           Found a broken link or know about a perk that's missing?
-          <a href="https://github.com/sarakay/freestuff-dartmouth-v2/issues" class="inline-link">Open an issue on GitHub</a> with the details. We review reports regularly.
+          <a href={`${SITE.github}/issues`} class="inline-link">Open an issue on GitHub</a> with the details. We review reports regularly.
         </p>
       </section>
 
@@ -99,9 +100,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <strong>To fork this for your school:</strong>
         </p>
         <ol class="fork-steps">
-          <li>Fork the <a href="https://github.com/sarakay/freestuff-dartmouth-v2" class="inline-link-inverse">GitHub repo</a></li>
+          <li>Fork the <a href={SITE.github} class="inline-link-inverse">GitHub repo</a></li>
           <li>Update <code>src/content/resources.json</code> with your school's perks</li>
-          <li>Customize colors in <code>tailwind.config.mjs</code></li>
+          <li>Set your school's name and links in <code>src/site.config.ts</code></li>
+          <li>Customize the accent color in <code>public/tokens.css</code> (the <code>--color-accent</code> token)</li>
           <li>Deploy to Vercel or Netlify (free)</li>
         </ol>
         <p>
@@ -118,7 +120,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           Agent maintenance (coming in v2) will use Python and Claude Sonnet 4.5.
         </p>
         <p>
-          Source code available on <a href="https://github.com/sarakay/freestuff-dartmouth-v2" class="inline-link">GitHub</a>.
+          Source code available on <a href={SITE.github} class="inline-link">GitHub</a>.
         </p>
       </section>
 
@@ -126,7 +128,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <h2 class="section-head">Contact</h2>
         <p>
           Built by Dartmouth folks, for Dartmouth folks. Questions or feedback?
-          <a href="https://github.com/sarakay/freestuff-dartmouth-v2/issues" class="inline-link">Open an issue on GitHub</a>.
+          <a href={`${SITE.github}/issues`} class="inline-link">Open an issue on GitHub</a>.
         </p>
       </section>
     </div>

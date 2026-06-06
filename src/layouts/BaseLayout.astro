@@ -1,5 +1,6 @@
 ---
 import Analytics from '@vercel/analytics/astro';
+import { SITE } from '../site.config';
 
 interface Props {
   title: string;
@@ -8,7 +9,7 @@ interface Props {
   image?: string;
 }
 
-const { title, description = "A complete, always-current catalog of free perks available to Dartmouth students and alumni.", image = "/og.png" } = Astro.props;
+const { title, description = `A complete, always-current catalog of free perks available to ${SITE.school} students and alumni.`, image = "/og.png" } = Astro.props;
 
 // Absolute URLs for canonical + Open Graph (share cards need full origins).
 // Astro.site is set in astro.config; fall back gracefully if a page renders
@@ -35,7 +36,7 @@ const imageURL = new URL(image, siteOrigin);
     <!-- Open Graph / Twitter: links shared in GroupMe, iMessage, Slack render
          as a real card instead of a naked URL — this site grows by word of mouth. -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Free Stuff @ Dartmouth" />
+    <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
@@ -56,7 +57,7 @@ const imageURL = new URL(image, siteOrigin);
     <header>
       <nav class="nav-inline" aria-label="Primary">
         <div class="nav-container">
-          <a href="/" class="wordmark">Free Stuff @ Dartmouth</a>
+          <a href="/" class="wordmark">{SITE.name}</a>
           <div class="nav-links">
             <a href="/for-students" class="nav-link">Students</a>
             <a href="/for-alumni" class="nav-link">Alumni</a>
@@ -76,8 +77,8 @@ const imageURL = new URL(image, siteOrigin);
     <!-- Footer: Ft2 Terse statement -->
     <footer class="footer-terse">
       <div class="footer-container">
-        <p>Built by Dartmouth folks, for Dartmouth folks. <a href="https://github.com/ssskay/freestuff-dartmouth-v2" class="footer-link">Fork this for your school</a>.</p>
-        <p class="footer-disclosure">An independent, community-maintained catalog — not an official Dartmouth site. Always verify access details on the linked Dartmouth page.</p>
+        <p>Built by {SITE.school} folks, for {SITE.school} folks. <a href={SITE.github} class="footer-link">Fork this for your school</a>.</p>
+        <p class="footer-disclosure">An independent, community-maintained catalog — not an official {SITE.school} site. Always verify access details on the linked {SITE.school} page.</p>
         <p class="footer-links">
           <a href="/privacy" class="footer-link">Privacy</a> ·
           <a href="/terms" class="footer-link">Terms</a> ·

@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site.config';
 
 const lastUpdated = 'June 3, 2026';
 ---
@@ -76,7 +77,7 @@ const lastUpdated = 'June 3, 2026';
           <li>To browse with no data collected at all, simply don't upvote, submit, or report.</li>
           <li>
             To have a submission or its email removed, open an issue on
-            <a href="https://github.com/sarakay/freestuff-dartmouth-v2/issues" class="inline-link">GitHub</a>
+            <a href={`${SITE.github}/issues`} class="inline-link">GitHub</a>
             and we'll delete it.
           </li>
         </ul>
@@ -95,7 +96,7 @@ const lastUpdated = 'June 3, 2026';
         <h2 class="section-head">Contact</h2>
         <p>
           Questions? Open an issue on
-          <a href="https://github.com/sarakay/freestuff-dartmouth-v2/issues" class="inline-link">GitHub</a>.
+          <a href={`${SITE.github}/issues`} class="inline-link">GitHub</a>.
         </p>
       </section>
     </div>

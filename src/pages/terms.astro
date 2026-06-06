@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site.config';
 
 const lastUpdated = 'June 3, 2026';
 ---
@@ -53,7 +54,7 @@ const lastUpdated = 'June 3, 2026';
         <h2 class="section-head">Open source</h2>
         <p>
           The source code is available on
-          <a href="https://github.com/sarakay/freestuff-dartmouth-v2" class="inline-link">GitHub</a> under its
+          <a href={SITE.github} class="inline-link">GitHub</a> under its
           published license. You're welcome to fork it for your own school.
         </p>
       </section>
@@ -63,7 +64,7 @@ const lastUpdated = 'June 3, 2026';
         <p>
           These terms may be updated; the "last updated" date above reflects the current version. Questions?
           Open an issue on
-          <a href="https://github.com/sarakay/freestuff-dartmouth-v2/issues" class="inline-link">GitHub</a>.
+          <a href={`${SITE.github}/issues`} class="inline-link">GitHub</a>.
         </p>
       </section>
     </div>

@@ -9,12 +9,14 @@
 
 import type { Resource } from './lib/catalog';
 
-/** School / site branding. */
+/** School / site branding. The single place a fork edits to rebrand. */
 export const SITE = {
   school: 'Dartmouth',
   name: 'Free Stuff @ Dartmouth',
   tagline: 'Your complete catalog of free perks',
   url: 'https://freestuff-dartmouth.vercel.app',
+  /** Public repo — used for the "fork this" + "report an issue" links. */
+  github: 'https://github.com/ssskay/freestuff-dartmouth-v2',
 } as const;
 
 /** Allowed resource categories. Mirrors the DB category constraint. */

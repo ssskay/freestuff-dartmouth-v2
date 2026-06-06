@@ -1,10 +1,11 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
+import { SITE } from './src/site.config.ts';
 
 export default defineConfig({
   integrations: [tailwind(), sitemap()],
-  site: 'https://freestuff-dartmouth.vercel.app',
+  site: SITE.url,
   devToolbar: {
     enabled: false
   },
