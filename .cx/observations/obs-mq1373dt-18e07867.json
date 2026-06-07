@@ -1,0 +1,34 @@
+{
+  "id": "obs-mq1373dt-18e07867",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] All 40 tests pass; the JSON is still valid. Here's what changed and why.",
+  "content": "Session: 23 user turns, 55 assistant turns\nTools: 22 calls (Bash×19, Read×2, Edit×1)\nFiles touched: src/lib/map-data.ts, src/pages/map.astro\n\nFinal response excerpt:\nAll 40 tests pass; the JSON is still valid. Here's what changed and why.\n\n## What was wrong\n\nThe coordinates were guesses from memory, and several were badly off — exactly as you saw. The worst offenders:\n\n| Place | Was | Now (OSM) | What was wrong |\n|---|---|---|---|\n| **Feldberg Library** | 43.7036, −72.2899 | 43.7051, −72.2951 | Pinned down by the Green; Feldberg is up at Tuck. This is the \"Bloomberg Terminal at Feldberg\" pin you saw in the wrong spot. |\n| **The \"WiFi\" pin (Green anchor)** | 43.7045, −72.2887 | 43.7033, −72.2886 | Sat ~130m north, up by Baker Library — \"at the library at the top, not where the green is.\" Now on the actual Green centroid. |\n| **Dick's House** | 43.7041, −72.2867 | 43.7088, −72.2869 | ~500m too far south. |\n| **Ledyard Canoe Club** | 43.7028, −72.2931 | …",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:read",
+    "tool:edit",
+    "edits",
+    "session:fbef36d3-f645-4595-8514-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "358db97043a1248ea9387aea0b735575c7238b33",
+  "extras": {
+    "sessionId": "fbef36d3-f645-4595-8514-c38217c233a3",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 23,
+    "assistantTurns": 55,
+    "toolCallCount": 22,
+    "filesTouched": [
+      "src/lib/map-data.ts",
+      "src/pages/map.astro"
+    ]
+  },
+  "createdAt": "2026-06-05T15:36:26.849Z",
+  "updatedAt": "2026-06-05T15:36:26.849Z"
+}

@@ -1,0 +1,44 @@
+{
+  "id": "obs-mq15ysze-767eb267",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] Popup opens anchored at the Feldberg pin showing \"Bloomberg Terminal at Feldberg\" — no price tag, correctly placed at Tuck. Everything checks out. Let me clean up the processes:",
+  "content": "Session: 167 user turns, 365 assistant turns\nTools: 155 calls (Bash×87, Read×38, Edit×26, Write×2, Agent×1, Skill×1)\nFiles touched: src/lib/map-data.ts, src/pages/map.astro, /tmp/map-desktop.png, /tmp/map-mobile.png, /tmp/map-zoom2x.png, /tmp/cluster3x.png, /tmp/m2-desktop.png, /tmp/m2-mobile.png, /tmp/m3-mobile.png, /tmp/m3-desktop.png, /tmp/fp-desktop.png, /tmp/fpcz.png, …\n\nFinal response excerpt:\nPopup opens anchored at the Feldberg pin showing \"Bloomberg Terminal at Feldberg\" — no price tag, correctly placed at Tuck. Everything checks out. Let me clean up the processes:",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:read",
+    "tool:edit",
+    "edits",
+    "session:fbef36d3-f645-4595-8514-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "bfa69343d077f6795ac4074e190370f0448aa4a1",
+  "extras": {
+    "sessionId": "fbef36d3-f645-4595-8514-c38217c233a3",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 167,
+    "assistantTurns": 365,
+    "toolCallCount": 155,
+    "filesTouched": [
+      "src/lib/map-data.ts",
+      "src/pages/map.astro",
+      "/tmp/map-desktop.png",
+      "/tmp/map-mobile.png",
+      "/tmp/map-zoom2x.png",
+      "/tmp/cluster3x.png",
+      "/tmp/m2-desktop.png",
+      "/tmp/m2-mobile.png",
+      "/tmp/m3-mobile.png",
+      "/tmp/m3-desktop.png",
+      "/tmp/fp-desktop.png",
+      "/tmp/fpcz.png"
+    ]
+  },
+  "createdAt": "2026-06-05T16:53:58.970Z",
+  "updatedAt": "2026-06-05T16:53:58.970Z"
+}

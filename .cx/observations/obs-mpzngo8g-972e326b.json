@@ -1,0 +1,30 @@
+{
+  "id": "obs-mpzngo8g-972e326b",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] What would you like to clarify about placement? Tell me what you're weighing and I'll adjust the options.",
+  "content": "Session: 11 user turns, 21 assistant turns\nTools: 8 calls (Bash×4, AskUserQuestion×3, Skill×1)\n\nFinal response excerpt:\nWhat would you like to clarify about placement? Tell me what you're weighing and I'll adjust the options.",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:askuserquestion",
+    "tool:skill",
+    "session:239031a8-354b-4b67-b475-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "646eceba6f25daa091c0fed4f8dbcc457f5e1fa3",
+  "extras": {
+    "sessionId": "239031a8-354b-4b67-b475-7cdc4558d13a",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 11,
+    "assistantTurns": 21,
+    "toolCallCount": 8,
+    "filesTouched": []
+  },
+  "createdAt": "2026-06-04T15:28:13.744Z",
+  "updatedAt": "2026-06-04T15:28:13.744Z"
+}

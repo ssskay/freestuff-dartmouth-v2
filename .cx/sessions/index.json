@@ -1,0 +1,65 @@
+[
+  {
+    "id": "mq3xt032-c2201305",
+    "project": "freestuff-dartmouth-v2",
+    "platform": "claude-code",
+    "startedAt": "2026-06-07T15:28:49.838Z",
+    "lastActive": "2026-06-07T15:45:14.410Z",
+    "status": "completed",
+    "summary": "commits: 414f3f1 Add handoff for freestuff-template extraction + CMU pack; b6d56f4 Make the fork seam real: wire SITE config, kill four fork traps; bfa6934 a11y + polish: map keyboard, reduced motion, honest counts/dates, nav wrap — 2 warnings"
+  },
+  {
+    "id": "mq3xszel-e7cbf179",
+    "project": "freestuff-dartmouth-v2",
+    "platform": "claude-code",
+    "startedAt": "2026-06-07T15:28:48.957Z",
+    "lastActive": "2026-06-07T15:45:15.473Z",
+    "status": "completed",
+    "summary": "commits: 414f3f1 Add handoff for freestuff-template extraction + CMU pack; b6d56f4 Make the fork seam real: wire SITE config, kill four fork traps; bfa6934 a11y + polish: map keyboard, reduced motion, honest counts/dates, nav wrap"
+  },
+  {
+    "id": "mq12rdq1-1477ce30",
+    "project": "freestuff-dartmouth-v2",
+    "platform": "claude-code",
+    "startedAt": "2026-06-05T15:24:13.753Z",
+    "lastActive": "2026-06-05T15:36:26.153Z",
+    "status": "completed",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings"
+  },
+  {
+    "id": "mq12rdao-78b34eba",
+    "project": "freestuff-dartmouth-v2",
+    "platform": "claude-code",
+    "startedAt": "2026-06-05T15:24:13.200Z",
+    "lastActive": "2026-06-05T15:36:26.843Z",
+    "status": "completed",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0"
+  },
+  {
+    "id": "mpzpoth0-2aaad3f5",
+    "project": "freestuff-dartmouth-v2",
+    "platform": "claude-code",
+    "startedAt": "2026-06-04T16:30:33.012Z",
+    "lastActive": "2026-06-05T03:55:54.731Z",
+    "status": "completed",
+    "summary": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings"
+  },
+  {
+    "id": "mpzn7290-b79c9898",
+    "project": "freestuff-dartmouth-v2",
+    "platform": "claude-code",
+    "startedAt": "2026-06-04T15:20:45.348Z",
+    "lastActive": "2026-06-04T15:26:14.240Z",
+    "status": "completed",
+    "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources"
+  },
+  {
+    "id": "mpzn71o4-2420e7c5",
+    "project": "freestuff-dartmouth-v2",
+    "platform": "claude-code",
+    "startedAt": "2026-06-04T15:20:44.596Z",
+    "lastActive": "2026-06-04T15:26:15.155Z",
+    "status": "completed",
+    "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources"
+  }
+]

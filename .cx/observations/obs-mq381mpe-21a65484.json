@@ -1,0 +1,44 @@
+{
+  "id": "obs-mq381mpe-21a65484",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] Done. The full handoff lives in the repo and in memory, so the next chat picks up with zero loss.",
+  "content": "Session: 217 user turns, 457 assistant turns\nTools: 198 calls (Bash×96, Read×49, Edit×45, Write×4, Agent×2, Skill×2)\nFiles touched: src/lib/map-data.ts, src/pages/map.astro, /tmp/map-desktop.png, /tmp/map-mobile.png, /tmp/map-zoom2x.png, /tmp/cluster3x.png, /tmp/m2-desktop.png, /tmp/m2-mobile.png, /tmp/m3-mobile.png, /tmp/m3-desktop.png, /tmp/fp-desktop.png, /tmp/fpcz.png, …\n\nFinal response excerpt:\nDone. The full handoff lives in the repo and in memory, so the next chat picks up with zero loss.\n\n## Here's your copy-paste opening prompt\n\nPaste this into a fresh chat (in whichever repo you start the template work):\n\n> I'm starting the multi-school template extraction for Free Stuff @ Dartmouth (the \"Track B\" engine — sell the agent-maintained-catalog pattern to other schools; Dartmouth stays the clean reference). **Read `.cx/handoffs/2026-06-06-freestuff-template-extraction.md` first** — it has the full forkability boundary, the chosen approach (C: templatize-through-CMU), the map-building recipe, risks, and what not to touch.\n>\n> Goal this session: stand up a school-agnostic `freestuff-template` structure, extract the **mechanical** config now (theme, taxonomy, OG generator, external…",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:read",
+    "tool:edit",
+    "edits",
+    "session:fbef36d3-f645-4595-8514-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "414f3f1e1ce644428f4664108805b6f5e117c676",
+  "extras": {
+    "sessionId": "fbef36d3-f645-4595-8514-c38217c233a3",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 217,
+    "assistantTurns": 457,
+    "toolCallCount": 198,
+    "filesTouched": [
+      "src/lib/map-data.ts",
+      "src/pages/map.astro",
+      "/tmp/map-desktop.png",
+      "/tmp/map-mobile.png",
+      "/tmp/map-zoom2x.png",
+      "/tmp/cluster3x.png",
+      "/tmp/m2-desktop.png",
+      "/tmp/m2-mobile.png",
+      "/tmp/m3-mobile.png",
+      "/tmp/m3-desktop.png",
+      "/tmp/fp-desktop.png",
+      "/tmp/fpcz.png"
+    ]
+  },
+  "createdAt": "2026-06-07T03:27:42.387Z",
+  "updatedAt": "2026-06-07T03:27:42.387Z"
+}

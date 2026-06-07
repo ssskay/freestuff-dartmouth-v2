@@ -1,0 +1,37 @@
+{
+  "id": "obs-mq0e7q9o-5aa653eb",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] Pushed — Vercel auto-deploys on push to main, so the build is running now (typically 1–2 min). Let me confirm /map actually goes live before handing you the link:",
+  "content": "Session: 58 user turns, 137 assistant turns\nTools: 54 calls (Bash×36, Edit×7, Read×5, Skill×2, ToolSearch×1, TaskList×1, Write×1, AskUserQuestion×1)\nFiles touched: /Users/sarakay/.claude/projects/-Users-sarakay-freestuff-dartmouth-v2/ed3d298a-3b15-4045-89ce-be281732f012/tool-results/b9t30oh6v.txt, tests/catalog-data.test.ts, src/layouts/BaseLayout.astro, src/pages/map.astro, tests/routes.test.ts\n\nFinal response excerpt:\nPushed — Vercel auto-deploys on push to `main`, so the build is running now (typically 1–2 min). Let me confirm `/map` actually goes live before handing you the link:",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:edit",
+    "tool:read",
+    "edits",
+    "session:ed3d298a-3b15-4045-89ce-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "2479a5a024bfd185a1865c2d12256dbd15269ac5",
+  "extras": {
+    "sessionId": "ed3d298a-3b15-4045-89ce-be281732f012",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 58,
+    "assistantTurns": 137,
+    "toolCallCount": 54,
+    "filesTouched": [
+      "/Users/sarakay/.claude/projects/-Users-sarakay-freestuff-dartmouth-v2/ed3d298a-3b15-4045-89ce-be281732f012/tool-results/b9t30oh6v.txt",
+      "tests/catalog-data.test.ts",
+      "src/layouts/BaseLayout.astro",
+      "src/pages/map.astro",
+      "tests/routes.test.ts"
+    ]
+  },
+  "createdAt": "2026-06-05T03:57:06.108Z",
+  "updatedAt": "2026-06-05T03:57:06.108Z"
+}

@@ -1,0 +1,44 @@
+{
+  "id": "obs-mq1y1rvu-63c7a8f3",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] Good news: the codebase was built to be forked — there's a src/site.config.ts that's explicitly \"the single source of school-specific configuration.\" But I want to be honest rather than sell you the …",
+  "content": "Session: 173 user turns, 381 assistant turns\nTools: 158 calls (Bash×89, Read×39, Edit×26, Write×2, Agent×1, Skill×1)\nFiles touched: src/lib/map-data.ts, src/pages/map.astro, /tmp/map-desktop.png, /tmp/map-mobile.png, /tmp/map-zoom2x.png, /tmp/cluster3x.png, /tmp/m2-desktop.png, /tmp/m2-mobile.png, /tmp/m3-mobile.png, /tmp/m3-desktop.png, /tmp/fp-desktop.png, /tmp/fpcz.png, …\n\nFinal response excerpt:\nGood news: the codebase was *built* to be forked — there's a `src/site.config.ts` that's explicitly \"the single source of school-specific configuration.\" But I want to be honest rather than sell you the dream: the config file is the *intent*, not the full reality. \"Dartmouth/Hanover\" is still hardcoded across ~21 files. So here's the grounded picture.\n\n## What forks cleanly vs. what's real work\n\n**The engine comes free** — and it's everything we've been polishing: the component system, search/filters, the card layout, submit + report flows, the Supabase schema, the weekly verifier agent, a11y, SEO/OG. None of that cares what school it is.\n\n**Four things are genuinely per-school and can't be templated away:**\n\n1. **The catalog content** (`resources.json`, 204 of the refs) — this is the act…",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:read",
+    "tool:edit",
+    "edits",
+    "session:fbef36d3-f645-4595-8514-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "bfa69343d077f6795ac4074e190370f0448aa4a1",
+  "extras": {
+    "sessionId": "fbef36d3-f645-4595-8514-c38217c233a3",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 173,
+    "assistantTurns": 381,
+    "toolCallCount": 158,
+    "filesTouched": [
+      "src/lib/map-data.ts",
+      "src/pages/map.astro",
+      "/tmp/map-desktop.png",
+      "/tmp/map-mobile.png",
+      "/tmp/map-zoom2x.png",
+      "/tmp/cluster3x.png",
+      "/tmp/m2-desktop.png",
+      "/tmp/m2-mobile.png",
+      "/tmp/m3-mobile.png",
+      "/tmp/m3-desktop.png",
+      "/tmp/fp-desktop.png",
+      "/tmp/fpcz.png"
+    ]
+  },
+  "createdAt": "2026-06-06T06:00:06.762Z",
+  "updatedAt": "2026-06-06T06:00:06.762Z"
+}

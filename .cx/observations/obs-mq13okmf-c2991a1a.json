@@ -1,0 +1,38 @@
+{
+  "id": "obs-mq13okmf-c2991a1a",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] Done. Here's where things stand:",
+  "content": "Session: 53 user turns, 117 assistant turns\nTools: 48 calls (Bash×37, Read×8, Edit×3)\nFiles touched: src/lib/map-data.ts, src/pages/map.astro, /tmp/map-desktop.png, /tmp/map-mobile.png, /tmp/map-zoom2x.png, /tmp/cluster3x.png\n\nFinal response excerpt:\nDone. Here's where things stand:\n\n**Shipped to `main`** — commit `a6c9864`:\n- All 11 building pins now use authoritative OpenStreetMap footprints (Feldberg up at Tuck, Dick's House north, Ledyard on the river, etc.)\n- The WiFi/Green anchor moved to the true Green centroid\n- The `~$X/yr` price tag removed from map popups (still shows on catalog cards, where it's meant to be)\n\n**Deploy:** there's a `vercel.json`, so Vercel auto-deploys on push to `main` — it should be building now and live in a minute or two at your production URL. The catalog page is untouched, so nothing else changed.\n\n**Local:** the dev server is still running at `localhost:4321/map` if you want to click pins and confirm the popups before the deploy lands — worth a quick check on a couple of pins since I couldn't verify …",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:read",
+    "tool:edit",
+    "edits",
+    "session:fbef36d3-f645-4595-8514-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "a6c9864713dc20d63f37170b1b75038b5b89de34",
+  "extras": {
+    "sessionId": "fbef36d3-f645-4595-8514-c38217c233a3",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 53,
+    "assistantTurns": 117,
+    "toolCallCount": 48,
+    "filesTouched": [
+      "src/lib/map-data.ts",
+      "src/pages/map.astro",
+      "/tmp/map-desktop.png",
+      "/tmp/map-mobile.png",
+      "/tmp/map-zoom2x.png",
+      "/tmp/cluster3x.png"
+    ]
+  },
+  "createdAt": "2026-06-05T15:50:02.343Z",
+  "updatedAt": "2026-06-05T15:50:02.343Z"
+}

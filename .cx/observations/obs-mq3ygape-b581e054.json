@@ -1,0 +1,34 @@
+{
+  "id": "obs-mq3ygape-b581e054",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] You just gave me a clean decision rule. All three of your criteria point the same way, so I'll make the call: fork-base. Here's why it wins on each thing you named:",
+  "content": "Session: 9 user turns, 20 assistant turns\nTools: 6 calls (Read×2, Bash×2, Skill×1, AskUserQuestion×1)\nFiles touched: .cx/handoffs/2026-06-06-freestuff-template-extraction.md, src/site.config.ts\n\nFinal response excerpt:\nYou just gave me a clean decision rule. All three of your criteria point the same way, so I'll make the call: **fork-base.** Here's why it wins on each thing you named:\n\n- **Easiest to maintain.** The weekly work is *content* (the agent updating `resources.json`) — identical in both models. Where they differ is engine fixes and machinery. Fork-base needs *zero* new build machinery; the monorepo needs a compose step that is itself a thing that can break. Less machinery = less to maintain and less to debug at 11pm.\n- **Most popularity.** This is the decisive one. \"Use this template\" on GitHub is a self-serve growth loop — any school's student can fork and launch without you lifting a finger. The handoff's whole \"Fork this for your school\" funnel *requires* fork-base to work. A monorepo only…",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:read",
+    "tool:bash",
+    "tool:skill",
+    "edits",
+    "session:b0398ca4-f173-471a-b309-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "414f3f1e1ce644428f4664108805b6f5e117c676",
+  "extras": {
+    "sessionId": "b0398ca4-f173-471a-b309-77065f9830ae",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 9,
+    "assistantTurns": 20,
+    "toolCallCount": 6,
+    "filesTouched": [
+      ".cx/handoffs/2026-06-06-freestuff-template-extraction.md",
+      "src/site.config.ts"
+    ]
+  },
+  "createdAt": "2026-06-07T15:46:56.690Z",
+  "updatedAt": "2026-06-07T15:46:56.690Z"
+}

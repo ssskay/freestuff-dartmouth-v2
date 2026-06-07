@@ -1,0 +1,44 @@
+{
+  "id": "obs-mq1491ld-59de049c",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] All four things are done and live (c7e5646):",
+  "content": "Session: 96 user turns, 205 assistant turns\nTools: 88 calls (Bash×57, Read×21, Edit×10)\nFiles touched: src/lib/map-data.ts, src/pages/map.astro, /tmp/map-desktop.png, /tmp/map-mobile.png, /tmp/map-zoom2x.png, /tmp/cluster3x.png, /tmp/m2-desktop.png, /tmp/m2-mobile.png, /tmp/m3-mobile.png, /tmp/m3-desktop.png, /tmp/fp-desktop.png, /tmp/fpcz.png, …\n\nFinal response excerpt:\nAll four things are done and live (`c7e5646`):\n\n## What shipped\n1. **Zoom one notch tighter** — desktop fills the frame; mobile self-corrects to keep every pin visible.\n2. **Real building footprints, softly tinted** — pulled the actual OSM polygons (via Overpass), stored static in `building-footprints.json`, drawn in brand green at 16% opacity in a pane *below* the pins. 10 of 11 places have a footprint (Feldberg → its Murdough Center building; Advance Transit is a bus stop, so pin-only). They're non-interactive, so pins stay the tap targets.\n3. **Mobile hero/height fix** — trimmed the hero and gave the map ~68vh, so you land on pins instead of a wall of text.\n\n## Worth knowing / your call\n\n- **The tint is intentionally subtle**, and it's *most* visible when zoomed in — at the default ove…",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:read",
+    "tool:edit",
+    "edits",
+    "session:fbef36d3-f645-4595-8514-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "c7e5646a74b39290461c5bc65ede9311817e3cba",
+  "extras": {
+    "sessionId": "fbef36d3-f645-4595-8514-c38217c233a3",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 96,
+    "assistantTurns": 205,
+    "toolCallCount": 88,
+    "filesTouched": [
+      "src/lib/map-data.ts",
+      "src/pages/map.astro",
+      "/tmp/map-desktop.png",
+      "/tmp/map-mobile.png",
+      "/tmp/map-zoom2x.png",
+      "/tmp/cluster3x.png",
+      "/tmp/m2-desktop.png",
+      "/tmp/m2-mobile.png",
+      "/tmp/m3-mobile.png",
+      "/tmp/m3-desktop.png",
+      "/tmp/fp-desktop.png",
+      "/tmp/fpcz.png"
+    ]
+  },
+  "createdAt": "2026-06-05T16:05:57.457Z",
+  "updatedAt": "2026-06-05T16:05:57.457Z"
+}

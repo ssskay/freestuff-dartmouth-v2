@@ -1,0 +1,30 @@
+{
+  "id": "obs-mpzne4q6-1a75db71",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] What would you like to clarify about the map scope? Happy to talk it through before we lock the direction.",
+  "content": "Session: 8 user turns, 14 assistant turns\nTools: 6 calls (Bash×4, Skill×1, AskUserQuestion×1)\n\nFinal response excerpt:\nWhat would you like to clarify about the map scope? Happy to talk it through before we lock the direction.",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:skill",
+    "tool:askuserquestion",
+    "session:239031a8-354b-4b67-b475-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "646eceba6f25daa091c0fed4f8dbcc457f5e1fa3",
+  "extras": {
+    "sessionId": "239031a8-354b-4b67-b475-7cdc4558d13a",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 8,
+    "assistantTurns": 14,
+    "toolCallCount": 6,
+    "filesTouched": []
+  },
+  "createdAt": "2026-06-04T15:26:15.150Z",
+  "updatedAt": "2026-06-04T15:26:15.150Z"
+}

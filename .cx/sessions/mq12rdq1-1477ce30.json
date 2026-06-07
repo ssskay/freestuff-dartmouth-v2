@@ -1,0 +1,13 @@
+{
+  "id": "mq12rdq1-1477ce30",
+  "project": "freestuff-dartmouth-v2",
+  "platform": "claude-code",
+  "startedAt": "2026-06-05T15:24:13.753Z",
+  "lastActive": "2026-06-05T15:36:26.153Z",
+  "status": "completed",
+  "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+  "decisions": [],
+  "filesChanged": [],
+  "openQuestions": [],
+  "taskSnapshot": []
+}

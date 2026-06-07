@@ -1,0 +1,20 @@
+{
+  "id": "obs-mq3ye3t5-6eee5daf",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "commits: 414f3f1 Add handoff for freestuff-template extraction + CMU pack; b6d56f4 Make the fork seam real: wire SITE config, kill four fork traps; bfa6934 a11y + polish: map keyboard, reduced motion, honest counts/dates, nav wrap — 2 warnings",
+  "content": "commits: 414f3f1 Add handoff for freestuff-template extraction + CMU pack; b6d56f4 Make the fork seam real: wire SITE config, kill four fork traps; bfa6934 a11y + polish: map keyboard, reduced motion, honest counts/dates, nav wrap — 2 warnings",
+  "tags": [
+    "freestuff-dartmouth-v2",
+    "session"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.9,
+  "source": {
+    "session": "mq3xt032-c2201305"
+  },
+  "gitSha": "414f3f1e1ce644428f4664108805b6f5e117c676",
+  "extras": null,
+  "createdAt": "2026-06-07T15:45:14.441Z",
+  "updatedAt": "2026-06-07T15:45:14.441Z"
+}

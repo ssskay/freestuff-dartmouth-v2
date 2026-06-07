@@ -1,0 +1,41 @@
+{
+  "id": "obs-mq0ev106-61a25547",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] Both bugs are root-caused, fixed, and verified live — and I caught myself before shipping a wrong guess.",
+  "content": "Session: 87 user turns, 215 assistant turns\nTools: 81 calls (Bash×54, Read×11, Edit×9, Skill×3, ToolSearch×1, TaskList×1, Write×1, AskUserQuestion×1)\nFiles touched: /Users/sarakay/.claude/projects/-Users-sarakay-freestuff-dartmouth-v2/ed3d298a-3b15-4045-89ce-be281732f012/tool-results/b9t30oh6v.txt, tests/catalog-data.test.ts, src/layouts/BaseLayout.astro, src/pages/map.astro, tests/routes.test.ts, src/components/ResourceCard.astro, /tmp/map-mobile-after.png, /tmp/map-desktop-after.png, /private/tmp/claude-501/-Users-sarakay-freestuff-dartmouth-v2/ed3d298a-3b15-4045-89ce-be281732f012/tasks/b8uvkpimd.output\n\nFinal response excerpt:\nBoth bugs are root-caused, fixed, and verified live — and I caught myself before shipping a wrong guess.\n\n## What was actually wrong\n\n**The pins (your \"dots\") — fixed.** The click handler was working fine all along. The real bug was layout: on phone-width screens the detail panel was `position: static`, so it rendered *below* a full-height map and opened **off-screen below the fold**. You tapped a dot, the panel opened where you couldn't see it — \"nothing happens.\" (On a desktop it worked, which is why it wasn't obvious.) I reproduced it in a real browser at 390×844 and confirmed the panel landed at y:908, past the 844px screen.\n\nNow on mobile it's a **bottom sheet** that slides up over the map the instant you tap a pin — title, the resources at that place, and a ✕ to close. Verified visu…",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:read",
+    "tool:edit",
+    "edits",
+    "session:ed3d298a-3b15-4045-89ce-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "e15afa258295e4e9f574046735e60f5dc7454dda",
+  "extras": {
+    "sessionId": "ed3d298a-3b15-4045-89ce-be281732f012",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 87,
+    "assistantTurns": 215,
+    "toolCallCount": 81,
+    "filesTouched": [
+      "/Users/sarakay/.claude/projects/-Users-sarakay-freestuff-dartmouth-v2/ed3d298a-3b15-4045-89ce-be281732f012/tool-results/b9t30oh6v.txt",
+      "tests/catalog-data.test.ts",
+      "src/layouts/BaseLayout.astro",
+      "src/pages/map.astro",
+      "tests/routes.test.ts",
+      "src/components/ResourceCard.astro",
+      "/tmp/map-mobile-after.png",
+      "/tmp/map-desktop-after.png",
+      "/private/tmp/claude-501/-Users-sarakay-freestuff-dartmouth-v2/ed3d298a-3b15-4045-89ce-be281732f012/tasks/b8uvkpimd.output"
+    ]
+  },
+  "createdAt": "2026-06-05T04:15:13.110Z",
+  "updatedAt": "2026-06-05T04:15:13.110Z"
+}

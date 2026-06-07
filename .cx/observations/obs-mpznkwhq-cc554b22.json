@@ -1,0 +1,30 @@
+{
+  "id": "obs-mpznkwhq-cc554b22",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] Locked: /map. Here's the full design. I've broken it into sections — tell me if any piece feels off and we'll adjust before I write the spec.",
+  "content": "Session: 14 user turns, 27 assistant turns\nTools: 9 calls (Bash×4, AskUserQuestion×3, Skill×1, Agent×1)\n\nFinal response excerpt:\nLocked: **`/map`**. Here's the full design. I've broken it into sections — tell me if any piece feels off and we'll adjust before I write the spec.\n\n## 1. The page\n`src/pages/map.astro`, wrapped in `BaseLayout` with its own title, meta description, and OG image — a real shareable destination (the whole point of the nyc.gov/summer framing). Structure mirrors your existing `scenarios/index.astro`:\n- **Hero**: \"The campus is your backyard. Get out there.\" + one line of copy.\n- **The map** (Leaflet, real Hanover geography).\n- **A back-to-catalog CTA** (\"Browse all 78 resources →\" linking to `/`).\n- One nav link added to `BaseLayout.astro` (`Map`).\n\n## 2. Data model\nAdd three optional fields to records in `resources.json` (and to the `StaticResource` interface + `normalizeStaticResource` in `c…",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:askuserquestion",
+    "tool:skill",
+    "session:239031a8-354b-4b67-b475-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "646eceba6f25daa091c0fed4f8dbcc457f5e1fa3",
+  "extras": {
+    "sessionId": "239031a8-354b-4b67-b475-7cdc4558d13a",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 14,
+    "assistantTurns": 27,
+    "toolCallCount": 9,
+    "filesTouched": []
+  },
+  "createdAt": "2026-06-04T15:31:31.070Z",
+  "updatedAt": "2026-06-04T15:31:31.070Z"
+}

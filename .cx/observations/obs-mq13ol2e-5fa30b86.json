@@ -1,0 +1,20 @@
+{
+  "id": "obs-mq13ol2e-5fa30b86",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+  "content": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+  "tags": [
+    "freestuff-dartmouth-v2",
+    "session"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.9,
+  "source": {
+    "session": "mq12rdq1-1477ce30"
+  },
+  "gitSha": "a6c9864713dc20d63f37170b1b75038b5b89de34",
+  "extras": null,
+  "createdAt": "2026-06-05T15:50:02.918Z",
+  "updatedAt": "2026-06-05T15:50:02.918Z"
+}

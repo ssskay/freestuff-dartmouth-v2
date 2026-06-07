@@ -1,0 +1,13 @@
+{
+  "id": "mpzn7290-b79c9898",
+  "project": "freestuff-dartmouth-v2",
+  "platform": "claude-code",
+  "startedAt": "2026-06-04T15:20:45.348Z",
+  "lastActive": "2026-06-04T15:26:14.240Z",
+  "status": "completed",
+  "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+  "decisions": [],
+  "filesChanged": [],
+  "openQuestions": [],
+  "taskSnapshot": []
+}

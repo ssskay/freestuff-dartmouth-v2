@@ -1,0 +1,37 @@
+{
+  "id": "obs-mpznuo95-56a1f79b",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] Both docs are committed on feature/campus-map:",
+  "content": "Session: 27 user turns, 54 assistant turns\nTools: 20 calls (Bash×9, AskUserQuestion×3, Read×3, Skill×2, Write×2, Agent×1)\nFiles touched: docs/superpowers/specs/2026-06-04-campus-map-design.md, src/lib/catalog.ts, src/layouts/BaseLayout.astro, src/pages/scenarios/index.astro, docs/superpowers/plans/2026-06-04-campus-map.md\n\nFinal response excerpt:\nBoth docs are committed on `feature/campus-map`:\n- **Spec** → `docs/superpowers/specs/2026-06-04-campus-map-design.md`\n- **Plan** → `docs/superpowers/plans/2026-06-04-campus-map.md`\n\nThe plan is 6 TDD tasks, each ending in a passing test + commit:\n\n1. **Geo fields** in the catalog data layer (`lat`/`lng`/`place` + a JSON-only `loadStaticResources()` — because coords live only in the JSON, not Supabase)\n2. **`buildMapData()`** — pure, unit-tested function that groups co-located resources into one pin and routes everything else to the Green\n3. **Author the coordinates** into `resources.json` (~20 physical resources → ~11 pins) + Hanover bounding-box invariants\n4. **The `/map` page** — hero, nav link, and the accessible text-list baseline that works with no JS\n5. **The Leaflet island** — pin…",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:askuserquestion",
+    "tool:read",
+    "edits",
+    "session:239031a8-354b-4b67-b475-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "c96350c6cb3ff9c689b70af352308660e9192ddf",
+  "extras": {
+    "sessionId": "239031a8-354b-4b67-b475-7cdc4558d13a",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 27,
+    "assistantTurns": 54,
+    "toolCallCount": 20,
+    "filesTouched": [
+      "docs/superpowers/specs/2026-06-04-campus-map-design.md",
+      "src/lib/catalog.ts",
+      "src/layouts/BaseLayout.astro",
+      "src/pages/scenarios/index.astro",
+      "docs/superpowers/plans/2026-06-04-campus-map.md"
+    ]
+  },
+  "createdAt": "2026-06-04T15:39:06.953Z",
+  "updatedAt": "2026-06-04T15:39:06.953Z"
+}

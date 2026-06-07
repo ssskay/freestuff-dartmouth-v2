@@ -1,0 +1,20 @@
+{
+  "id": "obs-mpznkvpp-578ba521",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+  "content": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+  "tags": [
+    "freestuff-dartmouth-v2",
+    "session"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.9,
+  "source": {
+    "session": "mpzn7290-b79c9898"
+  },
+  "gitSha": "646eceba6f25daa091c0fed4f8dbcc457f5e1fa3",
+  "extras": null,
+  "createdAt": "2026-06-04T15:31:30.062Z",
+  "updatedAt": "2026-06-04T15:31:30.062Z"
+}

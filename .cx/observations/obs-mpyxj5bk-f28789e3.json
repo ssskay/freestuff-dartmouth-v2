@@ -1,0 +1,44 @@
+{
+  "id": "obs-mpyxj5bk-f28789e3",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] Clean across the board: typecheck 0/0/0, build 14 pages, 27 tests. Committing + pushing:",
+  "content": "Session: 254 user turns, 553 assistant turns\nTools: 239 calls (Edit×101, Bash×66, Read×30, Write×28, Agent×12, AskUserQuestion×2)\nFiles touched: docs/construct-review.md, src/lib/supabase.ts, src/lib/fingerprint.ts, supabase/schema.sql, supabase/add-reports-table.sql, src/pages/index.astro, src/pages/scenarios/grad-school.astro, src/components/ResourceCard.astro, src/lib/database.types.ts, src/pages/submit.astro, scripts/seed-supabase.js, src/site.config.ts, …\n\nFinal response excerpt:\nClean across the board: **typecheck 0/0/0**, build 14 pages, 27 tests. Committing + pushing:",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:edit",
+    "tool:bash",
+    "tool:read",
+    "edits",
+    "session:06ba2528-cab7-4c22-a0f0-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "a597106c4a903ee31a1499feb01fb651f0c38c02",
+  "extras": {
+    "sessionId": "06ba2528-cab7-4c22-a0f0-7dc361e9b9d8",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 254,
+    "assistantTurns": 553,
+    "toolCallCount": 239,
+    "filesTouched": [
+      "docs/construct-review.md",
+      "src/lib/supabase.ts",
+      "src/lib/fingerprint.ts",
+      "supabase/schema.sql",
+      "supabase/add-reports-table.sql",
+      "src/pages/index.astro",
+      "src/pages/scenarios/grad-school.astro",
+      "src/components/ResourceCard.astro",
+      "src/lib/database.types.ts",
+      "src/pages/submit.astro",
+      "scripts/seed-supabase.js",
+      "src/site.config.ts"
+    ]
+  },
+  "createdAt": "2026-06-04T03:22:19.184Z",
+  "updatedAt": "2026-06-04T03:22:19.184Z"
+}

@@ -1,0 +1,44 @@
+{
+  "id": "obs-mq0z0mpe-2eaa2c91",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "[session] Live and verified — the width cap shipped and the new JS bundle contains fitBounds.",
+  "content": "Session: 116 user turns, 275 assistant turns\nTools: 106 calls (Bash×65, Read×19, Edit×15, Skill×3, ToolSearch×1, TaskList×1, Write×1, AskUserQuestion×1)\nFiles touched: /Users/sarakay/.claude/projects/-Users-sarakay-freestuff-dartmouth-v2/ed3d298a-3b15-4045-89ce-be281732f012/tool-results/b9t30oh6v.txt, tests/catalog-data.test.ts, src/layouts/BaseLayout.astro, src/pages/map.astro, tests/routes.test.ts, src/components/ResourceCard.astro, /tmp/map-mobile-after.png, /tmp/map-desktop-after.png, /private/tmp/claude-501/-Users-sarakay-freestuff-dartmouth-v2/ed3d298a-3b15-4045-89ce-be281732f012/tasks/b8uvkpimd.output, /Users/sarakay/freestuky-dartmouth-v2/src/pages/map.astro, /tmp/map2-desktop.png, /tmp/map2-mobile.png, …\n\nFinal response excerpt:\nLive and verified — the width cap shipped and the new JS bundle contains `fitBounds`.\n\n## Done\n\nThe map now **opens zoomed into the campus core** instead of a tiny cluster lost in empty outskirts. Two changes:\n\n- **`fitBounds`** — instead of a fixed zoom-15, the map now auto-frames to the actual pin spread, so it opens as tight as it can while still showing every pin. Adapts to any screen.\n- **Width cap (60rem, centered)** — the full-width banner was so wide that even a tight zoom left Route 5 and dead space on the sides. Capping it keeps the frame on Hanover.\n\nVerified in a real browser at desktop and phone widths — campus fills the frame both ways, pins spread out and easy to hit, no Route 5. All 40 tests pass, tooling cleaned up.\n\nRefresh **https://freestuff-dartmouth-v2.vercel.app/map…",
+  "tags": [
+    "auto-reflect",
+    "session-summary",
+    "tool:bash",
+    "tool:read",
+    "tool:edit",
+    "edits",
+    "session:ed3d298a-3b15-4045-89ce-"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.7,
+  "source": "auto-reflect",
+  "gitSha": "358db97043a1248ea9387aea0b735575c7238b33",
+  "extras": {
+    "sessionId": "ed3d298a-3b15-4045-89ce-be281732f012",
+    "cwd": "/Users/sarakay/freestuff-dartmouth-v2",
+    "durationMs": null,
+    "userTurns": 116,
+    "assistantTurns": 275,
+    "toolCallCount": 106,
+    "filesTouched": [
+      "/Users/sarakay/.claude/projects/-Users-sarakay-freestuff-dartmouth-v2/ed3d298a-3b15-4045-89ce-be281732f012/tool-results/b9t30oh6v.txt",
+      "tests/catalog-data.test.ts",
+      "src/layouts/BaseLayout.astro",
+      "src/pages/map.astro",
+      "tests/routes.test.ts",
+      "src/components/ResourceCard.astro",
+      "/tmp/map-mobile-after.png",
+      "/tmp/map-desktop-after.png",
+      "/private/tmp/claude-501/-Users-sarakay-freestuff-dartmouth-v2/ed3d298a-3b15-4045-89ce-be281732f012/tasks/b8uvkpimd.output",
+      "/Users/sarakay/freestuky-dartmouth-v2/src/pages/map.astro",
+      "/tmp/map2-desktop.png",
+      "/tmp/map2-mobile.png"
+    ]
+  },
+  "createdAt": "2026-06-05T13:39:26.835Z",
+  "updatedAt": "2026-06-05T13:39:26.835Z"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "obs-mq0f42kc-17630d53",
+  "role": "construct",
+  "category": "session-summary",
+  "summary": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings",
+  "content": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings",
+  "tags": [
+    "freestuff-dartmouth-v2",
+    "session"
+  ],
+  "project": "freestuff-dartmouth-v2",
+  "confidence": 0.9,
+  "source": {
+    "session": "mpzpoth0-2aaad3f5"
+  },
+  "gitSha": "bbd0b9919d309e27b3df605d3239c1d031bfa2a7",
+  "extras": null,
+  "createdAt": "2026-06-05T04:22:15.036Z",
+  "updatedAt": "2026-06-05T04:22:15.036Z"
+}

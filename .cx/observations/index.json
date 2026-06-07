@@ -1,5 +1,989 @@
 [
   {
+    "id": "obs-mq3yl1bg-fab1cd05",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 414f3f1 Add handoff for freestuff-template extraction + CMU pack; b6d56f4 Make the fork seam real: wire SITE config, kill four fork traps; bfa6934 a11y + polish: map keyboard, reduced motion, honest counts/dates, nav wrap — 2 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T15:50:37.804Z"
+  },
+  {
+    "id": "obs-mq3yl1b7-701f3ba5",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Spec written to docs/superpowers/specs/2026-06-07-freestuff-template-extraction-design.md. I self-reviewed it for placeholders, internal consistency, scope, and ambiguity — it's clean (the only defer…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T15:50:37.795Z"
+  },
+  {
+    "id": "obs-mq3yl0rk-8fcea81b",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Got everything I need — the category CHECK (schema.sql:17-21) mirrors CATEGORIES exactly, and the verifier's three Dartmouth-locked spots are confirmed. Writing the spec.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T15:50:37.088Z"
+  },
+  {
+    "id": "obs-mq3yl0rl-4b906127",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 414f3f1 Add handoff for freestuff-template extraction + CMU pack; b6d56f4 Make the fork seam real: wire SITE config, kill four fork traps; bfa6934 a11y + polish: map keyboard, reduced motion, honest counts/dates, nav wrap — 2 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T15:50:37.089Z"
+  },
+  {
+    "id": "obs-mq3ygapk-f68a2e14",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 414f3f1 Add handoff for freestuff-template extraction + CMU pack; b6d56f4 Make the fork seam real: wire SITE config, kill four fork traps; bfa6934 a11y + polish: map keyboard, reduced motion, honest counts/dates, nav wrap — 2 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T15:46:56.696Z"
+  },
+  {
+    "id": "obs-mq3ygape-b581e054",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] You just gave me a clean decision rule. All three of your criteria point the same way, so I'll make the call: fork-base. Here's why it wins on each thing you named:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T15:46:56.690Z"
+  },
+  {
+    "id": "obs-mq3yga76-ce5fc62d",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Good — this one's worth getting right because it's load-bearing. Here's how the two models stack up against the four things the handoff actually cares about.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T15:46:56.034Z"
+  },
+  {
+    "id": "obs-mq3yga73-e11ad7ca",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 414f3f1 Add handoff for freestuff-template extraction + CMU pack; b6d56f4 Make the fork seam real: wire SITE config, kill four fork traps; bfa6934 a11y + polish: map keyboard, reduced motion, honest counts/dates, nav wrap — 2 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T15:46:56.031Z"
+  },
+  {
+    "id": "obs-mq3ye4mf-93d69ec4",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 414f3f1 Add handoff for freestuff-template extraction + CMU pack; b6d56f4 Make the fork seam real: wire SITE config, kill four fork traps; bfa6934 a11y + polish: map keyboard, reduced motion, honest counts/dates, nav wrap — 2 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T15:45:15.495Z"
+  },
+  {
+    "id": "obs-mq3ye4lo-8e59f35d",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Good — this one's worth getting right because it's load-bearing. Here's how the two models stack up against the four things the handoff actually cares about.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T15:45:15.468Z"
+  },
+  {
+    "id": "obs-mq3ye3t5-6eee5daf",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 414f3f1 Add handoff for freestuff-template extraction + CMU pack; b6d56f4 Make the fork seam real: wire SITE config, kill four fork traps; bfa6934 a11y + polish: map keyboard, reduced motion, honest counts/dates, nav wrap — 2 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T15:45:14.441Z"
+  },
+  {
+    "id": "obs-mq3ye3s6-90f6f624",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] That gives me what I need: content flows in by relative import (../content/resources.json, ../content/building-footprints.json), and at build the catalog reads Supabase with a JSON fallback. So a \"pa…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T15:45:14.406Z"
+  },
+  {
+    "id": "obs-mq381mpe-21a65484",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done. The full handoff lives in the repo and in memory, so the next chat picks up with zero loss.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T03:27:42.387Z"
+  },
+  {
+    "id": "obs-mq381mp7-9236ef50",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T03:27:42.379Z"
+  },
+  {
+    "id": "obs-mq381ldq-cd1f61f0",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Now let me record this in memory so the next session picks it up, and commit the handoff to the repo.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T03:27:40.670Z"
+  },
+  {
+    "id": "obs-mq381ldo-54e388bc",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-07T03:27:40.668Z"
+  },
+  {
+    "id": "obs-mq301j9o-71e7b56d",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done and shipped (b6d56f4). All four traps are fixed in the Dartmouth repo, verified end-to-end, and pushed — so none of them propagate into the template.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T23:43:41.004Z"
+  },
+  {
+    "id": "obs-mq301j9b-99279c03",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T23:43:40.991Z"
+  },
+  {
+    "id": "obs-mq301ip7-c434c906",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done and shipped (b6d56f4). All four traps are fixed in the Dartmouth repo, verified end-to-end, and pushed — so none of them propagate into the template.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T23:43:40.267Z"
+  },
+  {
+    "id": "obs-mq301ipa-a6aa7630",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T23:43:40.270Z"
+  },
+  {
+    "id": "obs-mq2h3zpd-e0641661",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Construct read the whole codebase and double-checked my work — I was right in substance but I understated it and missed several real traps. And on your bigger question: your instinct beats my origina…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T14:53:42.913Z"
+  },
+  {
+    "id": "obs-mq2h3zp6-2bf309f9",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T14:53:42.906Z"
+  },
+  {
+    "id": "obs-mq2h3z52-f4e13deb",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Construct read the whole codebase and double-checked my work — I was right in substance but I understated it and missed several real traps. And on your bigger question: your instinct beats my origina…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T14:53:42.183Z"
+  },
+  {
+    "id": "obs-mq2h3z52-ab61bf2a",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T14:53:42.182Z"
+  },
+  {
+    "id": "obs-mq1y1rvu-63c7a8f3",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Good news: the codebase was built to be forked — there's a src/site.config.ts that's explicitly \"the single source of school-specific configuration.\" But I want to be honest rather than sell you the …",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T06:00:06.762Z"
+  },
+  {
+    "id": "obs-mq1y1rvk-4fef0ecc",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T06:00:06.752Z"
+  },
+  {
+    "id": "obs-mq1y1rfx-2884c5b3",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T06:00:06.189Z"
+  },
+  {
+    "id": "obs-mq1y1rfp-3329b28c",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Love it — that's literally the Track B play coming to life (and you've got the grad-student credibility at CMU to make it real). Before I answer \"how easy,\" let me actually look at how forkable the e…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T06:00:06.181Z"
+  },
+  {
+    "id": "obs-mq1xekmc-bcacb875",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] That's the one — and to be precise about your question: no, it wasn't this chat. This session has been the map coordinate fixes, the improvements batch, the verification run, and the search-bar conve…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T05:42:04.260Z"
+  },
+  {
+    "id": "obs-mq1xekm6-9865d551",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T05:42:04.254Z"
+  },
+  {
+    "id": "obs-mq1xek6j-978c8442",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] That's the one — and to be precise about your question: no, it wasn't this chat. This session has been the map coordinate fixes, the improvements batch, the verification run, and the search-bar conve…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T05:42:03.691Z"
+  },
+  {
+    "id": "obs-mq1xek6f-7b435542",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-06T05:42:03.688Z"
+  },
+  {
+    "id": "obs-mq1a2wrx-da1e1df1",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Honestly? I think you're onto something real, and it's worth being precise about why, because it points at a bigger decision than just the search bar.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T18:49:08.973Z"
+  },
+  {
+    "id": "obs-mq1a2wrt-522db3f6",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T18:49:08.969Z"
+  },
+  {
+    "id": "obs-mq1a2w5r-95a41a49",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] I drove the production build (what Vercel serves) through Chrome DevTools, hit all 15 routes, and exercised the real interactions. Here's the verdict.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T18:49:08.176Z"
+  },
+  {
+    "id": "obs-mq1a2w5o-973795a9",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T18:49:08.173Z"
+  },
+  {
+    "id": "obs-mq15ytgx-7c5f9289",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] I drove the production build (what Vercel serves) through Chrome DevTools, hit all 15 routes, and exercised the real interactions. Here's the verdict.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:53:59.601Z"
+  },
+  {
+    "id": "obs-mq15ytgr-ecfd43a6",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:53:59.595Z"
+  },
+  {
+    "id": "obs-mq15ysze-767eb267",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Popup opens anchored at the Feldberg pin showing \"Bloomberg Terminal at Feldberg\" — no price tag, correctly placed at Tuck. Everything checks out. Let me clean up the processes:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:53:58.970Z"
+  },
+  {
+    "id": "obs-mq15ysze-e5a86b5a",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:53:58.970Z"
+  },
+  {
+    "id": "obs-mq154m8d-8179dac9",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] All done and shipped across three commits. Here's the rundown:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:30:30.541Z"
+  },
+  {
+    "id": "obs-mq154m83-48a857e9",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:30:30.531Z"
+  },
+  {
+    "id": "obs-mq154lti-23e99319",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] All done and shipped across three commits. Here's the rundown:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:30:30.006Z"
+  },
+  {
+    "id": "obs-mq154lt3-146897b7",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:30:29.992Z"
+  },
+  {
+    "id": "obs-mq14i7xr-17afa350",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Construct surveyed the actual codebase. Here's the distilled picture — I've kept its prioritization and flagged what's genuinely broken/risky vs. polish.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:13:05.583Z"
+  },
+  {
+    "id": "obs-mq14i7xj-0821824d",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:13:05.575Z"
+  },
+  {
+    "id": "obs-mq14i7hu-48e777b1",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] I'll route this to Construct to survey the project and come back with a prioritized set of opportunities. Let me give it the full context of where things stand.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:13:05.011Z"
+  },
+  {
+    "id": "obs-mq14i7hp-f33586ab",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:13:05.005Z"
+  },
+  {
+    "id": "obs-mq14921n-2cfa1005",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] All four things are done and live (c7e5646):",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:05:58.043Z"
+  },
+  {
+    "id": "obs-mq14921o-7b0650b3",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:05:58.044Z"
+  },
+  {
+    "id": "obs-mq1491ld-59de049c",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] All four things are done and live (c7e5646):",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:05:57.457Z"
+  },
+  {
+    "id": "obs-mq1491ld-4e6552e0",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T16:05:57.457Z"
+  },
+  {
+    "id": "obs-mq13vrsm-b548c053",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:55:38.230Z"
+  },
+  {
+    "id": "obs-mq13vrs2-6be15607",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Shipped (cb1ecb6). Now your two questions:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:55:38.210Z"
+  },
+  {
+    "id": "obs-mq13vre4-d5f556fd",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:55:37.708Z"
+  },
+  {
+    "id": "obs-mq13vrdz-24c5af4e",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Shipped (cb1ecb6). Now your two questions:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:55:37.703Z"
+  },
+  {
+    "id": "obs-mq13ol2e-5fa30b86",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:50:02.918Z"
+  },
+  {
+    "id": "obs-mq13ol2d-2fad0fab",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done. Here's where things stand:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:50:02.917Z"
+  },
+  {
+    "id": "obs-mq13okmo-0c29c60f",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:50:02.352Z"
+  },
+  {
+    "id": "obs-mq13okmf-c2991a1a",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done. Here's where things stand:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:50:02.343Z"
+  },
+  {
+    "id": "obs-mq13k17w-c116956a",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] That gives me a factual answer rather than a guess. Here's what the project's own records (.cx/audit-trail.jsonl, which logs every file-touching tool call, plus the session observations) actually sho…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:46:30.572Z"
+  },
+  {
+    "id": "obs-mq13k17w-538ecb70",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:46:30.572Z"
+  },
+  {
+    "id": "obs-mq13k0p9-43dc5beb",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:46:29.901Z"
+  },
+  {
+    "id": "obs-mq13k0p6-c916e1ba",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] That gives me a factual answer rather than a guess. Here's what the project's own records (.cx/audit-trail.jsonl, which logs every file-touching tool call, plus the session observations) actually sho…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:46:29.898Z"
+  },
+  {
+    "id": "obs-mq1373ed-458b5fc3",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:36:26.869Z"
+  },
+  {
+    "id": "obs-mq1373dt-18e07867",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] All 40 tests pass; the JSON is still valid. Here's what changed and why.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:36:26.849Z"
+  },
+  {
+    "id": "obs-mq1372vv-4d5e94b0",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 358db97 Map: frame the view on campus (fitBounds + width cap); bbd0b99 Map: bigger pins + popups anchored at the pin (replace corner panel); e15afa2 Fix stray '0' rendered on cards with annual_value 0 — 3 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:36:26.203Z"
+  },
+  {
+    "id": "obs-mq1372u8-5c8279ae",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Those are synthetic test fixtures, not assertions against the real data, so they're fine to leave. Let me run the suite to confirm the JSON is still valid and nothing broke.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T15:36:26.144Z"
+  },
+  {
+    "id": "obs-mq0z0n72-34f0e59c",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T13:39:27.470Z"
+  },
+  {
+    "id": "obs-mq0z0n71-348b474f",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Live and verified — the width cap shipped and the new JS bundle contains fitBounds.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T13:39:27.469Z"
+  },
+  {
+    "id": "obs-mq0z0mpg-96dd491d",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T13:39:26.836Z"
+  },
+  {
+    "id": "obs-mq0z0mpe-2eaa2c91",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Live and verified — the width cap shipped and the new JS bundle contains fitBounds.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T13:39:26.835Z"
+  },
+  {
+    "id": "obs-mq0f42kc-17630d53",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T04:22:15.036Z"
+  },
+  {
+    "id": "obs-mq0f42k1-a3e633d7",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] The new version is live and verified — the bigger-pin CSS shipped, and the old corner panel is fully gone (0 references).",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T04:22:15.025Z"
+  },
+  {
+    "id": "obs-mq0f4256-105ad2b8",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T04:22:14.490Z"
+  },
+  {
+    "id": "obs-mq0f424y-4b78da43",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Pushed. Verifying the new CSS (bigger pins + popup styling are inlined in the /map HTML by Astro) reached the live site — polling for a marker unique to this change (scale(1.25)):",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T04:22:14.483Z"
+  },
+  {
+    "id": "obs-mq0ev106-61a25547",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Both bugs are root-caused, fixed, and verified live — and I caught myself before shipping a wrong guess.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T04:15:13.110Z"
+  },
+  {
+    "id": "obs-mq0ev0z9-3d57d244",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T04:15:13.077Z"
+  },
+  {
+    "id": "obs-mq0ev0m9-f5b46101",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T04:15:12.609Z"
+  },
+  {
+    "id": "obs-mq0ev0m8-a6eae2e4",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Both bugs are root-caused, fixed, and verified live — and I caught myself before shipping a wrong guess.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T04:15:12.608Z"
+  },
+  {
+    "id": "obs-mq0e7qoz-6c14bc1e",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T03:57:06.660Z"
+  },
+  {
+    "id": "obs-mq0e7q9p-b847c594",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T03:57:06.109Z"
+  },
+  {
+    "id": "obs-mq0e7q9o-5aa653eb",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Pushed — Vercel auto-deploys on push to main, so the build is running now (typically 1–2 min). Let me confirm /map actually goes live before handing you the link:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T03:57:06.108Z"
+  },
+  {
+    "id": "obs-mq0e67lw-15e43e59",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done. The campus map is fully recovered and shipped to main.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T03:55:55.268Z"
+  },
+  {
+    "id": "obs-mq0e67lm-9e9f3bef",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T03:55:55.258Z"
+  },
+  {
+    "id": "obs-mq0e677u-5ffe45b8",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 2479a5a Finalize campus map: replace undefined token fallbacks with real tokens; 80d311a Add Leaflet island: place pins, Green anchor, detail panel; 577f8ba Add /map page: server-rendered accessible baseline + nav link — 8 warnings",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T03:55:54.762Z"
+  },
+  {
+    "id": "obs-mq0e676p-8229a4d5",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done. The campus map is fully recovered and shipped to main.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-05T03:55:54.721Z"
+  },
+  {
+    "id": "obs-mpznuo9o-2fc1186d",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:39:06.972Z"
+  },
+  {
+    "id": "obs-mpznuo95-56a1f79b",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Both docs are committed on feature/campus-map:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:39:06.953Z"
+  },
+  {
+    "id": "obs-mpznunvp-91b1d9f9",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:39:06.470Z"
+  },
+  {
+    "id": "obs-mpznunvm-a6dc58c2",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Both docs are committed on feature/campus-map:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:39:06.466Z"
+  },
+  {
+    "id": "obs-mpznkwhx-f0956b16",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:31:31.077Z"
+  },
+  {
+    "id": "obs-mpznkwhq-cc554b22",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Locked: /map. Here's the full design. I've broken it into sections — tell me if any piece feels off and we'll adjust before I write the spec.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:31:31.070Z"
+  },
+  {
+    "id": "obs-mpznkvpp-578ba521",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:31:30.062Z"
+  },
+  {
+    "id": "obs-mpznkvpl-57551974",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Construct read the actual codebase and came back with a clear pick: a dedicated /map page (Option 1). The reasoning, grounded in what's really there:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:31:30.057Z"
+  },
+  {
+    "id": "obs-mpznji3s-aa6f7cdc",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:30:25.768Z"
+  },
+  {
+    "id": "obs-mpznji3q-41839575",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Construct read the actual codebase and came back with a clear pick: a dedicated /map page (Option 1). The reasoning, grounded in what's really there:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:30:25.766Z"
+  },
+  {
+    "id": "obs-mpznjhkp-a815976a",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:30:25.081Z"
+  },
+  {
+    "id": "obs-mpznjhkl-b324aa91",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Construct read the actual codebase and came back with a clear pick: a dedicated /map page (Option 1). The reasoning, grounded in what's really there:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:30:25.077Z"
+  },
+  {
+    "id": "obs-mpzngo8i-d8972cf9",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:28:13.747Z"
+  },
+  {
+    "id": "obs-mpzngo8g-972e326b",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] What would you like to clarify about placement? Tell me what you're weighing and I'll adjust the options.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:28:13.744Z"
+  },
+  {
+    "id": "obs-mpzngnr5-3981af4a",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:28:13.121Z"
+  },
+  {
+    "id": "obs-mpzngnr3-6a9f398a",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Leaflet it is — precise, familiar, and easy to drop pins by coordinate. (I'll geocode the campus places by hand; there aren't many.)",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:28:13.120Z"
+  },
+  {
+    "id": "obs-mpzne4qw-cace5a38",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:26:15.176Z"
+  },
+  {
+    "id": "obs-mpzne4q6-1a75db71",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] What would you like to clarify about the map scope? Happy to talk it through before we lock the direction.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:26:15.150Z"
+  },
+  {
+    "id": "obs-mpzne41t-d24ecaae",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "commits: 646eceb Simplify subscribe_email regex to remove POSIX-class ambiguity; a597106 Add TypeScript type-checking (astro check) and fix all type errors; 715f868 Harden report_issue(): reject reports for unknown resources",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:26:14.273Z"
+  },
+  {
+    "id": "obs-mpzne40t-28b3120b",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] I dug into the data, and there's a finding that shapes this whole feature, so let me surface it before anything else.",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:26:14.237Z"
+  },
+  {
+    "id": "obs-mpzmz3sv-5cbd3c6f",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] ✅ Saved — the ANTHROPICAPIKEY step is now a persistent project memory, so it'll surface in a future chat even if you start fresh (it won't get lost in this context). I also dropped a short project-st…",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:14:34.111Z"
+  },
+  {
+    "id": "obs-mpzmz3do-bc95342f",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Now a concise project-state memory so a fresh chat picks up the essentials without this whole transcript:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:14:33.564Z"
+  },
+  {
+    "id": "obs-mpzmwbuw-1528f4e6",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Confirmed — nothing for you to npm or add. It's all already in place and live:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:12:24.584Z"
+  },
+  {
+    "id": "obs-mpzmwbfx-80710aa6",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Confirmed — nothing for you to npm or add. It's all already in place and live:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:12:24.045Z"
+  },
+  {
+    "id": "obs-mpzmuv13-f9d9dad4",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] ✅ Newsletter is fully working now. Verified the whole path end-to-end against your live database:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:11:16.119Z"
+  },
+  {
+    "id": "obs-mpzmuum6-44c2a06e",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Here's the exact block — copy this whole thing into the Supabase SQL editor and run it, then watch the result panel:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:11:15.582Z"
+  },
+  {
+    "id": "obs-mpzmtuzs-6483411f",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Here's the exact block — copy this whole thing into the Supabase SQL editor and run it, then watch the result panel:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:10:29.416Z"
+  },
+  {
+    "id": "obs-mpzmtul7-866fb5f1",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Here's the exact block — copy this whole thing into the Supabase SQL editor and run it, then watch the result panel:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T15:10:28.891Z"
+  },
+  {
+    "id": "obs-mpyxoftw-c82ef5f6",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Re-probed — both still PGRST205/PGRST202 (\"not found in the schema cache\"). So:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T03:26:26.084Z"
+  },
+  {
+    "id": "obs-mpyxofcw-821bf379",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Re-probed — both still PGRST205/PGRST202 (\"not found in the schema cache\"). So:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T03:26:25.472Z"
+  },
+  {
+    "id": "obs-mpyxj5wl-c03b4199",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Pushed (a597106). Here's the honest accounting of \"the other stuff.\"",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T03:22:19.941Z"
+  },
+  {
+    "id": "obs-mpyxj5bk-f28789e3",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Clean across the board: typecheck 0/0/0, build 14 pages, 27 tests. Committing + pushing:",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T03:22:19.184Z"
+  },
+  {
+    "id": "obs-mpyvp7ni-157934d1",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Pushed (715f868). Here's the full picture from Construct's autonomous pass — it ran all 11 checks for real (build, tests, live Supabase probes, audit, a11y, secrets, the works).",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T02:31:02.910Z"
+  },
+  {
+    "id": "obs-mpyvp79u-be4d6b45",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Committing the guard fix (SQL-only — doesn't touch the live site until you paste it):",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T02:31:02.418Z"
+  },
+  {
+    "id": "obs-mpyv9h51-649e2903",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done — go play. 🎮",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T02:18:48.709Z"
+  },
+  {
+    "id": "obs-mpyv9gpr-10ef1cd5",
+    "role": "construct",
+    "category": "session-summary",
+    "summary": "[session] Done — go play. 🎮",
+    "project": "freestuff-dartmouth-v2",
+    "createdAt": "2026-06-04T02:18:48.159Z"
+  },
+  {
     "id": "obs-mpyv22zw-e78f899c",
     "role": "construct",
     "category": "session-summary",

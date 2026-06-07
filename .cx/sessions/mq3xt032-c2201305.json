@@ -1,0 +1,13 @@
+{
+  "id": "mq3xt032-c2201305",
+  "project": "freestuff-dartmouth-v2",
+  "platform": "claude-code",
+  "startedAt": "2026-06-07T15:28:49.838Z",
+  "lastActive": "2026-06-07T15:45:14.410Z",
+  "status": "completed",
+  "summary": "commits: 414f3f1 Add handoff for freestuff-template extraction + CMU pack; b6d56f4 Make the fork seam real: wire SITE config, kill four fork traps; bfa6934 a11y + polish: map keyboard, reduced motion, honest counts/dates, nav wrap — 2 warnings",
+  "decisions": [],
+  "filesChanged": [],
+  "openQuestions": [],
+  "taskSnapshot": []
+}
