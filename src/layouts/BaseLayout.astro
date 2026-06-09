@@ -1,6 +1,8 @@
 ---
 import Analytics from '@vercel/analytics/astro';
-import { SITE } from '../site.config';
+import { SITE, fundingLink } from '../site.config';
+
+const tip = fundingLink();
 
 interface Props {
   title: string;
@@ -82,7 +84,9 @@ const imageURL = new URL(image, siteOrigin);
         <p class="footer-links">
           <a href="/privacy" class="footer-link">Privacy</a> ·
           <a href="/terms" class="footer-link">Terms</a> ·
-          <a href="/about" class="footer-link">About</a>
+          <a href="/about" class="footer-link">About</a>{tip && (
+            <Fragment> · <a href={tip.href} class="footer-link" rel="noopener" target="_blank">{tip.label}</a></Fragment>
+          )}
         </p>
       </div>
     </footer>

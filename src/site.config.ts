@@ -17,7 +17,35 @@ export const SITE = {
   url: 'https://freestuff-dartmouth.vercel.app',
   /** Public repo — used for the "fork this" + "report an issue" links. */
   github: 'https://github.com/ssskay/freestuff-dartmouth-v2',
+  /**
+   * Optional tip jar. Fill in any handle you have and it lights up on its own —
+   * leave a value as '' and it stays hidden (nothing fake ships). One link shows
+   * in the site footer; all of them can show on the GitHub repo's Sponsor button
+   * (keep .github/FUNDING.yml in sync).
+   */
+  funding: {
+    // Each value lights up its link automatically the moment it's non-empty.
+    // Left blank on purpose — fill these in once the accounts exist:
+    githubSponsors: '', // -> 'ssskay' AFTER enrolling at github.com/sponsors (link 404s until approved)
+    kofi: '', // -> your handle after creating ko-fi.com/<handle>
+    buyMeACoffee: '', // -> your handle after creating buymeacoffee.com/<handle>
+  },
 } as const;
+
+/**
+ * The single tip-jar link rendered in the footer, or null if none configured.
+ * Prefers a coffee link (warmer for a $5 community catalog) over the formal
+ * Sponsor link, but shows whichever exists.
+ */
+export function fundingLink(): { href: string; label: string } | null {
+  const f = SITE.funding;
+  if (f.kofi) return { href: `https://ko-fi.com/${f.kofi}`, label: '☕ Buy us a coffee' };
+  if (f.buyMeACoffee)
+    return { href: `https://buymeacoffee.com/${f.buyMeACoffee}`, label: '☕ Buy us a coffee' };
+  if (f.githubSponsors)
+    return { href: `https://github.com/sponsors/${f.githubSponsors}`, label: '♥ Sponsor this project' };
+  return null;
+}
 
 /** Allowed resource categories. Mirrors the DB category constraint. */
 export const CATEGORIES = [
