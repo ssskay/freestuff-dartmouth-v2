@@ -31,3 +31,5 @@ test-supabase.js
 
 # Agent run metrics: ignore per-run snapshots, keep the longitudinal ledger
 agents/metrics/run-*.json
+.vercel
+freshness-report.md
