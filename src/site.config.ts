@@ -26,7 +26,7 @@ export const SITE = {
   funding: {
     // Each value lights up its link automatically the moment it's non-empty.
     // Left blank on purpose — fill these in once the accounts exist:
-    githubSponsors: '', // -> 'ssskay' AFTER enrolling at github.com/sponsors (link 404s until approved)
+    githubSponsors: 'ssskay', // live: github.com/sponsors/ssskay
     kofi: '', // -> your handle after creating ko-fi.com/<handle>
     buyMeACoffee: '', // -> your handle after creating buymeacoffee.com/<handle>
   },

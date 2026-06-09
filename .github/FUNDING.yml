@@ -1,6 +1,6 @@
 # Powers the "♥ Sponsor" button on the GitHub repo page.
 # Uncomment / fill a line once the account exists and it appears automatically.
 # Keep the handles in sync with the `funding` block in src/site.config.ts.
-# github: [ssskay]        # AFTER enrolling at github.com/sponsors (button errors until approved)
+github: [ssskay]          # live: github.com/sponsors/ssskay
 # ko_fi: yourhandle       # ko-fi.com/<handle>
 # buy_me_a_coffee: yourhandle
