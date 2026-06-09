@@ -1,0 +1,14 @@
+# Free Stuff @ Dartmouth
+
+> A verified, ad-free catalog of perks that are genuinely free for Dartmouth students and alumni — software, transit, gear, museums, grants, and more. Only things you can get WITHOUT paying money are listed (no discounts, no affiliate links, no ads). Every entry shows a last-verified date.
+
+## Browse
+- [Full catalog](https://dartmouth.campusfreebies.com): all verified free perks, searchable by category
+- [Campus map](https://dartmouth.campusfreebies.com/map): perks by location around Hanover
+- [Scenario guides](https://dartmouth.campusfreebies.com/scenarios): curated sets (new to campus, job hunting, creative work, and more)
+
+## What "free" means here
+A listing qualifies only if a student gets the benefit without paying money. Conditions like showing a student ID or reserving ahead are fine. Memberships, fees, and discounts (still paid) do not qualify and are excluded.
+
+## About
+Part of [Free Stuff on Campus](https://campusfreebies.com) — an independent, student-built, open-source project. Not affiliated with Dartmouth College. Always confirm details on the official pages each listing links to.
