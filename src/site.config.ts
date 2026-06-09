@@ -14,7 +14,7 @@ export const SITE = {
   school: 'Dartmouth',
   name: 'Free Stuff @ Dartmouth',
   tagline: 'Your complete catalog of free perks',
-  url: 'https://freestuff-dartmouth.vercel.app',
+  url: 'https://dartmouth.campusfreebies.com',
   /** Public repo — used for the "fork this" + "report an issue" links. */
   github: 'https://github.com/ssskay/freestuff-dartmouth-v2',
   /**
