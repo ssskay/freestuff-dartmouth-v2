@@ -776,7 +776,7 @@
     "name": "Web of Science",
     "category": "library",
     "description": "Citation database indexing scholarly literature across sciences, social sciences, arts, and humanities. Track citations, analyze research impact, and discover related papers.",
-    "link": "https://researchguides.dartmouth.edu/az.php",
+    "link": "https://researchguides.dartmouth.edu/az/databases?q=Web%20of%20Science",
     "eligibility": [
       "student",
       "faculty",
@@ -785,7 +785,7 @@
     "source": "library.dartmouth.edu",
     "last_verified": "2026-06-09",
     "status": "active",
-    "notes": "Free via the Dartmouth Library — find 'Web of Science' in the A-Z databases list. Access on campus or via VPN; export 500-1000 records at a time; API access available.",
+    "notes": "Free via the Dartmouth Library. Access on campus or via VPN; export 500-1000 records at a time; API access available.",
     "added_by": "agent",
     "annual_value": null,
     "date_added": "2026-05-27"
