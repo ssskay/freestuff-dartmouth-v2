@@ -216,18 +216,17 @@
   },
   {
     "id": "doc-cabin-rentals",
-    "name": "DOC Cabin Rentals",
+    "name": "DOC Grant Cabins (Free for Undergrads)",
     "category": "outdoor",
-    "description": "Rent DOC cabins throughout New Hampshire including the Second College Grant and hills near Hanover. 18 cabins total with rates ranging from free (undergrads at Grant cabins) to $100/night (Hanover area cabins).",
+    "description": "Free overnight stays in DOC cabins at the Second College Grant for Dartmouth undergraduates. (Other DOC cabins near Hanover are paid rentals, $40–$250/night, and are not part of this free listing.)",
     "link": "https://outdoors.dartmouth.edu/services/cabins/",
     "eligibility": [
-      "student",
-      "alumni"
+      "student"
     ],
     "source": "outdoors.dartmouth.edu",
     "last_verified": "2026-05-28",
     "status": "active",
-    "notes": "Hanover cabins: $40-$250/night with DOC life member discounts. Grant cabins: Free for undergrads, $7-$35/person for others. DOC life members get 50% off for spouse, 75% off for kids.",
+    "notes": "Grant cabins are free for Dartmouth undergrads — reserve through DOC Outdoor Programs. Hanover-area cabins ($40–$250/night) and non-undergrad rates are paid and excluded from the free offering.",
     "added_by": "human",
     "hidden_gem": true,
     "annual_value": 150,
