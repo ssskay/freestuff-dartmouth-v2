@@ -776,16 +776,16 @@
     "name": "Web of Science",
     "category": "library",
     "description": "Citation database indexing scholarly literature across sciences, social sciences, arts, and humanities. Track citations, analyze research impact, and discover related papers.",
-    "link": "https://researchguides.dartmouth.edu/c.php?g=59725&p=9910244",
+    "link": "https://researchguides.dartmouth.edu/az.php",
     "eligibility": [
       "student",
       "faculty",
       "staff"
     ],
     "source": "library.dartmouth.edu",
-    "last_verified": "2026-05-27",
+    "last_verified": "2026-06-09",
     "status": "active",
-    "notes": "Access on campus or via VPN; export 500-1000 records at a time; API access available",
+    "notes": "Free via the Dartmouth Library — find 'Web of Science' in the A-Z databases list. Access on campus or via VPN; export 500-1000 records at a time; API access available.",
     "added_by": "agent",
     "annual_value": null,
     "date_added": "2026-05-27"
@@ -890,16 +890,16 @@
     "name": "PsycINFO",
     "category": "library",
     "description": "The best resource for scholarly publications in psychology and the brain sciences. Indexes citations and summaries of journal articles, book chapters, books, and technical reports.",
-    "link": "https://search.ebscohost.com/login.aspx?authtype=ip,shib&profile=ehost&defaultdb=psyh&custid=dartcol&groupid=main",
+    "link": "https://researchguides.dartmouth.edu/psychology",
     "eligibility": [
       "student",
       "faculty",
       "staff"
     ],
     "source": "library.dartmouth.edu",
-    "last_verified": "2026-05-27",
+    "last_verified": "2026-06-09",
     "status": "active",
-    "notes": "Provided by APA (American Psychological Association); includes PsycTests for finding psychological tests and measures",
+    "notes": "Free via the Dartmouth Library — access PsycINFO from the Psychology research guide. Provided by APA (American Psychological Association); includes PsycTests for finding psychological tests and measures.",
     "added_by": "agent",
     "annual_value": null,
     "date_added": "2026-05-27"
@@ -1129,12 +1129,12 @@
     "name": "Rockefeller Center Senior Thesis Grants",
     "category": "money",
     "description": "Grants from $100 to $2,000 for undergraduate students writing Senior Honors Theses in the Social Sciences.",
-    "link": "https://rockefeller.dartmouth.edu/funding/senior-honors-thesis-grants",
+    "link": "https://rockefeller.dartmouth.edu/funding/student-senior-honors-thesis-grants",
     "eligibility": [
       "student"
     ],
     "source": "rockefeller.dartmouth.edu",
-    "last_verified": "2026-05-27",
+    "last_verified": "2026-06-09",
     "status": "active",
     "notes": "For seniors writing honors theses on public policy or social science topics",
     "added_by": "agent",
