@@ -1,5 +1,6 @@
 ---
 import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
 import { SITE, fundingLink } from '../site.config';
 
 const tip = fundingLink();
@@ -96,6 +97,7 @@ const imageURL = new URL(image, siteOrigin);
 
     <!-- Cookieless, privacy-friendly aggregate analytics (see /privacy) -->
     <Analytics />
+    <SpeedInsights />
 
     <style>
       /* Nav: N7 Inline + Wordmark */
