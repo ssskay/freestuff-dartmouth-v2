@@ -196,17 +196,17 @@
   },
   {
     "id": "doc-trips",
-    "name": "DOC Trips",
+    "name": "DOC Gear Rental & Term Trips",
     "category": "outdoor",
-    "description": "Subsidized outdoor trips throughout the year including hiking, paddling, climbing, and camping. Trailhead trips and break trips available.",
+    "description": "Free outdoor gear rental from Robinson Hall for all students (bring your Dartmouth ID), plus free term-time DOC trips — day hikes, paddling, climbing — through the Trailhead sign-up. Multi-day break trips are subsidized (reduced cost), not fully free.",
     "link": "https://outdoors.dartmouth.edu/dartmouth-outing-club/go-trip",
     "eligibility": [
       "student"
     ],
     "source": "outdoors.dartmouth.edu",
-    "last_verified": "2026-05-27",
+    "last_verified": "2026-06-09",
     "status": "active",
-    "notes": "Free gear rental included; DOC subsidizes trip costs",
+    "notes": "Gear rental is officially free for all students. Term trips are free; break trips are subsidized. The separate DOC First-Year Trips pre-orientation program charges a fee (waived up to 100% for aid recipients) and is not part of this listing.",
     "added_by": "human",
     "annual_value": 200,
     "date_added": "2026-05-27",
