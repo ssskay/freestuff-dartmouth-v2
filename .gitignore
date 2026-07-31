@@ -33,3 +33,9 @@ test-supabase.js
 agents/metrics/run-*.json
 .vercel
 freshness-report.md
+
+# agent state
+.cx/
+.claude/
+.codex/
+.construct/
