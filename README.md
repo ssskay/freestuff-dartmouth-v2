@@ -164,3 +164,7 @@ Built by Dartmouth folks, for Dartmouth folks. Questions or feedback? [Open an i
 ---
 
 **Note:** Agent automation (Phase 2) is planned but not yet implemented. Current version (v1) is a static site with manually-verified resources.
+
+---
+
+Maintained by [Sara Kay](https://sarakay.me) · [@ssskay](https://github.com/ssskay) · [more projects](https://sarakay.me/projects.html)
