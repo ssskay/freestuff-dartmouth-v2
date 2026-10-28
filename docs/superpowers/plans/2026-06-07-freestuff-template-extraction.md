@@ -4,13 +4,13 @@
 
 **Goal:** Stand up a fork-base `freestuff-template` repo that reproduces the current Dartmouth site, with the four mechanical extractions (SQL CHECK-from-config, brand-color generator helper, OG generator, verifier externalization) in place and every school-specific value confined to a documented pack-file set.
 
-**Architecture:** Copy the buildable Dartmouth site into a new repo at `/Users/sarakay/freestuff-template` (live Dartmouth repo untouched). Add small, on-demand generator scripts (run via `tsx`) that derive the SQL category constraint, the social card, and read the verifier's school config from a single source. No build-time machinery, no browser — generators run on demand; the deploy build is unchanged. Dartmouth's content stays in as the worked reference.
+**Architecture:** Copy the buildable Dartmouth site into a new repo at `~/freestuff-template` (live Dartmouth repo untouched). Add small, on-demand generator scripts (run via `tsx`) that derive the SQL category constraint, the social card, and read the verifier's school config from a single source. No build-time machinery, no browser — generators run on demand; the deploy build is unchanged. Dartmouth's content stays in as the worked reference.
 
 **Tech Stack:** Astro 5, TypeScript, vitest, `sharp` (PNG render, already in tree), `tsx` (run TS scripts from node), Python 3 (verifier).
 
 **Spec:** `docs/superpowers/specs/2026-06-07-freestuff-template-extraction-design.md`. **Context:** `.cx/handoffs/2026-06-06-freestuff-template-extraction.md`.
 
-> **Working directory:** Task 0 creates `/Users/sarakay/freestuff-template`. **Every task from Task 1 onward runs inside that new repo**, not the Dartmouth repo. All paths below are relative to the new repo unless prefixed with `DARTMOUTH:`.
+> **Working directory:** Task 0 creates `~/freestuff-template`. **Every task from Task 1 onward runs inside that new repo**, not the Dartmouth repo. All paths below are relative to the new repo unless prefixed with `DARTMOUTH:`.
 
 ---
 
@@ -35,15 +35,15 @@
 ## Task 0: Seed the template repo and establish the reproduction baseline
 
 **Files:**
-- Create: `/Users/sarakay/freestuff-template/` (new git repo, seeded from the Dartmouth working tree)
+- Create: `~/freestuff-template/` (new git repo, seeded from the Dartmouth working tree)
 
 - [ ] **Step 1: Create the new repo directory and copy only the site + tooling we want**
 
 Run (from anywhere):
 
 ```bash
-SRC=/Users/sarakay/freestuff-dartmouth-v2
-DST=/Users/sarakay/freestuff-template
+SRC=~/freestuff-dartmouth-v2
+DST=~/freestuff-template
 mkdir -p "$DST"
 # Copy the buildable site, CI, agents, scripts, supabase, tests — NOT secrets, caches, or tooling.
 rsync -a \
@@ -67,7 +67,7 @@ Expected: `$DST` contains `src/ public/ supabase/ agents/ scripts/ tests/ .githu
 Run:
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 git init -q && npm ci
 ```
 
@@ -78,7 +78,7 @@ Expected: `npm ci` completes; `node_modules/` populated.
 Run:
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 npm run test && npm run typecheck && npm run build
 ```
 
@@ -89,7 +89,7 @@ Expected: 40 vitest tests PASS; `astro check` reports 0 errors; `astro build` co
 Run:
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 npm install -D tsx sharp
 ```
 
@@ -98,7 +98,7 @@ Expected: `package.json` devDependencies now list `tsx` and `sharp` (sharp was o
 - [ ] **Step 5: Commit the baseline**
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 git add -A
 git commit -q -m "Seed freestuff-template from Dartmouth (reproduction baseline)
 
@@ -176,7 +176,7 @@ describe('gen-schema-check', () => {
 
 - [ ] **Step 3: Run the test to verify it fails**
 
-Run: `cd /Users/sarakay/freestuff-template && npx vitest run tests/gen/schema-check.test.ts`
+Run: `cd ~/freestuff-template && npx vitest run tests/gen/schema-check.test.ts`
 Expected: FAIL — `scripts/gen-schema-check.mts` has no export `renderCategoryCheck`.
 
 - [ ] **Step 4: Write the generator**
@@ -240,7 +240,7 @@ In `package.json` `scripts`, add:
 Run:
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 npm run gen:schema
 npx vitest run tests/gen/schema-check.test.ts
 ```
@@ -250,7 +250,7 @@ Expected: generator prints `wrote 12 categories`; both tests PASS. If the "no dr
 - [ ] **Step 7: Confirm the full suite + build still green, then commit**
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 npm run test && npm run build
 git add scripts/gen-schema-check.mts tests/gen/schema-check.test.ts supabase/schema.sql package.json
 git commit -q -m "Generate SQL category CHECK from config (kill dual-source drift)
@@ -299,7 +299,7 @@ describe('oklchToHex', () => {
 
 - [ ] **Step 2: Run the test to verify it fails**
 
-Run: `cd /Users/sarakay/freestuff-template && npx vitest run tests/gen/oklch-to-hex.test.ts`
+Run: `cd ~/freestuff-template && npx vitest run tests/gen/oklch-to-hex.test.ts`
 Expected: FAIL — module/export missing.
 
 - [ ] **Step 3: Implement the converter (OKLCH → OKLab → linear sRGB → gamma sRGB, clamped)**
@@ -345,13 +345,13 @@ export function oklchToHex(input: string): string {
 
 - [ ] **Step 4: Run the test to verify it passes**
 
-Run: `cd /Users/sarakay/freestuff-template && npx vitest run tests/gen/oklch-to-hex.test.ts`
+Run: `cd ~/freestuff-template && npx vitest run tests/gen/oklch-to-hex.test.ts`
 Expected: PASS. If the green assertion is off by ±1 in a channel, the math rounding differs slightly — adjust the test to `#00693e`/`#00693d` tolerance only if the conversion is provably correct; prefer fixing rounding to hit the documented `#00693e`.
 
 - [ ] **Step 5: Commit**
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 git add scripts/lib/oklch-to-hex.mts tests/gen/oklch-to-hex.test.ts
 git commit -q -m "Add oklch->hex helper for the OG generator (brand color single-sourced)
 
@@ -399,7 +399,7 @@ describe('gen-og', () => {
 
 - [ ] **Step 2: Run the test to verify it fails**
 
-Run: `cd /Users/sarakay/freestuff-template && npx vitest run tests/gen/og.test.ts`
+Run: `cd ~/freestuff-template && npx vitest run tests/gen/og.test.ts`
 Expected: FAIL — `renderOgSvg` not exported.
 
 - [ ] **Step 3: Write the generator**
@@ -469,7 +469,7 @@ In `package.json` `scripts`, add:
 Run:
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 npx vitest run tests/gen/og.test.ts
 npm run og
 ```
@@ -479,7 +479,7 @@ Expected: both tests PASS; `npm run og` overwrites `public/og.png` and prints th
 - [ ] **Step 6: Confirm suite + build, then commit**
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 npm run test && npm run build
 git add scripts/gen-og.mts tests/gen/og.test.ts package.json public/og.png
 git commit -q -m "Add OG generator (SVG -> sharp), brand color read from tokens.css
@@ -548,7 +548,7 @@ def test_user_agent_comes_from_config():
 
 - [ ] **Step 3: Run the test to verify it fails**
 
-Run: `cd /Users/sarakay/freestuff-template/agents && python -m pytest test_verify_config.py -v`
+Run: `cd ~/freestuff-template/agents && python -m pytest test_verify_config.py -v`
 Expected: FAIL — `verify` has no `load_config` / `build_domain_map` (install pytest first if missing: `pip install -r requirements.txt`).
 
 - [ ] **Step 4: Add the loader and refactor the three hardcoded spots in `verify.py`**
@@ -598,7 +598,7 @@ At `:157-163`, replace the hardcoded `domain_map = { ... }` literal with:
 
 - [ ] **Step 5: Run the test to verify it passes**
 
-Run: `cd /Users/sarakay/freestuff-template/agents && python -m pytest test_verify_config.py -v`
+Run: `cd ~/freestuff-template/agents && python -m pytest test_verify_config.py -v`
 Expected: 3 tests PASS.
 
 - [ ] **Step 6: Smoke-check the module still imports and the JS suite is unaffected**
@@ -606,8 +606,8 @@ Expected: 3 tests PASS.
 Run:
 
 ```bash
-cd /Users/sarakay/freestuff-template/agents && python -c "import verify; print(verify.SCHOOL, verify.USER_AGENT)"
-cd /Users/sarakay/freestuff-template && npm run test
+cd ~/freestuff-template/agents && python -c "import verify; print(verify.SCHOOL, verify.USER_AGENT)"
+cd ~/freestuff-template && npm run test
 ```
 
 Expected: prints `Dartmouth Dartmouth-Verifier/1.0 ...`; vitest suite still green (unchanged).
@@ -623,7 +623,7 @@ pytest>=8
 Then:
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 git add agents/verify.config.json agents/verify.py agents/test_verify_config.py agents/requirements.txt
 git commit -q -m "Externalise verifier school/domains/UA into verify.config.json
 
@@ -770,7 +770,7 @@ At the top of `src/site.config.ts`, immediately after the existing module docstr
 - [ ] **Step 4: Verify build still green (docs/comment changes are non-breaking), then commit**
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 npm run typecheck && npm run build
 git add recipes README.md src/site.config.ts
 git commit -q -m "Document the pack-file edit surface (recipes + README + config header)
@@ -789,7 +789,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 Run:
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 rm -rf node_modules dist .astro
 npm ci
 npm run test && npm run typecheck && npm run build
@@ -802,7 +802,7 @@ Expected: all generator + helper + existing tests PASS; `astro check` 0 errors; 
 Run:
 
 ```bash
-cd /Users/sarakay/freestuff-dartmouth-v2 && git status --short && git log --oneline -1
+cd ~/freestuff-dartmouth-v2 && git status --short && git log --oneline -1
 ```
 
 Expected: only the spec/plan docs from the brainstorming session appear (already committed); no engine/site changes. The live repo's `main` is intact.
@@ -814,13 +814,13 @@ Manually verify (no code change expected):
 - Scenario page copy in `src/pages/scenarios/*.astro` is unchanged (no copy→data refactor).
 - `CATEGORIES` still contains `tuck` (no `tuck`→`tepper` reshape).
 
-Run: `diff /Users/sarakay/freestuff-dartmouth-v2/src/lib/map-data.ts /Users/sarakay/freestuff-template/src/lib/map-data.ts && echo "map-data identical"`
+Run: `diff ~/freestuff-dartmouth-v2/src/lib/map-data.ts ~/freestuff-template/src/lib/map-data.ts && echo "map-data identical"`
 Expected: `map-data identical`.
 
 - [ ] **Step 4: Tag the reproduction milestone**
 
 ```bash
-cd /Users/sarakay/freestuff-template
+cd ~/freestuff-template
 git tag -a v0.1.0-template -m "Mechanical extraction complete; reproduces Dartmouth site"
 git log --oneline
 ```

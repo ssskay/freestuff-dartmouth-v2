@@ -27,7 +27,7 @@ Phase 1 & 2 adds:
 ## Step 2: Run the Database Schema
 
 1. In your Supabase project, go to the **SQL Editor**
-2. Open the file `/Users/sarakay/freestuff-dartmouth-v2/supabase/schema.sql`
+2. Open the file `supabase/schema.sql` (in this repo)
 3. Copy the entire contents
 4. Paste it into the SQL Editor
 5. Click **Run** (bottom right)

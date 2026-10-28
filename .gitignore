@@ -39,3 +39,7 @@ freshness-report.md
 .claude/
 .codex/
 .construct/
+
+# Local agent tooling config (machine-specific paths)
+.cursor/
+.opencode/

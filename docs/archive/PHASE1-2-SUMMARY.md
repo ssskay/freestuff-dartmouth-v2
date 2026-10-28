@@ -10,7 +10,7 @@
 
 ### Database Layer (Supabase)
 
-**Schema File:** `/Users/sarakay/freestuff-dartmouth-v2/supabase/schema.sql`
+**Schema File:** `~/freestuff-dartmouth-v2/supabase/schema.sql`
 
 Three tables created:
 
@@ -42,7 +42,7 @@ Three tables created:
 ### Application Layer
 
 **1. Supabase Client Module**
-- **File:** `/Users/sarakay/freestuff-dartmouth-v2/src/lib/supabase.ts`
+- **File:** `~/freestuff-dartmouth-v2/src/lib/supabase.ts`
 - Typed helpers for all database operations
 - Environment variable validation
 - Graceful error handling
@@ -54,12 +54,12 @@ Three tables created:
   - `getUserVotes()` - Get user's vote state
 
 **2. Database Types**
-- **File:** `/Users/sarakay/freestuff-dartmouth-v2/src/lib/database.types.ts`
+- **File:** `~/freestuff-dartmouth-v2/src/lib/database.types.ts`
 - Full TypeScript definitions for Supabase schema
 - Type safety for all database operations
 
 **3. Fingerprinting Utility**
-- **File:** `/Users/sarakay/freestuff-dartmouth-v2/src/lib/fingerprint.ts`
+- **File:** `~/freestuff-dartmouth-v2/src/lib/fingerprint.ts`
 - Browser fingerprint generation using navigator properties
 - Persistent storage in localStorage
 - Simple hash function (djb2) for uniqueness
@@ -67,7 +67,7 @@ Three tables created:
 - `clearFingerprint()` - Clear stored fingerprint (testing)
 
 **4. Seed Script**
-- **File:** `/Users/sarakay/freestuff-dartmouth-v2/scripts/seed-supabase.js`
+- **File:** `~/freestuff-dartmouth-v2/scripts/seed-supabase.js`
 - Migrates `resources.json` to Supabase
 - Batch processing (50 resources per batch)
 - Upsert logic (handles duplicates by URL)
@@ -77,14 +77,14 @@ Three tables created:
 ### Frontend Components
 
 **1. ResourceCard Component** (Updated)
-- **File:** `/Users/sarakay/freestuff-dartmouth-v2/src/components/ResourceCard.astro`
+- **File:** `~/freestuff-dartmouth-v2/src/components/ResourceCard.astro`
 - Added upvote button with vote count
 - Visual state for voted/unvoted
 - Optimistic UI updates
 - Props now include `upvotes` and `userVotedIds`
 
 **2. Index Page** (Updated)
-- **File:** `/Users/sarakay/freestuff-dartmouth-v2/src/pages/index.astro`
+- **File:** `~/freestuff-dartmouth-v2/src/pages/index.astro`
 - Fetches resources from Supabase at runtime
 - Fallback to static JSON if Supabase unavailable
 - Client-side upvote handling
@@ -92,7 +92,7 @@ Three tables created:
 - Existing search/filter functionality preserved
 
 **3. Submit Page** (New)
-- **File:** `/Users/sarakay/freestuff-dartmouth-v2/src/pages/submit.astro`
+- **File:** `~/freestuff-dartmouth-v2/src/pages/submit.astro`
 - Community submission form
 - All fields match database schema
 - Client-side validation
@@ -101,19 +101,19 @@ Three tables created:
 - Matches Hallmark design system
 
 **4. Navigation** (Updated)
-- **File:** `/Users/sarakay/freestuff-dartmouth-v2/src/layouts/BaseLayout.astro`
+- **File:** `~/freestuff-dartmouth-v2/src/layouts/BaseLayout.astro`
 - Added "Submit" link to header
 - Mobile-responsive nav
 
 ### Configuration
 
 **1. Astro Config**
-- **File:** `/Users/sarakay/freestuff-dartmouth-v2/astro.config.mjs`
+- **File:** `~/freestuff-dartmouth-v2/astro.config.mjs`
 - Changed `output` to `'hybrid'` for SSR/SSG mix
 - Enables dynamic data fetching
 
 **2. Environment Variables**
-- **File:** `/Users/sarakay/freestuff-dartmouth-v2/.env.example`
+- **File:** `~/freestuff-dartmouth-v2/.env.example`
 - Template for required variables:
   - `PUBLIC_SUPABASE_URL`
   - `PUBLIC_SUPABASE_ANON_KEY`
@@ -357,7 +357,7 @@ After deploying to Vercel:
 ### New Files Created
 
 ```
-/Users/sarakay/freestuff-dartmouth-v2/
+~/freestuff-dartmouth-v2/
 ├── supabase/
 │   └── schema.sql                    # Database schema + RLS policies
 ├── scripts/
@@ -377,7 +377,7 @@ After deploying to Vercel:
 ### Modified Files
 
 ```
-/Users/sarakay/freestuff-dartmouth-v2/
+~/freestuff-dartmouth-v2/
 ├── astro.config.mjs                   # Added output: 'hybrid'
 ├── package.json                       # Added dependencies + seed script
 ├── src/
