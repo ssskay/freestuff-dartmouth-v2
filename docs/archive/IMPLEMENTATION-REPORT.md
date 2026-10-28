@@ -24,7 +24,7 @@ Phase 1 & 2 of the static → hybrid migration is **complete and production-read
 
 ### 1. Database Schema (Supabase)
 
-**File:** `/Users/sarakay/freestuff-dartmouth-v2/supabase/schema.sql`
+**File:** `~/freestuff-dartmouth-v2/supabase/schema.sql`
 
 - `resources` table: Main catalog with upvote counts
 - `votes` table: Fingerprint-based vote tracking

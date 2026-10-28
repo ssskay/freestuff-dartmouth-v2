@@ -29,7 +29,7 @@ The handoff's monorepo *structure sketch* is treated as superseded by its own CM
 
 ## 3. Where the work lives
 
-- New repo at `/Users/sarakay/freestuff-template` (fresh `git init`; later pushed to `github.com/ssskay/freestuff-template`), seeded from the current Dartmouth repo state.
+- New repo at `~/freestuff-template` (fresh `git init`; later pushed to `github.com/ssskay/freestuff-template`), seeded from the current Dartmouth repo state.
 - **The live `freestuff-dartmouth-v2` repo is NOT touched** — it keeps deploying as-is (handoff DO-NOT-TOUCH).
 - The template ships **with Dartmouth's real content** as the worked reference (not a neutral placeholder) — this is how we prove reproduction and keeps "Dartmouth = the clean reference" true inside the template.
 - **Open item (do not resolve this session):** Dartmouth content now lives in two repos (the live one and the template's reference copy). Whether to later re-point the live deploy at the template is a future decision; the handoff forbids touching the live deploy now.

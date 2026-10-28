@@ -68,7 +68,7 @@ Wait 2 minutes for provisioning.
 
 In Supabase dashboard:
 1. Go to **SQL Editor**
-2. Open `/Users/sarakay/freestuff-dartmouth-v2/supabase/schema.sql`
+2. Open `supabase/schema.sql` (in this repo)
 3. Copy entire file
 4. Paste into SQL Editor
 5. Click **Run**
@@ -91,7 +91,7 @@ In Supabase:
 ### 4. Configure Environment
 
 ```bash
-cd /Users/sarakay/freestuff-dartmouth-v2
+cd freestuff-dartmouth-v2
 cp .env.example .env
 ```
 
